@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.enjoyTrip.OdysseyFrontiers.attraction.model.mapper.AttractionMapper">
+    <resultMap id="resultSido" type="com.enjoyTrip.OdysseyFrontiers.attraction.model.dto.Sido">
+        <result column="sido_code" property="sidoCode"/>
+        <result column="sido_name" property="sidoName"/>
+    </resultMap>
+
+    <resultMap id="resultGugun" type="com.enjoyTrip.OdysseyFrontiers.attraction.model.dto.Gugun">
+        <result column="gugun_code" property="gugunCode"/>
+        <result column="gugun_name" property="gugunName"/>
+        <result column="sido_code" property="sidoCode"/>
+    </resultMap>
+
+    <resultMap id="resultAttr" type="com.enjoyTrip.OdysseyFrontiers.attraction.model.dto.AttractionInfo">
+        <result column="title" property="title"/>
+        <result column="addr1" property="addr1"/>
+        <result column="addr2" property="addr2"/>
+        <result column="latitude" property="latitude"/>
+        <result column="longitude" property="longitude"/>
+        <result column="first_image" property="firstImage"/>
+    </resultMap>
+
+    <select id="listSidos" resultMap="resultSido">
+        SELECT *
+        FROM sido;
+    </select>
+
+    <select id="listGuguns" parameterType="int" resultMap="resultGugun">
+        SELECT *
+        FROM gugun
+        WHERE sido_code = #{sidoCode};
+    </select>
+
+    <select id="selectAttr" parameterType="map" resultMap="resultAttr">
+        SELECT title,
+        addr1,
+        addr2,
+        latitude,
+        longitude,
+        first_image
+        FROM attraction_info
+        WHERE content_type_id = #{contentTypeId}
+        AND sido_code = #{sidoCode}
+        AND gugun_code = #{gugunCode}
+        AND title LIKE CONCAT('%', #{keyword}, '%')
+        limit 30;
+    </select>
+
+    <select id="selectAttrOnlyKeyword" parameterType="string" resultMap="resultAttr">
+        SELECT title,
+        addr1,
+        addr2,
+        latitude,
+        longitude,
+        first_image
+        FROM attraction_info
+        WHERE title LIKE CONCAT('%', #{keyword}, '%');
+    </select>
+
+    <select id="selectAttrNoKeyword" parameterType="map" resultMap="resultAttr">
+        SELECT title,
+        addr1,
+        addr2,
+        latitude,
+        longitude,
+        first_image
+        FROM attraction_info
+        WHERE content_type_id = #{contentTypeId}
+        AND sido_code = #{sidoCode}
+        AND gugun_code = #{gugunCode};
+    </select>
+
+</mapper>

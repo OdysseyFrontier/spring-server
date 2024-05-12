@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.enjoyTrip.OdysseyFrontiers.plan.model.mapper.PlanMapper">
+
+    <resultMap type="planDto" id="plan">
+        <result column="plan_id" property="planId"/>
+        <result column="member_id" property="memberId"/>
+        <result column="member_name" property="memberName"/>
+        <result column="title" property="title"/>
+        <result column="description" property="description"/>
+<!--        <result column="access_type" property="accessType"/>-->
+<!--        <result column="season" property="season"/>-->
+        <result column="start_time" property="startTime"/>
+        <result column="recent_update_time" property="recentUpdateTime"/>
+    </resultMap>
+
+    <insert id="createPlan" parameterType="planDto">
+        INSERT INTO plan (member_id, title, description)
+        VALUES (#{memberId}, #{title}, #{description})
+    </insert>
+
+    <select id="listPlan" resultMap="plan">
+        SELECT * FROM plan
+    </select>
+
+    <select id="getPlan" parameterType="int" resultMap="plan">
+        SELECT * FROM plan WHERE plan_id = #{planNo}
+    </select>
+
+    <update id="modifyPlan" parameterType="map">
+        UPDATE plan
+        SET title = #{planDto.title},
+            description = #{planDto.description},
+            season = #{planDto.season},
+            access_type = #{planDto.accessType},
+            recent_update_time = now()
+        WHERE plan_id = #{planNo}
+    </update>
+
+    <delete id="deletePlan" parameterType="int">
+        DELETE FROM plan WHERE plan_id = #{planNo}
+    </delete>
+
+</mapper>

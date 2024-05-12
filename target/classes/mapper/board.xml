@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.enjoyTrip.OdysseyFrontiers.board.model.mapper.BoardMapper">
+
+    <resultMap type="boardDto" id="board">
+        <result column="board_no" property="boardNo"/>
+        <result column="member_id" property="memberId"/>
+        <result column="member_name" property="memberName"/>
+        <result column="subject" property="subject"/>
+        <result column="content" property="content"/>
+        <result column="hit" property="hit"/>
+        <result column="register_time" property="registerTime"/>
+        <!--		<result column="type" property="type"/>-->
+    </resultMap>
+
+    <resultMap type="boardHitDto" id="boardHit">
+        <result column="board_hit_id" property="boardHitId"/>
+        <result column="board_no" property="boardNo"/>
+        <result column="memberId" property="memberId"/>
+    </resultMap>
+
+    <!--	<resultMap type="boardDto" id="viewboard" extends="board">-->
+    <!--		<collection property="fileInfos" column="board_no" javaType="list" ofType="fileInfoDto" select="fileInfoList"/>-->
+    <!--	</resultMap>-->
+
+    <!--	<resultMap type="fileInfoDto" id="file">-->
+    <!--		<result column="save_folder" property="saveFolder"/>-->
+    <!--		<result column="original_file" property="originalFile"/>-->
+    <!--		<result column="save_file" property="saveFile"/>-->
+    <!--	</resultMap>-->
+
+    <insert id="writeBoard" parameterType="boardDto">
+        insert into board (member_id, subject, content, register_time)
+        values (#{memberId}, #{subject}, #{content}, now())
+        <selectKey resultType="int" keyProperty="boardNo" order="AFTER">
+            select last_insert_id()
+        </selectKey>
+    </insert>
+
+    <!--	<insert id="registerFile" parameterType="boardDto">-->
+    <!--		insert into file_info (board_no, save_folder, original_file, save_file)-->
+    <!--		values-->
+    <!--		<foreach collection="fileInfos" item="fileinfo" separator=" , ">-->
+    <!--			(#{boardNo}, #{fileinfo.saveFolder}, #{fileinfo.originalFile}, #{fileinfo.saveFile})-->
+    <!--		</foreach>-->
+    <!--	</insert>-->
+
+
+    <sql id="search">
+        <where>
+            <if test="word != null and word != ''">
+                <if test="key == 'subject'">
+                    and subject like concat('%', #{word}, '%')
+                </if>
+                <if test="key != 'subject'">
+                    and ${key} = #{word}
+                </if>
+            </if>
+        </where>
+    </sql>
+
+    <sql id="sort">
+        <choose>
+            <when test="orderBy != null and orderBy != ''">
+                order by ${orderBy} ${orderDir}
+            </when>
+            <otherwise>
+                order by b.board_no desc
+            </otherwise>
+        </choose>
+    </sql>
+
+
+    <select id="listBoard" parameterType="map" resultMap="board">
+        select b.board_no, b.member_id, b.subject, b.content, b.register_time, b.type, m.member_name,
+        count(bh.board_no) hit
+        from board b
+        INNER JOIN members m ON b.member_id = m.member_id
+        LEFT JOIN board_hit bh ON b.board_no = bh.board_no
+        <include refid="search"/>
+        GROUP BY b.board_no, b.member_id, b.subject, b.content, b.register_time, b.type, m.member_name
+        <include refid="sort"/>
+    </select>
+
+
+    <select id="getBoard" parameterType="int" resultMap="board">
+        select b.board_no,
+               m.member_id,
+               m.member_name,
+               b.subject,
+               b.content,
+               b.register_time,
+               b.type,
+               count(board_hit.board_no) hit
+        from board b
+                 LEFT JOIN members m
+                            on b.member_id = m.member_id
+                 LEFT JOIN board_hit
+                           on board_hit.board_no = b.board_no
+        where b.board_no = #{boardNo}
+        GROUP BY b.board_no, b.member_id, b.subject, b.content, b.register_time, b.type, m.member_name
+    </select>
+
+    <!--	<select id="fileInfoList" resultMap="file">-->
+    <!--		select save_folder, original_file, save_file-->
+    <!--		from file_info-->
+    <!--		where board_no = #{boardNo}-->
+    <!--	</select>-->
+
+
+    <update id="modifyBoard" parameterType="boardDto">
+        update board
+        set subject = #{subject},
+            content = #{content}
+        where board_no = #{boardNo}
+    </update>
+
+
+    <delete id="deleteBoard" parameterType="int">
+        delete
+        from board
+        where board_no = #{boardNo}
+    </delete>
+
+    <!--	<delete id="deleteFile" parameterType="int">-->
+    <!--		delete from file_info-->
+    <!--		where board_no = #{boardNo}-->
+    <!--	</delete>-->
+
+
+    <select id="getRecentMemberHit" resultType="java.lang.Integer">
+        select board_hit_id
+        from board_hit
+        where member_id = #{memberId} and
+            board_no = #{boardNo}
+        order by create_time desc
+            limit 1
+    </select>
+
+    <insert id="createHit">
+        INSERT INTO board_hit (member_id, board_no)
+        VALUES (#{memberId}, #{boardNo})
+    </insert>
+
+
+    <update id="updateHit" parameterType="int">
+        UPDATE board_hit
+        SET update_time = now()
+        where board_hit_id = #{boardHitId}
+    </update>
+
+</mapper>
