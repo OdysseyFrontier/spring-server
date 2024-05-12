@@ -94,7 +94,7 @@
         where member_name = #{memberName}
     </select>
 
-    <select id="findAllMember" resultMap="member">
+    <select id="findAllMembers" resultMap="member">
         select *
         from members
     </select>
