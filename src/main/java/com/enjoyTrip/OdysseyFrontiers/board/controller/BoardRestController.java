@@ -25,8 +25,14 @@ public class BoardRestController {
         this.boardService = boardService;
     }
 
+    @GetMapping("/list")
+    public ResponseEntity<?> listBoard(@RequestParam Map<String, String> map) throws Exception {
+        // 게시판의 리스트를 json으로 보내주는 코드
+        return new ResponseEntity<>(boardService.listBoard(map), HttpStatus.OK);
+    }
 
-//    @GetMapping("/view/{BoardNo}")
+
+    @GetMapping("/view/{BoardNo}")
     public ResponseEntity<?> view(@PathVariable int BoardNo, @RequestParam Map<String, String> map,
                                Model model, HttpSession session)
             throws Exception {

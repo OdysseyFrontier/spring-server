@@ -20,6 +20,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.enjoyTrip.OdysseyFrontiers.util.constant.JwtConst.GRANT_TYPE;
@@ -46,6 +47,12 @@ public class MemberRestController {
     }
 
 
+    @GetMapping("/list")
+    public ResponseEntity<?> getAllMembers() throws Exception {
+        List<MemberDto> allMembers = memberService.findAllMembers();
+        return new ResponseEntity<>(allMembers, HttpStatus.OK);
+    }
+
     @PostMapping("/aa")
     public ResponseEntity<?> login(@RequestBody MemberDto memberDto,
                                    HttpServletResponse response) throws Exception {
@@ -60,7 +67,6 @@ public class MemberRestController {
 //				cookie 설정
 //                Cookie cookie = new Cookie("memberId", map.get("memberId"));
 //                Cookie cookie2 = new Cookie("memberPassword", map.get("memberPassword"));
-//				cookie.setPath("/board");
 
                 // @RequestParam으로 rememeber 못 가져옴.
 //                if ("true".equals(remember)) { // 아이디 저장을 체크 했다면.

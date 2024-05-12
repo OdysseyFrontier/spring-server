@@ -1,6 +1,7 @@
 package com.enjoyTrip.OdysseyFrontiers.member.model.service;
 
 
+import java.util.List;
 import java.util.Map;
 
 import com.enjoyTrip.OdysseyFrontiers.member.model.dto.MemberDto;
@@ -11,8 +12,10 @@ public interface MemberService {
 		
 		// 회원 가입
 		int joinMember(MemberDto memberDto) throws Exception;
-		
-		// 로그인
+
+		List<MemberDto> findAllMembers() throws Exception;
+
+	// 로그인
 		MemberDto loginMember(Map<String, String> map) throws Exception;
 		
 		// 회원 정보 수정

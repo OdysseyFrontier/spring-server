@@ -23,8 +23,8 @@ import jakarta.servlet.http.HttpSession;
 
 import static com.enjoyTrip.OdysseyFrontiers.util.constant.SessionConst.SESSION_MEMBER_INFO;
 
-@Controller
-@RequestMapping("/board")
+//@Controller
+//@RequestMapping("/board")
 public class BoardController {
 
     private final Logger logger = LoggerFactory.getLogger(BoardController.class);

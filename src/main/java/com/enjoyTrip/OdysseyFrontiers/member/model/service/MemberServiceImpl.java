@@ -2,7 +2,7 @@ package com.enjoyTrip.OdysseyFrontiers.member.model.service;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
+import java.util.List;
 import java.util.Map;
 
 import com.enjoyTrip.OdysseyFrontiers.member.model.mapper.MemberMapper;
@@ -75,6 +75,12 @@ public class MemberServiceImpl implements MemberService {
 	public int joinMember(MemberDto memberDto) throws Exception {
 		memberDto.setMemberPassword(getEncrypt(memberDto.getMemberPassword()));
 		return memberMapper.joinMember(memberDto);
+	}
+
+	@Override
+	public List<MemberDto> findAllMembers() throws Exception {
+		System.out.println("11");
+		return memberMapper.findAllMembers();
 	}
 
 	@Override

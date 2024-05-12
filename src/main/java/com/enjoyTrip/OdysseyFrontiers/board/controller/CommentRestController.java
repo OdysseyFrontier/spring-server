@@ -3,23 +3,20 @@ package com.enjoyTrip.OdysseyFrontiers.board.controller;
 import com.enjoyTrip.OdysseyFrontiers.board.model.dto.CommentDto;
 import com.enjoyTrip.OdysseyFrontiers.board.model.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 
-@RestController
-@RequestMapping("/comment")
-public class CommentController {
+//@RestController
+//@RequestMapping("/comment")
+public class CommentRestController {
 
     private final CommentService commentService;
 
     @Autowired
-    public CommentController(CommentService commentService) {
+    public CommentRestController(CommentService commentService) {
         this.commentService = commentService;
     }
 
@@ -34,9 +31,6 @@ public class CommentController {
     public ResponseEntity<?> selectCommentsByBoardNo(@PathVariable("boardNo") int boardNo) {
         List<CommentDto> comments = commentService.selectCommentsByBoardNo(boardNo);
         return new ResponseEntity<>(comments, HttpStatus.OK);
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
-//        return ResponseEntity.ok().headers(headers).body(comments);
     }
 
     @PutMapping("/update")

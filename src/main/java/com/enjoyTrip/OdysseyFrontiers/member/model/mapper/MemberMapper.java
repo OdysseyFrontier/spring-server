@@ -32,6 +32,7 @@ public interface MemberMapper {
 	// 회원 탈퇴
 	void deleteMember(String memberId) throws SQLException;
 
-	List<MemberDto> findAllMember() throws SQLException;
 	Optional<MemberDto> findByMemberName(String memberName) throws SQLException;
+
+    List<MemberDto> findAllMembers() throws SQLException;
 }

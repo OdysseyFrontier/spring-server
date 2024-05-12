@@ -1,5 +1,8 @@
 package com.enjoyTrip.OdysseyFrontiers.util;
 
+import lombok.Getter;
+
+@Getter
 public enum Season {
     SPRING("봄","spring"),
     SUMMER("여름","summer"),
@@ -12,14 +15,6 @@ public enum Season {
     Season(String koreanName, String englishName) {
         this.koreanName = koreanName;
         this.englishName = englishName;
-    }
-
-    public String getKoreanName() {
-        return koreanName;
-    }
-
-    public String getEnglishName() {
-        return englishName;
     }
 
     @Override
