@@ -17,7 +17,7 @@
 
     <select id="selectCommentsByBoardNo" resultType="com.enjoyTrip.OdysseyFrontiers.board.model.dto.CommentDto"
             parameterType="int">
-        SELECT c.comment_id, m.member_name, m.member_id, c.content, c.register_time
+        SELECT c.comment_id, m.name, m.member_id, c.content, c.register_time
         FROM comments c
                  INNER JOIN members m
                             on c.member_id = m.member_id

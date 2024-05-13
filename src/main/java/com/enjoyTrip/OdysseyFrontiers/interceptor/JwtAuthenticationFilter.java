@@ -34,6 +34,7 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
             throws IOException, ServletException {
         // 1. Request Header 에서 JWT 토큰 추출
         String token = resolveToken((HttpServletRequest) request);
+        System.out.println(token);
         // 2. validateToken 으로 토큰 유효성 검사
         if (token != null && jwtTokenProvider.validateToken(token)) {
             // 토큰이 유효할 경우 토큰 에서 Authentication 객체를 가지고 와서 SecurityContext 에 저장
@@ -53,6 +54,7 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
             log.info("토큰 사용 불가능 : {}", token);
             chain.doFilter(request, response);
         }
+//        chain.doFilter(request, response);
     }
 
     // Request Header 에서 토큰 정보 추출

@@ -53,13 +53,30 @@ public class MemberRestController {
         return new ResponseEntity<>(allMembers, HttpStatus.OK);
     }
 
-    @PostMapping("/aa")
-    public ResponseEntity<?> login(@RequestBody MemberDto memberDto,
+    @PostMapping("/join")
+    public ResponseEntity<?> join(@RequestBody MemberDto memberDto) throws Exception {
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+
+        try {
+            memberService.joinMember(memberDto);
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        } catch (Exception e) {
+            e.printStackTrace();
+            resultMap.put("message", e.getMessage());
+            return new ResponseEntity<>(resultMap, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody Map<String, String> map,
                                    HttpServletResponse response) throws Exception {
         Map<String, Object> resultMap = new HashMap<String, Object>();
         HttpStatus status = HttpStatus.ACCEPTED;
 
-        memberService.joinMember(memberDto);
+        System.out.println(map);
+        MemberDto memberDto = memberService.loginMember(map);
+
         System.out.println(memberDto);
         try {
             if (memberDto != null) {
@@ -84,7 +101,7 @@ public class MemberRestController {
 
 
 //				jwt 설정
-                JWToken jwToken = signIn(memberDto.getMemberName(), memberDto.getMemberId(), memberDto.getMemberPassword());
+                JWToken jwToken = signIn(memberDto.getMemberId(), memberDto.getName(), memberDto.getPassword());
 
                 HttpHeaders headers = new HttpHeaders();
 //                "Bearer"는 HTTP 요청의 Authorization 헤더에 추가되는 값으로,
@@ -92,8 +109,7 @@ public class MemberRestController {
 //                "Bearer"는 표준화된 인증 체계인 OAuth 2.0에서 사용되며,
 //                이를 통해 클라이언트가 서버에게 자신을 인증하고, 보호된 리소스에 접근할 수 있음을 알립니다.
                 headers.set(HEADER_AUTH, GRANT_TYPE + " " + jwToken);
-                System.out.println("create");
-                System.out.println(GRANT_TYPE + " " + jwToken);
+                System.out.println(jwToken);
                 return ResponseEntity.ok().headers(headers).build();
             } else {
                 resultMap.put("message", "아이디 또는 패스워드를 확인해 주세요.");
@@ -111,7 +127,7 @@ public class MemberRestController {
 
     // service에 추가?
 //    @Transactional
-    public JWToken signIn(String userName, String userId, String password) throws Exception {
+    public JWToken signIn(Long userId, String userName, String password) throws Exception {
         // 1. username + password 를 기반으로 Authentication 객체 생성
         // 이때 authentication 은 인증 여부를 확인하는 authenticated 값이 false
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userName, password);

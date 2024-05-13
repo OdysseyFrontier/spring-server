@@ -20,17 +20,16 @@ public class JwtInterpreter {
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public String getUserId(String authorization){
+    public Long getUserId(String authorization){
         Claims claims = Jwts.parser()
                 .verifyWith((SecretKey) key)
                 .build()
-                .parseSignedClaims(authorization)
+                .parseSignedClaims(authorization.substring(7))
                 .getPayload();
 
-        System.out.println(claims);
-        return claims.get("userId", String.class);
+        System.out.println("claims = " + claims);
+        return claims.get("userId", Long.class);
     }
-
 
     // 강사님 코드.
 //    public String getUserId(String authorization) {

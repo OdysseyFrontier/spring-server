@@ -11,12 +11,12 @@ import lombok.ToString;
 public class BoardDto {
 
 	private int boardNo;
-	private String memberId;
-	private String memberName;
+	private long memberId;
+	private String name;
 	private String subject;
 	private String content;
 	private String registerTime;
-	private BoardType type;
+	private String type;
 	private int hit;
 
 }

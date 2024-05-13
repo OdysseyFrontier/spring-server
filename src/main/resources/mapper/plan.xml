@@ -7,7 +7,7 @@
     <resultMap type="planDto" id="plan">
         <result column="plan_id" property="planId"/>
         <result column="member_id" property="memberId"/>
-        <result column="member_name" property="memberName"/>
+        <result column="name" property="name"/>
         <result column="title" property="title"/>
         <result column="description" property="description"/>
 <!--        <result column="access_type" property="accessType"/>-->

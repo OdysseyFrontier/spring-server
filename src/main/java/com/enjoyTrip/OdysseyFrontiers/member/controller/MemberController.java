@@ -39,7 +39,7 @@ public class MemberController {
 	
 	@GetMapping("/{memberId}")
 	@ResponseBody
-	public String idCheck(@PathVariable("memberId") String memberId) throws Exception {
+	public String idCheck(@PathVariable("memberId") Long memberId) throws Exception {
 		System.out.println("idCheck userid : { " + memberId + "}");
 		int cnt = memberService.idCheck(memberId);
 		return cnt + "";
@@ -123,16 +123,20 @@ public class MemberController {
 	}
 	
 	@PostMapping("/updatePassword")
-	public String updatePassword(@RequestParam Map<String, String> map, Model model) {
+	public String updatePassword(@RequestParam Map<String, String> map,
+								 Model model) {
 		System.out.println("memberDto info : { " + map + "}");
 		try {
-			String pwd = memberService.findPassword(map.get("memberId"));
+			String pwd = memberService.findPassword(Long.valueOf(map.get("memberId")));
 			if(pwd.equals(map.get("password"))) {
 				if(map.get("renewPassword").equals(map.get("newPassword"))) {
 					System.out.println("비번 두개 맞음");
 					MemberDto memberDto = new MemberDto();
-					memberDto.setMemberId(map.get("memberId"));
-					memberDto.setMemberPassword(map.get("newPassword"));
+					// db에서 멤버 구분하는 id값
+					memberDto.setMemberId(Long.parseLong(map.get("memberId")));
+					// memberLoginId
+					memberDto.setMemberId(Long.parseLong(map.get("memberId")));
+					memberDto.setPassword(map.get("newPassword"));
 					memberService.updatePassword(memberDto);
 				}else {
 					model.addAttribute("notEqual", "false");

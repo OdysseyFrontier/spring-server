@@ -4,6 +4,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import com.enjoyTrip.OdysseyFrontiers.member.model.mapper.MemberMapper;
 import com.enjoyTrip.OdysseyFrontiers.member.model.dto.MemberDto;
@@ -21,7 +22,7 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public int idCheck(String memberId) throws Exception {
+	public int idCheck(Long memberId) throws Exception {
 		return memberMapper.idCheck(memberId);
 	}
 
@@ -43,7 +44,7 @@ public class MemberServiceImpl implements MemberService {
 		return sb.toString();
 	}
 	
-	public String getEncrypt(String memberPassword) {
+	public String getEncrypt(String password) {
 		
 		String result = "";
 		try {
@@ -51,8 +52,8 @@ public class MemberServiceImpl implements MemberService {
 			MessageDigest md = MessageDigest.getInstance("SHA-256");
 			
 			//2. pwd와 salt 합친 문자열에 SHA 256 적용
-			System.out.println("pwd + salt 적용 전 : " + memberPassword+salt);
-			md.update((memberPassword+salt).getBytes());
+			System.out.println("pwd + salt 적용 전 : " + password+salt);
+			md.update((password+salt).getBytes());
 			byte[] pwdsalt = md.digest();
 			
 			//3. byte To String (10진수의 문자열로 변경)
@@ -73,7 +74,7 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public int joinMember(MemberDto memberDto) throws Exception {
-		memberDto.setMemberPassword(getEncrypt(memberDto.getMemberPassword()));
+		memberDto.setPassword(getEncrypt(memberDto.getPassword()));
 		return memberMapper.joinMember(memberDto);
 	}
 
@@ -85,7 +86,7 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public MemberDto loginMember(Map<String, String> map) throws Exception {
-		map.put("memberPassword", getEncrypt(map.get("memberPassword")));
+		map.put("password", getEncrypt(map.get("password")));
 		return memberMapper.loginMember(map);
 	}
 
@@ -98,17 +99,27 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public void updatePassword(MemberDto memberDto) throws Exception {
-		memberDto.setMemberPassword(getEncrypt(memberDto.getMemberPassword()));
+		memberDto.setPassword(getEncrypt(memberDto.getPassword()));
 		memberMapper.updatePassword(memberDto);	
 	}
 	
 	@Override
-	public String findPassword(String memberId) throws Exception {
+	public String findPassword(Long memberId) throws Exception {
 		return memberMapper.findPassword(memberId);
 	}
 
 	@Override
-	public void deleteMember(String memberId) throws Exception {
+	public void deleteMember(Long memberId) throws Exception {
 		memberMapper.deleteMember(memberId);;
+	}
+
+	@Override
+	public Optional<MemberDto> findByMemberId(Long memberId) throws Exception {
+		return memberMapper.findByMemberId(memberId);
+	}
+
+	@Override
+	public Optional<MemberDto> findByName(String name) throws Exception {
+		return memberMapper.findByName(name);
 	}
 }

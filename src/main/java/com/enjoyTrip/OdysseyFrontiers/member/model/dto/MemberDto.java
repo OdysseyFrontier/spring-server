@@ -3,25 +3,23 @@ package com.enjoyTrip.OdysseyFrontiers.member.model.dto;
 import com.enjoyTrip.OdysseyFrontiers.util.MemberStatus;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
+
+import java.util.Date;
 
 @Setter
 @Getter
+@ToString
 public class MemberDto {
 
-	private String memberId;
-	private String memberName;
-	private String memberPassword;
+	private long memberId;
+	private String name;
 	private String emailId;
 	private String emailDomain;
-	private String memberPhone;
-	private String memberAddress;
-	private String joinDate;
+	private String password;
+	private String phone;
 	private MemberStatus status;
-
-    @Override
-	public String toString() {
-		return "MemberDto [memberId=" + memberId + ", memberName=" + memberName + ", memberPassword=" + memberPassword
-				+ ", emailId=" + emailId + ", emailDomain=" + emailDomain + ", memberPhone=" + memberPhone
-				+ ", memberAddress=" + memberAddress + ", joinDate=" + joinDate + ", status=" + status + "]";
-	}
+	private String address;
+	private Date birthday;
+	private String joinDate;
 }

@@ -7,7 +7,7 @@
     <resultMap type="boardDto" id="board">
         <result column="board_no" property="boardNo"/>
         <result column="member_id" property="memberId"/>
-        <result column="member_name" property="memberName"/>
+        <result column="name" property="name"/>
         <result column="subject" property="subject"/>
         <result column="content" property="content"/>
         <result column="hit" property="hit"/>
@@ -74,13 +74,13 @@
 
 
     <select id="listBoard" parameterType="map" resultMap="board">
-        select b.board_no, b.member_id, b.subject, b.content, b.register_time, b.type, m.member_name,
+        select b.board_no, b.member_id, b.subject, b.content, b.register_time, b.type, m.name,
         count(bh.board_no) hit
         from board b
         INNER JOIN members m ON b.member_id = m.member_id
         LEFT JOIN board_hit bh ON b.board_no = bh.board_no
         <include refid="search"/>
-        GROUP BY b.board_no, b.member_id, b.subject, b.content, b.register_time, b.type, m.member_name
+        GROUP BY b.board_no, b.member_id, b.subject, b.content, b.register_time, b.type, m.name
         <include refid="sort"/>
     </select>
 
@@ -88,7 +88,7 @@
     <select id="getBoard" parameterType="int" resultMap="board">
         select b.board_no,
                m.member_id,
-               m.member_name,
+               m.name,
                b.subject,
                b.content,
                b.register_time,
@@ -100,7 +100,7 @@
                  LEFT JOIN board_hit
                            on board_hit.board_no = b.board_no
         where b.board_no = #{boardNo}
-        GROUP BY b.board_no, b.member_id, b.subject, b.content, b.register_time, b.type, m.member_name
+        GROUP BY b.board_no, b.member_id, b.subject, b.content, b.register_time, b.type, m.name
     </select>
 
     <!--	<select id="fileInfoList" resultMap="file">-->

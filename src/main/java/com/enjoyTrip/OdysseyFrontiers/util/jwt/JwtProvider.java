@@ -66,6 +66,7 @@ public class JwtProvider {
 //                    .parseClaimsJws(token);
 //                    .parseEncryptedClaims(token)
                     .parseSignedClaims(token);
+
             return true;
         } catch (SecurityException | MalformedJwtException e) {
             log.info("Invalid JWT Token", e);

@@ -24,10 +24,10 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         try {
-            // memberName이 중복이 없다고 가정.
-            Optional<MemberDto> byMemberName = memberMapper.findByMemberName(username);
+            // name이 중복이 없다고 가정.
+            Optional<MemberDto> byName = memberMapper.findByName(username);
 
-            return byMemberName
+            return byName
                     .map(this::createUserDetails)
                     .orElseThrow(() -> new UsernameNotFoundException("해당하는 회원을 찾을 수 없습니다."));
         } catch (SQLException e) {
@@ -38,8 +38,8 @@ public class CustomUserDetailsService implements UserDetailsService {
     // 해당하는 User 의 데이터가 존재한다면 UserDetails 객체로 만들어서 return
     private UserDetails createUserDetails(MemberDto member) {
         return User.builder()
-                .username(member.getMemberName())
-                .password(passwordEncoder.encode(member.getMemberPassword()))
+                .username(member.getName())
+                .password(passwordEncoder.encode(member.getPassword()))
                 .roles(member.getStatus().getEnglishName())
                 .build();
     }

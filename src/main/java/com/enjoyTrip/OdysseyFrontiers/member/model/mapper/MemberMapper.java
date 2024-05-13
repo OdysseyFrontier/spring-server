@@ -12,7 +12,7 @@ import com.enjoyTrip.OdysseyFrontiers.member.model.dto.MemberDto;
 @Mapper
 public interface MemberMapper {
 	// 아이디 중복 체크
-	int idCheck(String memberId) throws SQLException;
+	int idCheck(Long memberId) throws SQLException;
 	
 	// 회원 가입
 	int joinMember(MemberDto memberDto) throws SQLException;
@@ -27,12 +27,14 @@ public interface MemberMapper {
 	void updatePassword(MemberDto memberDto) throws SQLException;
 	
 	//비밀번호찾기
-	String findPassword(String memberId) throws SQLException;
+	String findPassword(Long memberId) throws SQLException;
 	
 	// 회원 탈퇴
-	void deleteMember(String memberId) throws SQLException;
+	void deleteMember(Long memberId) throws SQLException;
 
-	Optional<MemberDto> findByMemberName(String memberName) throws SQLException;
+	Optional<MemberDto> findByName(String name) throws SQLException;
+
+	Optional<MemberDto> findByMemberId(Long memberId) throws SQLException;
 
     List<MemberDto> findAllMembers() throws SQLException;
 }

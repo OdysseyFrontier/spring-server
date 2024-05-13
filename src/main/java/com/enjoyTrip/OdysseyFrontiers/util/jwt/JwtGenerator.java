@@ -30,21 +30,18 @@ import static com.enjoyTrip.OdysseyFrontiers.util.constant.JwtConst.GRANT_TYPE;
 public class JwtGenerator {
     private final Key key;
 
-    @Value("${jwt.access-token.expiretime}")
+    @Value("${jwt.access-token.expire-time}")
     private long accessTokenExpireTime;
 
-    @Value("${jwt.refresh-token.expiretime}")
+    @Value("${jwt.refresh-token.expire-time}")
     private long refreshTokenExpireTime;
 
-    private final JwtProvider jwtProvider;
-
-    public JwtGenerator(@Value("${jwt.secret}") String secretKey, JwtProvider jwtProvider) {
+    public JwtGenerator(@Value("${jwt.secret}") String secretKey) {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         this.key = Keys.hmacShaKeyFor(keyBytes);
-        this.jwtProvider = jwtProvider;
     }
 
-    public String createAccessToken(String userId, Authentication authentication) {
+    public String createAccessToken(Long userId, Authentication authentication) {
         // 권한 가져오기
         String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
@@ -57,7 +54,7 @@ public class JwtGenerator {
     }
 
     //	AccessToken에 비해 유효기간을 길게 설정.
-    public String createRefreshToken(String userId) {
+    public String createRefreshToken(Long userId) {
         // 토큰 마저 만들기
         return createJwtBuilder(userId, "refresh-token", refreshTokenExpireTime)
                 .compact();
@@ -68,7 +65,7 @@ public class JwtGenerator {
 //		subject : payload에 sub의 value로 들어갈 subject값
 //		expire : 토큰 유효기간 설정을 위한 값
 
-    private JwtBuilder createJwtBuilder(String userId, String subject, long expireTime) {
+    private JwtBuilder createJwtBuilder(Long userId, String subject, long expireTime) {
 //        long now = (new Date()).getTime();
 //        Date accessTokenExpiresIn = new Date(now + accessTokenExpireTime);
 
@@ -104,7 +101,7 @@ public class JwtGenerator {
     }
 
 
-    public JWToken generateToken(String userId, Authentication authentication) {
+    public JWToken generateToken(Long userId, Authentication authentication) {
         String accessToken = createAccessToken(userId, authentication);
         String refreshToken = createRefreshToken(userId);
 

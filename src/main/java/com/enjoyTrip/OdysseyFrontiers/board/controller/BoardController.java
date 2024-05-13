@@ -117,8 +117,8 @@ public class BoardController {
 //		MemberDto tmp = new MemberDto();
 //		tmp.setMemberId("ssafy1");
 //		tmp.setStatus(MemberStatus.ACTIVE);
-//		tmp.setMemberName("김싸피");
-//		tmp.setMemberPassword("whtlgus");
+//		tmp.setname("김싸피");
+//		tmp.setPassword("whtlgus");
 //		session.setAttribute("memberInfo", tmp);
 
         List<BoardDto> list = boardService.listBoard(map);

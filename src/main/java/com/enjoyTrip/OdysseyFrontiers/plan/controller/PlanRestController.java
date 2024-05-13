@@ -23,6 +23,7 @@ import javax.crypto.SecretKey;
 import java.security.Key;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static com.enjoyTrip.OdysseyFrontiers.util.constant.JwtConst.HEADER_AUTH;
 import static com.enjoyTrip.OdysseyFrontiers.util.constant.SessionConst.SESSION_MEMBER_INFO;
@@ -38,11 +39,11 @@ public class PlanRestController {
         super();
         this.planService = planService;
         this.memberService = memberService;
-        this.jwtInterpreter =  jwtInterpreter;
+        this.jwtInterpreter = jwtInterpreter;
     }
 
     @GetMapping("/aa")
-    public void aa (@CookieValue(name = HEADER_AUTH, required = false) String jwtToken) {
+    public void aa(@CookieValue(name = HEADER_AUTH, required = false) String jwtToken) {
         System.out.println("11");
         System.out.println(jwtToken);
     }
@@ -51,24 +52,41 @@ public class PlanRestController {
 //    @CookieValue(name = "your-cookie-name", required = false) String jwtToken) {
 
     @PostMapping("/create")
-    public ResponseEntity<?> createPlan(HttpServletRequest request) throws Exception {
+    public ResponseEntity<?> createPlan(
+            @RequestHeader(name = HEADER_AUTH) String jwtToken,
+            @RequestBody PlanDto planDto,
+            HttpServletRequest request) throws Exception {
         System.out.println("createPlan");
-        // 쿠키 가져오기
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-//                if (cookie.getName().equals("your-cookie-name")) {
-                if (cookie.getName().equals(HEADER_AUTH)) {
-                    String jwtToken = cookie.getValue();
 
-                    String userId = jwtInterpreter.getUserId(jwtToken);
-                    System.out.println(userId);
+        Long userId = jwtInterpreter.getUserId(jwtToken);
+        planDto.setMemberId(userId);
 
-                    // JWT 토큰 처리
-                    // ...
-                }
-            }
+        Optional<MemberDto> byMemberId = memberService.findByMemberId(userId);
+
+
+        System.out.println(userId);
+        System.out.println(planDto);
+
+        if (byMemberId.isPresent()) {
+            planService.createPlan(planDto);
         }
+
+        // 쿠키 가져오기
+//        Cookie[] cookies = request.getCookies();
+//        if (cookies != null) {
+//            for (Cookie cookie : cookies) {
+////                if (cookie.getName().equals("your-cookie-name")) {
+//                if (cookie.getName().equals(HEADER_AUTH)) {
+//                    String jwtToken = cookie.getValue();
+//
+//                    Long userId = jwtInterpreter.getUserId(jwtToken);
+//                    System.out.println(userId);
+//
+//                    // JWT 토큰 처리
+//                    // ...
+//                }
+//            }
+//        }
         // 처리 로직
 
 
@@ -112,9 +130,6 @@ public class PlanRestController {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
-
-
 
 
 }

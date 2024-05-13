@@ -6,12 +6,13 @@
 
     <resultMap type="com.enjoyTrip.OdysseyFrontiers.member.model.dto.MemberDto" id="member">
         <result column="member_id" property="memberId"/>
-        <result column="member_name" property="memberName"/>
-        <result column="member_password" property="memberPassword"/>
+        <result column="name" property="name"/>
         <result column="email_id" property="emailId"/>
         <result column="email_domain" property="emailDomain"/>
-        <result column="member_phone" property="memberPhone"/>
-        <result column="member_address" property="memberAddress"/>
+        <result column="password" property="password"/>
+        <result column="phone" property="phone"/>
+        <result column="address" property="address"/>
+        <result column="birthday" property="birthday"/>
         <result column="join_date" property="joinDate"/>
     </resultMap>
 
@@ -26,20 +27,20 @@
     <select id="idCheck" parameterType="String" resultType="int">
         select count(member_id)
         from members
-        where member_id = #{memberId}
+        where id = #{id}
     </select>
 
     <insert id="joinMember" parameterType="memberDto">
-        insert into members (member_id, member_name, member_password, email_id, email_domain, member_phone,
-        member_address, join_date)
-        values (#{memberId}, #{memberName}, #{memberPassword}, #{emailId}, #{emailDomain}, #{memberPhone},
-        #{memberAddress}, now())
+        insert into members (name, email_id, email_domain, password, phone,
+                             address, birthday, join_date)
+        values (#{name}, #{emailId}, #{emailDomain}, #{password}, #{phone},
+                #{address},#{birthday}, now())
     </insert>
 
     <select id="loginMember" parameterType="map" resultMap="member">
         select *
         from members
-        where member_id = #{memberId} and member_password = #{memberPassword}
+        where email_id = #{emailId} and password = #{password}
     </select>
 
     <!-- ADMIN -->
@@ -58,11 +59,11 @@
     <update id="updateMember" parameterType="memberDto">
         update members
         <trim prefix="set" suffixOverrides=",">
-            <if test="memberName != null">member_name = #{memberName},</if>
+            <if test="name != null">name = #{name},</if>
             <if test="emailId != null">email_id = #{emailId},</if>
             <if test="emailDomain != null">email_domain = #{emailDomain},</if>
-            <if test="memberPhone != null">member_phone = #{memberPhone},</if>
-            <if test="memberAddress != null">member_address = #{memberAddress},</if>
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="address != null">address = #{address},</if>
             <if test="status != null">status = #{status},</if>
         </trim>
         where member_id = #{memberId}
@@ -71,13 +72,13 @@
     <update id="updatePassword" parameterType="memberDto">
         update members
         <trim prefix="set" suffixOverrides=",">
-            <if test="memberPassword != null">member_password = #{memberPassword}</if>
+            <if test="password != null">password = #{password}</if>
         </trim>
         where member_id = #{memberId}
     </update>
 
     <select id="findPassword" parameterType="String">
-        select member_Password
+        select password
         from members
         where member_id = #{memberId}
     </select>
@@ -88,10 +89,16 @@
     </delete>
 
 
-    <select id="findByMemberName" parameterType="String" resultMap="member">
+    <select id="findByName" parameterType="String" resultMap="member">
         select *
         from members
-        where member_name = #{memberName}
+        where name = #{name}
+    </select>
+
+    <select id="findByMemberId" parameterType="Long" resultMap="member">
+        select *
+        from members
+        where member_id = #{memberId}
     </select>
 
     <select id="findAllMembers" resultMap="member">

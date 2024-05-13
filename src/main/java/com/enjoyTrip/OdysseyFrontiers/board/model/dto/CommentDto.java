@@ -2,13 +2,13 @@ package com.enjoyTrip.OdysseyFrontiers.board.model.dto;
 
 public class CommentDto {
     private int commentId;
-    private String memberId;
-    private String memberName;
+    private long memberId;
+    private String name;
     private int boardNo;
     private String content;
     private String registerTime;
 
-    public CommentDto(int commentId, String memberId, int boardNo, String content, String registerTime) {
+    public CommentDto(int commentId, Long memberId, int boardNo, String content, String registerTime) {
         this.commentId = commentId;
         this.memberId = memberId;
         this.boardNo = boardNo;
@@ -24,20 +24,20 @@ public class CommentDto {
         this.commentId = commentId;
     }
 
-    public String getMemberId() {
+    public Long getMemberId() {
         return memberId;
     }
 
-    public void setMemberId(String memberId) {
+    public void setMemberId(Long memberId) {
         this.memberId = memberId;
     }
 
-    public String getMemberName() {
-        return memberName;
+    public String getName() {
+        return name;
     }
 
-    public void setMemberName(String memberName) {
-        this.memberName = memberName;
+    public void setname(String name) {
+        this.name = name;
     }
 
     public int getBoardNo() {
