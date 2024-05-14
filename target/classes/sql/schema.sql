@@ -15,7 +15,10 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,N
 -- Schema enjoytrip
 -- -----------------------------------------------------
 
+
+-- 존재하는 경우 삭제해라 --
 DROP SCHEMA IF EXISTS `enjoytrip`;
+
 CREATE SCHEMA IF NOT EXISTS `enjoytrip` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci ;
 USE `enjoytrip` ;
 
@@ -143,7 +146,7 @@ CREATE TABLE IF NOT EXISTS `enjoytrip`.`members` (
                                                      `member_id` BIGINT NOT NULL AUTO_INCREMENT,
                                                      `name` VARCHAR(20) NOT NULL,
                                                      `email_id` VARCHAR(20) NOT NULL,
-                                                     `email_domain` VARCHAR(45) NOT NULL,
+                                                     `email_domain` VARCHAR(45) NULL,
                                                      `password` VARCHAR(16) NOT NULL,
                                                      `phone` VARCHAR(20) NOT NULL,
                                                      `address` TEXT NULL DEFAULT NULL,

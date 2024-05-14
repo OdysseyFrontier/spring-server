@@ -1,3 +1,4 @@
+package com.enjoyTrip.OdysseyFrontiers.attraction.controller;
 
 import java.util.List;
 
@@ -31,6 +32,7 @@ public class AttractionRestController extends HttpServlet {
     public ResponseEntity<?> getSidos() {
         try {
             List<Sido> sidos = attractionService.listSidos();
+            System.out.println(sidos);
             if (sidos != null && !sidos.isEmpty()) {
                 String result = objectMapper.writeValueAsString(sidos);
                 return new ResponseEntity<>(result, HttpStatus.OK);
