@@ -1,3 +1,4 @@
+package com.enjoyTrip.OdysseyFrontiers.attraction.controller;
 
 import java.util.List;
 
@@ -20,8 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/attraction")
 public class AttractionRestController extends HttpServlet {
 
-    private AttractionService attractionService;
-    private ObjectMapper objectMapper = new ObjectMapper();
+    private final AttractionService attractionService;
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     public AttractionRestController(AttractionService attractionService) throws ServletException {
         this.attractionService = attractionService;
@@ -31,6 +32,7 @@ public class AttractionRestController extends HttpServlet {
     public ResponseEntity<?> getSidos() {
         try {
             List<Sido> sidos = attractionService.listSidos();
+            System.out.println(sidos);
             if (sidos != null && !sidos.isEmpty()) {
                 String result = objectMapper.writeValueAsString(sidos);
                 return new ResponseEntity<>(result, HttpStatus.OK);
