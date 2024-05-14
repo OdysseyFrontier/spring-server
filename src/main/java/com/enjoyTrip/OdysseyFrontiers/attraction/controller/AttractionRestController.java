@@ -44,7 +44,7 @@ public class AttractionRestController extends HttpServlet {
         }
     }
 
-    @GetMapping("/sido/{sidoCode}")
+    @GetMapping("/gugun/{sidoCode}")
     public ResponseEntity<?> getGuguns(@PathVariable int sidoCode) {
         try {
             List<Gugun> guguns = attractionService.listGuguns(sidoCode);
@@ -59,7 +59,7 @@ public class AttractionRestController extends HttpServlet {
         }
     }
 
-    @GetMapping("/sido/{contentTypeId}/{sidoCode}/{gugunCode}/{keyword}/{nowLocLng}/{nowLocLat}")
+    @GetMapping("/search/{contentTypeId}/{sidoCode}/{gugunCode}/{keyword}/{nowLocLng}/{nowLocLat}")
     public ResponseEntity<?> getAttraction(
             @PathVariable int contentTypeId,
             @PathVariable int sidoCode,
