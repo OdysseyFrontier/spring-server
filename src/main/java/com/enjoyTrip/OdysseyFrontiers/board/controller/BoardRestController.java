@@ -2,6 +2,7 @@ package com.enjoyTrip.OdysseyFrontiers.board.controller;
 
 import com.enjoyTrip.OdysseyFrontiers.board.model.dto.BoardDto;
 import com.enjoyTrip.OdysseyFrontiers.board.model.dto.BoardHitDto;
+import com.enjoyTrip.OdysseyFrontiers.board.model.dto.BoardListDto;
 import com.enjoyTrip.OdysseyFrontiers.board.model.service.BoardService;
 import com.enjoyTrip.OdysseyFrontiers.board.model.service.CommentService;
 import com.enjoyTrip.OdysseyFrontiers.member.model.dto.MemberDto;
@@ -9,13 +10,17 @@ import com.enjoyTrip.OdysseyFrontiers.util.jwt.JwtInterpreter;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.nio.charset.Charset;
 import java.util.Map;
 
 import static com.enjoyTrip.OdysseyFrontiers.util.constant.JwtConst.HEADER_ACCESS_TOKEN;
@@ -52,7 +57,17 @@ public class BoardRestController {
     @GetMapping("/list")
     public ResponseEntity<?> listBoard(@RequestParam Map<String, String> map) throws Exception {
         // 게시판의 리스트를 json으로 보내주는 코드
-        return new ResponseEntity<>(boardService.listBoard(map), HttpStatus.OK);
+    	log.info("listArticle map - {}", map);
+		try {
+			BoardListDto boardListDto = boardService.listBoard(map);
+			HttpHeaders header = new HttpHeaders();
+			header.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+			return ResponseEntity.ok().headers(header).body(boardListDto);
+		} catch (Exception e) {
+			return new ResponseEntity<String>("Error : " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+    	
+//        return new ResponseEntity<>(boardService.listBoard(map), HttpStatus.OK);
     }
 
 

@@ -121,10 +121,12 @@ public class BoardController {
 //		tmp.setPassword("whtlgus");
 //		session.setAttribute("memberInfo", tmp);
 
-        List<BoardDto> list = boardService.listBoard(map);
-        System.out.println(list);
+        //List<BoardDto> list = boardService.listBoard(map);
+        //System.out.println(list);
+        
+        
 //		PageNavigation pageNavigation = boardService.makePageNavigation(map);
-        model.addAttribute("Boards", list);
+        //model.addAttribute("Boards", list);
 //		model.addAttribute("navigation", pageNavigation);
         model.addAttribute("pgno", map.get("pgno"));
         model.addAttribute("key", map.get("key"));
