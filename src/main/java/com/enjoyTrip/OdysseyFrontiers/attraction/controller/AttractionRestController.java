@@ -21,8 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/attraction")
 public class AttractionRestController extends HttpServlet {
 
-    private AttractionService attractionService;
-    private ObjectMapper objectMapper = new ObjectMapper();
+    private final AttractionService attractionService;
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     public AttractionRestController(AttractionService attractionService) throws ServletException {
         this.attractionService = attractionService;
