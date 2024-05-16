@@ -34,6 +34,14 @@
         WHERE sido_code = #{sidoCode};
     </select>
 
+
+    <sql id="search">
+        <if test="contentTypeId != 0">
+            And content_type_id = #{contentTypeId}
+        </if>
+    </sql>
+
+
     <select id="selectAttr" parameterType="map" resultMap="resultAttr">
         SELECT title,
         addr1,
@@ -42,9 +50,10 @@
         longitude,
         first_image
         FROM attraction_info
-        WHERE content_type_id = #{contentTypeId}
-        AND sido_code = #{sidoCode}
-        AND gugun_code = #{gugunCode}
+        WHERE sido_code = #{sidoCode}
+          AND gugun_code = #{gugunCode}
+        <include refid="search"/>
+
         AND title LIKE CONCAT('%', #{keyword}, '%')
         limit 30;
     </select>
@@ -68,9 +77,10 @@
         longitude,
         first_image
         FROM attraction_info
-        WHERE content_type_id = #{contentTypeId}
-        AND sido_code = #{sidoCode}
-        AND gugun_code = #{gugunCode};
+        WHERE sido_code = #{sidoCode}
+          AND gugun_code = #{gugunCode}
+        <include refid="search"/>
+
     </select>
 
 </mapper>

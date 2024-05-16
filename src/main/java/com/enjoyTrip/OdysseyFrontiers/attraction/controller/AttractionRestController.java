@@ -3,6 +3,7 @@ package com.enjoyTrip.OdysseyFrontiers.attraction.controller;
 import java.util.List;
 
 
+import com.enjoyTrip.OdysseyFrontiers.util.AttractionCategory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.enjoyTrip.OdysseyFrontiers.attraction.model.dto.AttractionInfo;
 import com.enjoyTrip.OdysseyFrontiers.attraction.model.dto.Gugun;
@@ -12,11 +13,9 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/attraction")
 public class AttractionRestController extends HttpServlet {
@@ -68,8 +67,9 @@ public class AttractionRestController extends HttpServlet {
             @PathVariable String nowLocLat,
             @PathVariable String nowLocLng) {
         try {
-            Double lat = Double.parseDouble(nowLocLat);
-            Double lng = Double.parseDouble(nowLocLng);
+            double lat = Double.parseDouble(nowLocLat);
+            double lng = Double.parseDouble(nowLocLng);
+            contentTypeId = AttractionCategory.fromCode(contentTypeId);
             List<AttractionInfo> attrs = attractionService.listAttr(contentTypeId, sidoCode, gugunCode, keyword, lat, lng);
             if (attrs != null && !attrs.isEmpty()) {
                 String result = objectMapper.writeValueAsString(attrs);
