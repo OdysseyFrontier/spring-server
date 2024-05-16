@@ -2,6 +2,7 @@ package com.enjoyTrip.OdysseyFrontiers.board.controller;
 
 import com.enjoyTrip.OdysseyFrontiers.board.model.dto.BoardDto;
 import com.enjoyTrip.OdysseyFrontiers.board.model.dto.BoardHitDto;
+import com.enjoyTrip.OdysseyFrontiers.board.model.dto.BoardListDto;
 import com.enjoyTrip.OdysseyFrontiers.board.model.service.BoardService;
 import com.enjoyTrip.OdysseyFrontiers.board.model.service.CommentService;
 import com.enjoyTrip.OdysseyFrontiers.member.model.dto.MemberDto;
@@ -9,13 +10,17 @@ import com.enjoyTrip.OdysseyFrontiers.util.jwt.JwtInterpreter;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.nio.charset.Charset;
 import java.util.Map;
 
 import static com.enjoyTrip.OdysseyFrontiers.util.constant.JwtConst.HEADER_ACCESS_TOKEN;
@@ -52,24 +57,34 @@ public class BoardRestController {
     @GetMapping("/list")
     public ResponseEntity<?> listBoard(@RequestParam Map<String, String> map) throws Exception {
         // 게시판의 리스트를 json으로 보내주는 코드
-        return new ResponseEntity<>(boardService.listBoard(map), HttpStatus.OK);
+    	log.info("listArticle map - {}", map);
+		try {
+			BoardListDto boardListDto = boardService.listBoard(map);
+			HttpHeaders header = new HttpHeaders();
+			header.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+			return ResponseEntity.ok().headers(header).body(boardListDto);
+		} catch (Exception e) {
+			return new ResponseEntity<String>("Error : " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+    	
+//        return new ResponseEntity<>(boardService.listBoard(map), HttpStatus.OK);
     }
 
 
-    @GetMapping("/{BoardNo}")
-    public ResponseEntity<?> view(@PathVariable int BoardNo,
+    @GetMapping("/{boardno}")
+    public ResponseEntity<?> view(@PathVariable("boardno") int boardno,
                                   @RequestHeader(name = HEADER_AUTH, required = false) String jwtToken) throws Exception {
 
         // 현재는 회원만 board 에 조회 수 증가 가능.
         if (jwtToken != null) {
             Long userId = jwtInterpreter.getUserId(jwtToken);
-            BoardHitDto boardHitDto = new BoardHitDto(BoardNo, userId);
+            BoardHitDto boardHitDto = new BoardHitDto(boardno, userId);
             boardService.createOrUpdateHit(boardHitDto);
         }
 
         // 비회원 증가하려면, ip를 가져와야함?
-
-        BoardDto boardDto = boardService.getBoard(BoardNo);
+        System.out.println("들어옴");
+        BoardDto boardDto = boardService.getBoard(boardno);
 
         log.info("{}", boardDto);
         return new ResponseEntity<>(boardDto, HttpStatus.OK);

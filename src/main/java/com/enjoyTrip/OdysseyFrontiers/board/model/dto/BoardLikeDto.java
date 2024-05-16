@@ -7,14 +7,12 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class BoardHitDto {
-    private int boardHitId;
+public class BoardLikeDto {
     private int boardNo;
     private long memberId;
     private String createTime;
-    private String updateTime;
 
-    public BoardHitDto(int boardNo, Long memberId) {
+    public BoardLikeDto(int boardNo, Long memberId) {
         this.boardNo = boardNo;
         this.memberId = memberId;
     }
