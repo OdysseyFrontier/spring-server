@@ -1,14 +1,17 @@
 package com.enjoyTrip.OdysseyFrontiers.member.model.dto;
 
+import java.util.Date;
+
 import com.enjoyTrip.OdysseyFrontiers.util.MemberStatus;
+
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.Date;
-
 @Setter
 @Getter
+@NoArgsConstructor
 @ToString
 public class MemberDto {
 
@@ -22,4 +25,5 @@ public class MemberDto {
 	private String address;
 	private Date birthday;
 	private String joinDate;
+	private String token;
 }
