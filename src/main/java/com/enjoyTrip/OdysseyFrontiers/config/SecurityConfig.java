@@ -50,8 +50,8 @@ public class SecurityConfig {
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                 // 이 밖에 모든 요청에 대해서 인증을 필요로 한다는 설정
 //                )
-                .requestMatchers("/member/join","/member/login","attraction/**").permitAll()
-                                        // USER 권한이 있어야 요청할 수 있음
+                .requestMatchers("/member/join","/member/login","/attraction/**","/**").permitAll()
+// USER 권한이 있어야 요청할 수 있음
 //                .requestMatchers("/members/test").hasRole("ACTIVE")
 
                 .anyRequest().authenticated()
