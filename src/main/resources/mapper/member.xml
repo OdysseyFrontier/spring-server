@@ -6,12 +6,12 @@
 
     <resultMap type="com.enjoyTrip.OdysseyFrontiers.member.model.dto.MemberDto" id="member">
         <result column="member_id" property="memberId"/>
-        <result column="name" property="name"/>
+<!--         <result column="name" property="name"/> -->
         <result column="email_id" property="emailId"/>
         <result column="email_domain" property="emailDomain"/>
-        <result column="password" property="password"/>
+<!--         <result column="password" property="password"/>
         <result column="phone" property="phone"/>
-        <result column="address" property="address"/>
+        <result column="address" property="address"/> -->
         <result column="birthday" property="birthday"/>
         <result column="join_date" property="joinDate"/>
     </resultMap>
@@ -24,10 +24,10 @@
             <result column="join_date" property="joinDate"/>
         </resultMap> -->
 
-    <select id="idCheck" parameterType="String" resultType="int">
+    <select id="idCheck" parameterType="map" resultType="int">
         select count(member_id)
         from members
-        where id = #{id}
+        where email_id = #{emailId} and email_domain = #{emailDomain}
     </select>
 
     <insert id="joinMember" parameterType="memberDto">
@@ -40,7 +40,7 @@
     <select id="loginMember" parameterType="map" resultMap="member">
         select *
         from members
-        where email_id = #{emailId} and password = #{password}
+        where email_id = #{emailId} and email_domain = #{emailDomain} and password = #{password}
     </select>
 
     <!-- ADMIN -->
@@ -106,5 +106,29 @@
         from members
     </select>
 
+
+<select id="memberInfo" parameterType="long" resultMap="member">
+		select *
+		from members
+		where member_id = #{memberId}
+	</select>
+
+<update id="saveRefreshToken" parameterType="map">
+		update members
+		set refresh_token = #{token}
+		where member_id = #{memberId}
+	</update>
+	
+	<select id="getRefreshToken" parameterType="long" resultType="string">
+		select refresh_token
+		from members
+		where member_id = #{memberId}
+	</select>
+	
+	<update id="deleteRefreshToken" parameterType="map">
+		update members
+		set refresh_token = #{token, jdbcType=VARCHAR}
+		where member_id = #{memberId}
+	</update>
 
 </mapper>

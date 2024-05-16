@@ -2,13 +2,15 @@ package com.enjoyTrip.OdysseyFrontiers.member.model.service;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import com.enjoyTrip.OdysseyFrontiers.member.model.mapper.MemberMapper;
-import com.enjoyTrip.OdysseyFrontiers.member.model.dto.MemberDto;
 import org.springframework.stereotype.Service;
+
+import com.enjoyTrip.OdysseyFrontiers.member.model.dto.MemberDto;
+import com.enjoyTrip.OdysseyFrontiers.member.model.mapper.MemberMapper;
 
 @Service
 public class MemberServiceImpl implements MemberService {
@@ -22,8 +24,8 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public int idCheck(Long memberId) throws Exception {
-		return memberMapper.idCheck(memberId);
+	public int idCheck(Map<String, String> map) throws Exception {
+		return memberMapper.idCheck(map);
 	}
 
 	public String getSalt() {
@@ -74,20 +76,19 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public int joinMember(MemberDto memberDto) throws Exception {
-		memberDto.setPassword(getEncrypt(memberDto.getPassword()));
+//		memberDto.setPassword(getEncrypt(memberDto.getPassword()));
 		return memberMapper.joinMember(memberDto);
 	}
 
 	@Override
 	public List<MemberDto> findAllMembers() throws Exception {
-		System.out.println("11");
 		return memberMapper.findAllMembers();
 	}
 
 	@Override
-	public MemberDto loginMember(Map<String, String> map) throws Exception {
-		map.put("password", getEncrypt(map.get("password")));
-		return memberMapper.loginMember(map);
+	public MemberDto loginMember(MemberDto memberDto) throws Exception {
+//		memberDto.setPassword(getEncrypt(memberDto.getPassword()));
+		return memberMapper.loginMember(memberDto);
 	}
 
 	@Override
@@ -99,7 +100,7 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public void updatePassword(MemberDto memberDto) throws Exception {
-		memberDto.setPassword(getEncrypt(memberDto.getPassword()));
+//		memberDto.setPassword(getEncrypt(memberDto.getPassword()));
 		memberMapper.updatePassword(memberDto);	
 	}
 	
@@ -121,5 +122,33 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public Optional<MemberDto> findByName(String name) throws Exception {
 		return memberMapper.findByName(name);
+	}
+	
+	
+	
+	@Override
+	public MemberDto memberInfo(long memberId) throws Exception {
+		return memberMapper.memberInfo(memberId);
+	}
+
+	@Override
+	public void saveRefreshToken(long memberId, String refreshToken) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("memberId", memberId);
+		map.put("token", refreshToken);
+		memberMapper.saveRefreshToken(map);
+	}
+
+	@Override
+	public Object getRefreshToken(long memberId) throws Exception {
+		return memberMapper.getRefreshToken(memberId);
+	}
+
+	@Override
+	public void deleRefreshToken(long memberId) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("memberId", memberId);
+		map.put("token", null);
+		memberMapper.deleteRefreshToken(map);
 	}
 }

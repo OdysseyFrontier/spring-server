@@ -4,17 +4,29 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import com.enjoyTrip.OdysseyFrontiers.interceptor.JWTInterceptor;
 
 @EnableWebMvc
 @Configuration
 @EnableAspectJAutoProxy
 public class WebMvcConfiguration implements WebMvcConfigurer {
-    @Override
-    public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/").setViewName("index");
-    }
+	private JWTInterceptor jwtInterceptor;
+
+	public WebMvcConfiguration(JWTInterceptor jwtInterceptor) {
+		super();
+		this.jwtInterceptor = jwtInterceptor;
+	}
+
+	
+	
+//    @Override
+//    public void addViewControllers(ViewControllerRegistry registry) {
+//        registry.addViewController("/").setViewName("index");
+//    }
 
     // 아직 잘 모르겠음.
     @Override
@@ -24,6 +36,12 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
                 .allowedMethods("GET", "POST", "PUT", "DELETE")
                 .allowedHeaders("*")
                 .allowCredentials(true);
+    }
+    
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+		registry.addResourceHandler("/img/**").addResourceLocations("classpath:/static/assets/img/");
+		registry.addResourceHandler("/*.html**").addResourceLocations("classpath:/static/");
     }
 //    @Bean
 //    public SqlSessionFactory sqlSessionFactory(DataSource dataSource) throws Exception {

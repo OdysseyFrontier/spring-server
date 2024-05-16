@@ -6,7 +6,7 @@ import com.enjoyTrip.OdysseyFrontiers.board.model.dto.BoardListDto;
 import com.enjoyTrip.OdysseyFrontiers.board.model.service.BoardService;
 import com.enjoyTrip.OdysseyFrontiers.board.model.service.CommentService;
 import com.enjoyTrip.OdysseyFrontiers.member.model.dto.MemberDto;
-import com.enjoyTrip.OdysseyFrontiers.util.jwt.JwtInterpreter;
+//import com.enjoyTrip.OdysseyFrontiers.util.jwt.JwtInterpreter;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,7 +35,7 @@ import static com.enjoyTrip.OdysseyFrontiers.util.constant.SessionConst.SESSION_
 public class BoardRestController {
 
     private final BoardService boardService;
-    private final JwtInterpreter jwtInterpreter;
+//    private final JwtInterpreter jwtInterpreter;
 
 
     @PostMapping("/")
@@ -44,8 +44,8 @@ public class BoardRestController {
                                    @RequestHeader(name = HEADER_AUTH, required = true) String jwtToken
     ) throws Exception {
         log.info("jwtToken : {}", jwtToken);
-        Long userId = jwtInterpreter.getUserId(jwtToken);
-        boardDto.setMemberId(userId);
+//        Long userId = jwtInterpreter.getUserId(jwtToken);
+//        boardDto.setMemberId(userId);
 
         int result = boardService.writeBoard(boardDto);
         if (result == 0) {
@@ -77,9 +77,9 @@ public class BoardRestController {
 
         // 현재는 회원만 board 에 조회 수 증가 가능.
         if (jwtToken != null) {
-            Long userId = jwtInterpreter.getUserId(jwtToken);
-            BoardHitDto boardHitDto = new BoardHitDto(boardno, userId);
-            boardService.createOrUpdateHit(boardHitDto);
+//            Long userId = jwtInterpreter.getUserId(jwtToken);
+//            BoardHitDto boardHitDto = new BoardHitDto(boardno, userId);
+//            boardService.createOrUpdateHit(boardHitDto);
         }
 
         // 비회원 증가하려면, ip를 가져와야함?
@@ -101,10 +101,10 @@ public class BoardRestController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        Long userId = jwtInterpreter.getUserId(jwtToken);
-        if (userId  != boardDto.getMemberId()){
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
+//        Long userId = jwtInterpreter.getUserId(jwtToken);
+//        if (userId  != boardDto.getMemberId()){
+//            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+//        }
 
         System.out.println(BoardNo);
         System.out.println(boardDto);
