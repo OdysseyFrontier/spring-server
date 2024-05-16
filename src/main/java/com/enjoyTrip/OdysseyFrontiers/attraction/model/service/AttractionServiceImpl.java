@@ -1,5 +1,6 @@
 package com.enjoyTrip.OdysseyFrontiers.attraction.model.service;
 
+import java.sql.SQLException;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
@@ -59,6 +60,11 @@ public class AttractionServiceImpl implements AttractionService {
 
         return list;
 
+    }
+
+    @Override
+    public List<AttractionInfo> listAttr(int contentTypeId) throws SQLException {
+        return attractionMapper.selectAttrNoKeyword(contentTypeId, 0, 0);
     }
 
     private double[] initLoc(double nowLocLat, double nowLocLng) {

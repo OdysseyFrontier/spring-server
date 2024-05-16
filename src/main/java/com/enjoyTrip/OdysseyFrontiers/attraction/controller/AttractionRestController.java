@@ -1,8 +1,10 @@
 package com.enjoyTrip.OdysseyFrontiers.attraction.controller;
 
 import java.util.List;
+import java.util.Map;
 
 
+import com.enjoyTrip.OdysseyFrontiers.util.AttractionCategory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.enjoyTrip.OdysseyFrontiers.attraction.model.dto.AttractionInfo;
 import com.enjoyTrip.OdysseyFrontiers.attraction.model.dto.Gugun;
@@ -12,11 +14,9 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/attraction")
 public class AttractionRestController extends HttpServlet {
@@ -68,12 +68,52 @@ public class AttractionRestController extends HttpServlet {
             @PathVariable String nowLocLat,
             @PathVariable String nowLocLng) {
         try {
-            Double lat = Double.parseDouble(nowLocLat);
-            Double lng = Double.parseDouble(nowLocLng);
+            double lat = Double.parseDouble(nowLocLat);
+            double lng = Double.parseDouble(nowLocLng);
+            contentTypeId = AttractionCategory.fromCode(contentTypeId);
             List<AttractionInfo> attrs = attractionService.listAttr(contentTypeId, sidoCode, gugunCode, keyword, lat, lng);
             if (attrs != null && !attrs.isEmpty()) {
                 String result = objectMapper.writeValueAsString(attrs);
                 System.out.println(result);
+                return new ResponseEntity<>(result, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception e) {
+            return exceptionHandling(e);
+        }
+    }
+
+    @GetMapping("/search/{contentTypeId}")
+    public ResponseEntity<?> getAttraction(@PathVariable int contentTypeId){
+        try {
+            contentTypeId = AttractionCategory.fromCode(contentTypeId);
+            System.out.println(contentTypeId);
+            List<AttractionInfo> attrs = attractionService.listAttr(contentTypeId);
+            System.out.println("11");
+            System.out.println(attrs);
+            if (attrs != null && !attrs.isEmpty()) {
+                System.out.println("123");
+                String result = objectMapper.writeValueAsString(attrs);
+                System.out.println(result);
+                return new ResponseEntity<>(result, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception e) {
+            return exceptionHandling(e);
+        }
+    }
+
+
+    @GetMapping("/category")
+    public ResponseEntity<?> getCategory() {
+        try {
+            List<Map<String, Object>> allCategoriesWithCodes = AttractionCategory.getAllCategoriesWithCodes();
+
+            System.out.println(allCategoriesWithCodes);
+            if (!allCategoriesWithCodes.isEmpty()) {
+                String result = objectMapper.writeValueAsString(allCategoriesWithCodes);
                 return new ResponseEntity<>(result, HttpStatus.OK);
             } else {
                 return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);

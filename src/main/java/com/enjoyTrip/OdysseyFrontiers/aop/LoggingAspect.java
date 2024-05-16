@@ -1,6 +1,7 @@
 package com.enjoyTrip.OdysseyFrontiers.aop;
 
 
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -9,11 +10,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
 
+@Slf4j
 @Aspect
 @Component
 public class LoggingAspect {
 
-	private Logger logger = LoggerFactory.getLogger(LoggingAspect.class);
 
 //	@Before(value = "execution(* com.ssafy.board.model.mapper.Board*.*(..))")
 //	public void loggin(JoinPoint joinPoint) {
@@ -23,7 +24,7 @@ public class LoggingAspect {
 
 	@Around(value = "execution(* com.enjoyTrip.OdysseyFrontiers.*.model.mapper.*.*(..))")
 	public Object executionTime(ProceedingJoinPoint joinPoint) throws Throwable {
-		logger.debug("around call method : {} ", joinPoint.getSignature());
+		log.info("around call method : {} ", joinPoint.getSignature());
 		StopWatch stopWatch = new StopWatch();
 		stopWatch.start();
 
@@ -31,9 +32,10 @@ public class LoggingAspect {
 
 		stopWatch.stop();
 
-		logger.debug("summary : {}", stopWatch.shortSummary());
-		logger.debug("totalTime : {}", stopWatch.getTotalTimeMillis());
-		logger.debug("pretty : {}", stopWatch.prettyPrint());
+		log.info("summary : {}", stopWatch.shortSummary());
+		log.info("totalTime : {}", stopWatch.getTotalTimeMillis());
+		log.info("pretty : {}", stopWatch.prettyPrint());
+
 
 		return proceed;
 	}

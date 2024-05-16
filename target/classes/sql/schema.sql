@@ -17,7 +17,7 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,N
 
 
 -- 존재하는 경우 삭제해라 --
-DROP SCHEMA IF EXISTS `enjoytrip`;
+# DROP SCHEMA IF EXISTS `enjoytrip`;
 
 CREATE SCHEMA IF NOT EXISTS `enjoytrip` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci ;
 USE `enjoytrip` ;
@@ -153,6 +153,7 @@ CREATE TABLE IF NOT EXISTS `enjoytrip`.`members` (
                                                      `status` ENUM('ACTIVE', 'INACTIVE', 'ADMIN') NOT NULL DEFAULT 'ACTIVE',
                                                      `image` VARCHAR(45) NULL,
                                                      `birthday` TIMESTAMP NULL,
+                                                     `refresh_token` VARCHAR(255) NULL,
                                                      `join_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
                                                      PRIMARY KEY (`member_id`))
     ENGINE = InnoDB

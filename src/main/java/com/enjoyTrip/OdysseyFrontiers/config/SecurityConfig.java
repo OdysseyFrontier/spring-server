@@ -42,6 +42,7 @@
 //                .sessionManagement(configurer ->
 //                        configurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 //                )
+
 //
 //                .authorizeHttpRequests(authorize ->
 //                                authorize
@@ -91,3 +92,4 @@
 //                .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
 //    }
 //}
+

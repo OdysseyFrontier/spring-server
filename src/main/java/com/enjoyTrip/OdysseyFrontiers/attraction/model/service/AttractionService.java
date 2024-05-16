@@ -1,5 +1,6 @@
 package com.enjoyTrip.OdysseyFrontiers.attraction.model.service;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import com.enjoyTrip.OdysseyFrontiers.attraction.model.dto.AttractionInfo;
@@ -12,4 +13,6 @@ public interface AttractionService {
 	List<Gugun> listGuguns(int sidoCode) throws Exception;
 	
 	List<AttractionInfo> listAttr(int contentTypeId, int sidoCode, int gugunCode, String keyword, double nowLocLng, double nowLocLat ) throws Exception;
+
+    List<AttractionInfo> listAttr(int contentTypeId) throws SQLException;
 }
