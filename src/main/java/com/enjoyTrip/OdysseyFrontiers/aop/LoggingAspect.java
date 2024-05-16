@@ -36,6 +36,7 @@ public class LoggingAspect {
 		log.info("totalTime : {}", stopWatch.getTotalTimeMillis());
 		log.info("pretty : {}", stopWatch.prettyPrint());
 
+
 		return proceed;
 	}
 

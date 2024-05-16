@@ -1,6 +1,7 @@
 package com.enjoyTrip.OdysseyFrontiers.attraction.controller;
 
 import java.util.List;
+import java.util.Map;
 
 
 import com.enjoyTrip.OdysseyFrontiers.util.AttractionCategory;
@@ -74,6 +75,45 @@ public class AttractionRestController extends HttpServlet {
             if (attrs != null && !attrs.isEmpty()) {
                 String result = objectMapper.writeValueAsString(attrs);
                 System.out.println(result);
+                return new ResponseEntity<>(result, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception e) {
+            return exceptionHandling(e);
+        }
+    }
+
+    @GetMapping("/search/{contentTypeId}")
+    public ResponseEntity<?> getAttraction(@PathVariable int contentTypeId){
+        try {
+            contentTypeId = AttractionCategory.fromCode(contentTypeId);
+            System.out.println(contentTypeId);
+            List<AttractionInfo> attrs = attractionService.listAttr(contentTypeId);
+            System.out.println("11");
+            System.out.println(attrs);
+            if (attrs != null && !attrs.isEmpty()) {
+                System.out.println("123");
+                String result = objectMapper.writeValueAsString(attrs);
+                System.out.println(result);
+                return new ResponseEntity<>(result, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception e) {
+            return exceptionHandling(e);
+        }
+    }
+
+
+    @GetMapping("/category")
+    public ResponseEntity<?> getCategory() {
+        try {
+            List<Map<String, Object>> allCategoriesWithCodes = AttractionCategory.getAllCategoriesWithCodes();
+
+            System.out.println(allCategoriesWithCodes);
+            if (!allCategoriesWithCodes.isEmpty()) {
+                String result = objectMapper.writeValueAsString(allCategoriesWithCodes);
                 return new ResponseEntity<>(result, HttpStatus.OK);
             } else {
                 return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);

@@ -36,51 +36,70 @@
 
 
     <sql id="search">
-        <if test="contentTypeId != 0">
-            And content_type_id = #{contentTypeId}
-        </if>
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="sidoCode != null and sidoCode != 0 ">
+                AND info.sido_code = #{sidoCode}
+            </if>
+            <if test="gugunCode != null and gugunCode != 0 ">
+                AND info.gugun_code = #{gugunCode}
+            </if>
+            <if test="contentTypeId != null and contentTypeId != 0">
+                AND info.content_type_id = #{contentTypeId}
+            </if>
+        </trim>
     </sql>
 
 
     <select id="selectAttr" parameterType="map" resultMap="resultAttr">
-        SELECT title,
-        addr1,
-        addr2,
-        latitude,
-        longitude,
-        first_image
-        FROM attraction_info
-        WHERE sido_code = #{sidoCode}
-          AND gugun_code = #{gugunCode}
+        SELECT info.title,
+                info.addr1,
+                info.addr2,
+                info.latitude,
+                info.longitude,
+                info.irst_image,
+                info.content_id,
+                des.overview as description
+        FROM attraction_info as info
+              join attraction_description as des
+        on info.content_id = des.content_id
+
         <include refid="search"/>
 
         AND title LIKE CONCAT('%', #{keyword}, '%')
-        limit 30;
+        ORDER BY info.readcount desc;
     </select>
 
     <select id="selectAttrOnlyKeyword" parameterType="string" resultMap="resultAttr">
-        SELECT title,
-        addr1,
-        addr2,
-        latitude,
-        longitude,
-        first_image
-        FROM attraction_info
-        WHERE title LIKE CONCAT('%', #{keyword}, '%');
+        SELECT info.title,
+               info.addr1,
+               info.addr2,
+               info.latitude,
+               info.longitude,
+               info.first_image,
+               info.content_id,
+               des.overview as description
+        FROM attraction_info info
+                 join attraction_description des
+        on info.content_id = des.content_id
+        WHERE info.title LIKE CONCAT('%', #{keyword}, '%')
+        ORDER BY info.readcount desc;
     </select>
 
     <select id="selectAttrNoKeyword" parameterType="map" resultMap="resultAttr">
-        SELECT title,
-        addr1,
-        addr2,
-        latitude,
-        longitude,
-        first_image
-        FROM attraction_info
-        WHERE sido_code = #{sidoCode}
-          AND gugun_code = #{gugunCode}
+        SELECT info.title,
+        info.addr1,
+        info.addr2,
+        info.latitude,
+        info.longitude,
+        info.first_image,
+        info.content_id,
+        des.overview as description
+        FROM attraction_info as info
+        join attraction_description as des
+        on info.content_id = des.content_id
         <include refid="search"/>
-
+        ORDER BY info.readcount desc
+        limit 30;
     </select>
 
 </mapper>
