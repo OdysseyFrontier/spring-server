@@ -7,10 +7,11 @@
     <resultMap type="boardDto" id="board">
         <result column="board_no" property="boardNo"/>
         <result column="member_id" property="memberId"/>
+        <!-- 변수명 같으면 자동 mapping되어서 지웁니다
         <result column="name" property="name"/>
         <result column="subject" property="subject"/>
         <result column="content" property="content"/>
-        <result column="hit" property="hit"/>
+        <result column="hit" property="hit"/> -->
         <result column="register_time" property="registerTime"/>
         <!--		<result column="type" property="type"/>-->
     </resultMap>
@@ -18,7 +19,15 @@
     <resultMap type="boardHitDto" id="boardHit">
         <result column="board_hit_id" property="boardHitId"/>
         <result column="board_no" property="boardNo"/>
-        <result column="memberId" property="memberId"/>
+        <result column="member_id" property="memberId"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+    
+    <resultMap type="boardLikeDto" id="boardLike">
+        <result column="board_no" property="boardNo"/>
+        <result column="member_id" property="memberId"/>
+        <result column="create_time" property="createTime"/>
     </resultMap>
 
     <!--	<resultMap type="boardDto" id="viewboard" extends="board">-->
@@ -32,8 +41,8 @@
     <!--	</resultMap>-->
 
     <insert id="writeBoard" parameterType="boardDto">
-        insert into board (member_id, subject, content, register_time)
-        values (#{memberId}, #{subject}, #{content}, now())
+        insert into board (member_id, subject, content, register_time, type)
+        values (#{memberId}, #{subject}, #{content}, now(), #{type})
         <selectKey resultType="int" keyProperty="boardNo" order="AFTER">
             select last_insert_id()
         </selectKey>
@@ -79,11 +88,21 @@
         from board b
         INNER JOIN members m ON b.member_id = m.member_id
         LEFT JOIN board_hit bh ON b.board_no = bh.board_no
-        <include refid="search"/>
+ 
+			<include refid="search"></include>
+
         GROUP BY b.board_no, b.member_id, b.subject, b.content, b.register_time, b.type, m.name
         <include refid="sort"/>
+        limit #{start}, #{listsize}
     </select>
 
+	<select id="getTotalArticleCount" parameterType="map" resultType="int">
+		select count(b.board_no)
+		from board b
+
+			<include refid="search"></include>
+
+	</select>
 
     <select id="getBoard" parameterType="int" resultMap="board">
         select b.board_no,
