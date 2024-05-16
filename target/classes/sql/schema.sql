@@ -146,7 +146,7 @@ CREATE TABLE IF NOT EXISTS `enjoytrip`.`members` (
                                                      `member_id` BIGINT NOT NULL AUTO_INCREMENT,
                                                      `name` VARCHAR(20) NOT NULL,
                                                      `email_id` VARCHAR(20) NOT NULL,
-                                                     `email_domain` VARCHAR(45) NOT NULL,
+                                                     `email_domain` VARCHAR(45) NULL,
                                                      `password` VARCHAR(16) NOT NULL,
                                                      `phone` VARCHAR(20) NOT NULL,
                                                      `address` TEXT NULL DEFAULT NULL,

@@ -2,6 +2,7 @@ package com.enjoyTrip.OdysseyFrontiers.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -15,6 +16,15 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
         registry.addViewController("/").setViewName("index");
     }
 
+    // 아직 잘 모르겠음.
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedOrigins("http://localhost:5173","http://localhost:5176","http://localhost:5175","http://localhost:5177","http://localhost:5174")
+                .allowedMethods("GET", "POST", "PUT", "DELETE")
+                .allowedHeaders("*")
+                .allowCredentials(true);
+    }
 //    @Bean
 //    public SqlSessionFactory sqlSessionFactory(DataSource dataSource) throws Exception {
 //        SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();

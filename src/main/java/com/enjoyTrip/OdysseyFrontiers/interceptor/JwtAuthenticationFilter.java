@@ -50,7 +50,6 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
             log.info("토큰 사용 가능 : {}", token);
             chain.doFilter(request, response);
         } else {
-            // 에러 핸들링 필요
             log.info("토큰 사용 불가능 : {}", token);
             chain.doFilter(request, response);
         }

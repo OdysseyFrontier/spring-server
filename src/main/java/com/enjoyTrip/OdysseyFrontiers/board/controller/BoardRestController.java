@@ -71,20 +71,20 @@ public class BoardRestController {
     }
 
 
-    @GetMapping("/{BoardNo}")
-    public ResponseEntity<?> view(@PathVariable int BoardNo,
+    @GetMapping("/{boardno}")
+    public ResponseEntity<?> view(@PathVariable("boardno") int boardno,
                                   @RequestHeader(name = HEADER_AUTH, required = false) String jwtToken) throws Exception {
 
         // 현재는 회원만 board 에 조회 수 증가 가능.
         if (jwtToken != null) {
             Long userId = jwtInterpreter.getUserId(jwtToken);
-            BoardHitDto boardHitDto = new BoardHitDto(BoardNo, userId);
+            BoardHitDto boardHitDto = new BoardHitDto(boardno, userId);
             boardService.createOrUpdateHit(boardHitDto);
         }
 
         // 비회원 증가하려면, ip를 가져와야함?
-
-        BoardDto boardDto = boardService.getBoard(BoardNo);
+        System.out.println("들어옴");
+        BoardDto boardDto = boardService.getBoard(boardno);
 
         log.info("{}", boardDto);
         return new ResponseEntity<>(boardDto, HttpStatus.OK);
