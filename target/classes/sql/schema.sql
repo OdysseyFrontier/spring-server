@@ -153,6 +153,7 @@ CREATE TABLE IF NOT EXISTS `enjoytrip`.`members` (
                                                      `status` ENUM('ACTIVE', 'INACTIVE', 'ADMIN') NOT NULL DEFAULT 'ACTIVE',
                                                      `image` VARCHAR(45) NULL,
                                                      `birthday` TIMESTAMP NULL,
+                                                     `refresh_token` VARCHAR(255) NULL,
                                                      `join_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
                                                      PRIMARY KEY (`member_id`))
     ENGINE = InnoDB
