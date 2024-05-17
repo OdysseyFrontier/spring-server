@@ -38,12 +38,13 @@ public class BoardRestController {
 //    private final JwtInterpreter jwtInterpreter;
 
 
-    @PostMapping("/")
-    public ResponseEntity<?> write(@RequestBody BoardDto boardDto,
-                                   @RequestPart(value = "upfile", required = false) MultipartFile[] files,
-                                   @RequestHeader(name = HEADER_AUTH, required = true) String jwtToken
-    ) throws Exception {
-        log.info("jwtToken : {}", jwtToken);
+    @PostMapping
+//    public ResponseEntity<?> write(@RequestBody BoardDto boardDto,
+//            @RequestPart(value = "upfile", required = false) MultipartFile[] files,
+//            @RequestHeader(name = HEADER_AUTH, required = true) String jwtToken
+//) throws Exception
+    public ResponseEntity<?> write(@RequestBody BoardDto boardDto) throws Exception {
+//        log.info("jwtToken : {}", jwtToken);
 //        Long userId = jwtInterpreter.getUserId(jwtToken);
 //        boardDto.setMemberId(userId);
 
@@ -51,7 +52,7 @@ public class BoardRestController {
         if (result == 0) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(boardDto.getBoardNo(), HttpStatus.CREATED);
     }
 
     @GetMapping("/list")
@@ -89,42 +90,49 @@ public class BoardRestController {
         log.info("{}", boardDto);
         return new ResponseEntity<>(boardDto, HttpStatus.OK);
     }
+    
+    
+    // 수정할 글 얻기
+    @GetMapping("/modify/{boardno}")
+	public ResponseEntity<BoardDto> getModifyArticle(
+			@PathVariable("boardno") int boardno)
+			throws Exception {
+		log.info("getModifyArticle - 호출 : " + boardno);
+		return new ResponseEntity<BoardDto>(boardService.getBoard(boardno), HttpStatus.OK);
+	}
 
-    @PutMapping("/{BoardNo}")
-    public ResponseEntity<?> modify(@PathVariable int BoardNo,
-                                    @RequestHeader(name = HEADER_AUTH, required = true) String jwtToken,
-                                    @RequestBody BoardDto boardDto)
+    // 글 수정
+    @PutMapping
+//    public ResponseEntity<?> modify(@RequestHeader(name = HEADER_AUTH, required = true) String jwtToken,
+//            @RequestBody BoardDto boardDto)
+    public ResponseEntity<?> modify(@RequestBody BoardDto boardDto)
             throws Exception {
 
-
-        if (BoardNo != boardDto.getBoardNo()) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
 
 //        Long userId = jwtInterpreter.getUserId(jwtToken);
 //        if (userId  != boardDto.getMemberId()){
 //            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 //        }
 
-        System.out.println(BoardNo);
+
         System.out.println(boardDto);
         
         int result = boardService.modifyBoard(boardDto);
         
         if (result == 0) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
 
         return new ResponseEntity<>(boardDto, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{BoardNo}")
-    public ResponseEntity<?> delete(@PathVariable int BoardNo) throws Exception {
+    @DeleteMapping("/{boardno}")
+    public ResponseEntity<?> delete(@PathVariable("boardno") int boardno) throws Exception {
 
-        int result = boardService.deleteBoard(BoardNo);
+        int result = boardService.deleteBoard(boardno);
 
         if (result == 0) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
 
         return new ResponseEntity<>(HttpStatus.OK);
