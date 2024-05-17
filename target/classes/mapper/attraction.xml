@@ -66,7 +66,8 @@
         <include refid="search"/>
 
         AND title LIKE CONCAT('%', #{keyword}, '%')
-        ORDER BY info.readcount desc;
+        ORDER BY info.readcount desc
+        limit 20;
     </select>
 
     <select id="selectAttrOnlyKeyword" parameterType="string" resultMap="resultAttr">
@@ -82,7 +83,8 @@
                  join attraction_description des
         on info.content_id = des.content_id
         WHERE info.title LIKE CONCAT('%', #{keyword}, '%')
-        ORDER BY info.readcount desc;
+        ORDER BY info.readcount desc
+        limit 20;
     </select>
 
     <select id="selectAttrNoKeyword" parameterType="map" resultMap="resultAttr">
@@ -99,7 +101,7 @@
         on info.content_id = des.content_id
         <include refid="search"/>
         ORDER BY info.readcount desc
-        limit 30;
+        limit 20;
     </select>
 
 </mapper>
