@@ -341,6 +341,7 @@ CREATE TABLE IF NOT EXISTS `enjoytrip`.`plan_detail` (
                                                          `plan_id` BIGINT NOT NULL,
                                                          `day` VARCHAR(45) NOT NULL,
                                                          `content_id` INT NOT NULL,
+                                                         `description` VARCHAR(100) NULL DEFAULT NULL,
                                                          `plan_time` DATETIME NULL DEFAULT NULL,
                                                          PRIMARY KEY (`plan_detail_id`),
                                                          INDEX `fk_plan_detail_attraction_info1_idx` (`content_id` ASC) VISIBLE,
