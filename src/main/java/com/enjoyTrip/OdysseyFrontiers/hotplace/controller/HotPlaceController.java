@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.enjoyTrip.OdysseyFrontiers.attraction.model.dto.Gugun;
+import com.enjoyTrip.OdysseyFrontiers.attraction.model.dto.Sido;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -18,10 +20,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.enjoyTrip.OdysseyFrontiers.hotplace.model.dto.Gugun;
 import com.enjoyTrip.OdysseyFrontiers.hotplace.model.dto.HotPlaceDto;
 import com.enjoyTrip.OdysseyFrontiers.hotplace.model.dto.HotPlaceHitDto;
-import com.enjoyTrip.OdysseyFrontiers.hotplace.model.dto.Sido;
 import com.enjoyTrip.OdysseyFrontiers.hotplace.model.service.HotPlaceService;
 import com.enjoyTrip.OdysseyFrontiers.util.jwt.JWTUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;

@@ -5,6 +5,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
+import com.enjoyTrip.OdysseyFrontiers.attraction.model.dto.AttractionDetail;
 import org.springframework.stereotype.Service;
 
 import com.enjoyTrip.OdysseyFrontiers.attraction.model.dto.AttractionInfo;
@@ -65,6 +66,11 @@ public class AttractionServiceImpl implements AttractionService {
     @Override
     public List<AttractionInfo> listAttr(int contentTypeId) throws SQLException {
         return attractionMapper.selectAttrNoKeyword(contentTypeId, 0, 0);
+    }
+
+    @Override
+    public AttractionInfo getAttraction(long contentId) {
+        return attractionMapper.selectAttraction(contentId);
     }
 
     private double[] initLoc(double nowLocLat, double nowLocLng) {

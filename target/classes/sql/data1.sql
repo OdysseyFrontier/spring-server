@@ -1,3 +1,15 @@
+INSERT INTO `content_type` (content_type_id, type_name) VALUES
+                                                            (0, '모든 관광지 유형'),
+                                                            (12, '관광지'),
+                                                            (14, '문화시설'),
+                                                            (15, '축제 / 공연 / 행사'),
+                                                            (25, '여행코스'),
+                                                            (28, '레포츠'),
+                                                            (32, '숙박'),
+                                                            (38, '쇼핑'),
+                                                            (39, '음식점');
+
+
 insert into members (name, email_id, password, phone, status)
 values ("admin" , "admin", "1234" , "010-1234-5678", 'ADMIN');
 

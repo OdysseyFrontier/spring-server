@@ -1,13 +1,11 @@
 package com.enjoyTrip.OdysseyFrontiers.hotplace.model.service;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
-import com.enjoyTrip.OdysseyFrontiers.hotplace.model.dto.Gugun;
 import com.enjoyTrip.OdysseyFrontiers.hotplace.model.dto.HotPlaceDto;
 import com.enjoyTrip.OdysseyFrontiers.hotplace.model.dto.HotPlaceHitDto;
-import com.enjoyTrip.OdysseyFrontiers.hotplace.model.dto.Sido;
+import com.enjoyTrip.OdysseyFrontiers.hotplace.model.dto.Sido2;
 
 public interface HotPlaceService {
 	List<Sido> listSidos() throws Exception;

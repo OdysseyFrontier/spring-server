@@ -22,6 +22,8 @@ public class AttractionInfo {
     private double longitude;
     private String mlevel;
     private boolean isScrap;
+    private long memberId;
+    private String accessLevel;
     
 
 	@Override

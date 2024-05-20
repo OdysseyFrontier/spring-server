@@ -8,11 +8,14 @@ import java.util.Map;
 public interface PlanService {
     void createPlan(PlanDto planDto);
 
-    List<PlanDto> listPlan(Map<String, Object> map);
 
-    PlanDto getPlan(int planNo);
+    PlanDto getPlan(long planNo);
 
-    void modifyPlan(int planId, PlanDto planDto);
+    void updatePlan(PlanDto planDto);
 
-    void deletePlan(int planNo);
+
+    void deletePlan(long planNo);
+
+    List<PlanDto> searchPlans(int contentTypeId, int sidoCode, int gugunCode, String keyword);
+
 }

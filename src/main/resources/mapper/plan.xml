@@ -1,46 +1,92 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.enjoyTrip.OdysseyFrontiers.plan.model.mapper.PlanMapper">
 
-    <resultMap type="planDto" id="plan">
-        <result column="plan_id" property="planId"/>
-        <result column="member_id" property="memberId"/>
-        <result column="name" property="name"/>
-        <result column="title" property="title"/>
-        <result column="description" property="description"/>
-<!--        <result column="access_type" property="accessType"/>-->
-<!--        <result column="season" property="season"/>-->
-        <result column="start_time" property="startTime"/>
-        <result column="recent_update_time" property="recentUpdateTime"/>
+    <resultMap id="planResultMap" type="com.enjoyTrip.OdysseyFrontiers.plan.model.dto.PlanDto">
+        <id property="planId" column="plan_id"/>
+        <result property="memberId" column="member_id"/>
+        <result property="name" column="name"/>
+        <result property="title" column="title"/>
+        <result property="description" column="description"/>
+        <result property="season" column="season"/>
+        <result property="accessType" column="access_type"/>
+        <result property="startTime" column="start_time"/>
+        <result property="recentUpdateTime" column="recent_update_time"/>
+        <collection property="planDetails" ofType="com.enjoyTrip.OdysseyFrontiers.plan.model.dto.PlanDetailDto">
+            <id property="planDetailId" column="plan_detail_id"/>
+            <result property="planId" column="plan_id"/>
+            <result property="day" column="day"/>
+            <result property="contentId" column="content_id"/>
+            <result property="description" column="description"/>
+            <result property="planTime" column="plan_time"/>
+        </collection>
     </resultMap>
 
-    <insert id="createPlan" parameterType="planDto">
-        INSERT INTO plan (member_id, title, description)
-        VALUES (#{memberId}, #{title}, #{description})
+    <sql id="search">
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="sidoCode != null and sidoCode != 0">
+                AND info.sido_code = #{sidoCode}
+            </if>
+            <if test="gugunCode != null and gugunCode != 0">
+                AND info.gugun_code = #{gugunCode}
+            </if>
+            <if test="contentTypeId != null and contentTypeId != 0">
+                AND info.content_type_id = #{contentTypeId}
+            </if>
+        </trim>
+    </sql>
+
+    <select id="searchPlans" parameterType="map" resultMap="planResultMap">
+        SELECT p.*, pd.*
+        FROM plan p
+        JOIN plan_detail pd ON p.plan_id = pd.plan_id
+        JOIN attraction_info info ON pd.content_id = info.content_id
+        <include refid="search"/>
+        AND (info.title LIKE CONCAT('%', #{keyword}, '%') OR info.description LIKE CONCAT('%', #{keyword}, '%'))
+        GROUP BY p.plan_id, pd.plan_detail_id
+        ORDER BY p.recent_update_time DESC
+        LIMIT 5;
+    </select>
+
+    <select id="getPlan" parameterType="long" resultMap="planResultMap">
+        SELECT p.*, pd.*
+        FROM plan p
+                 JOIN plan_detail pd ON p.plan_id = pd.plan_id
+        WHERE p.plan_id = #{planId}
+    </select>
+
+    <insert id="insertPlan" useGeneratedKeys="true" keyProperty="planId">
+        INSERT INTO plan (member_id, title, description, season, start_time, access_type, recent_update_time)
+        VALUES (#{memberId}, #{title}, #{description}, #{season}, #{startTime}, #{accessType}, #{recentUpdateTime})
     </insert>
 
-    <select id="listPlan" resultMap="plan">
-        SELECT * FROM plan
-    </select>
+    <insert id="insertPlanDetail">
+        INSERT INTO plan_detail (plan_id, day, content_id, description, plan_time)
+        VALUES (#{planId}, #{day}, #{contentId}, #{description}, #{planTime})
+    </insert>
 
-    <select id="getPlan" parameterType="int" resultMap="plan">
-        SELECT * FROM plan WHERE plan_id = #{planNo}
-    </select>
-
-    <update id="modifyPlan" parameterType="map">
+    <update id="updatePlan">
         UPDATE plan
-        SET title = #{planDto.title},
-            description = #{planDto.description},
-            season = #{planDto.season},
-            access_type = #{planDto.accessType},
-            recent_update_time = now()
-        WHERE plan_id = #{planNo}
+        SET member_id = #{memberId},
+            title = #{title},
+            description = #{description},
+            season = #{season},
+            start_time = #{startTime},
+            access_type = #{accessType},
+            recent_update_time = #{recentUpdateTime}
+        WHERE plan_id = #{planId}
     </update>
 
-    <delete id="deletePlan" parameterType="int">
-        DELETE FROM plan WHERE plan_id = #{planNo}
+    <delete id="deletePlan">
+        DELETE FROM plan
+        WHERE plan_id = #{planId}
     </delete>
 
+    <delete id="deletePlanDetails">
+        DELETE FROM plan_detail
+        WHERE plan_id = #{planId}
+    </delete>
 </mapper>

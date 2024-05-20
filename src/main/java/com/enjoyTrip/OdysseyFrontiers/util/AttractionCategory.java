@@ -15,27 +15,27 @@ public enum AttractionCategory {
     TOURIST_SPOT(12, "관광지"),
     CULTURAL_FACILITY(14, "문화시설"),
     FESTIVAL_EVENT(15, "축제 / 공연 / 행사"),
-//    TRAVEL_COURSE(25, "여행코스"),
+    TRAVEL_COURSE(25, "여행코스"),
     LEISURE_SPORTS(28, "레포츠"),
     ACCOMMODATION(32, "숙박"),
     SHOPPING(38, "쇼핑"),
     RESTAURANT(39, "음식점");
 
-    private final int code;
+    private final int id;
     private final String name;
 
-    AttractionCategory(int code, String name) {
-        this.code = code;
+    AttractionCategory(int id, String name) {
+        this.id = id;
         this.name = name;
     }
 
-    public static int fromCode(int code) {
+    public static int fromCode(int id) {
         for (AttractionCategory category : values()) {
-            if (category.code == code) {
-                return category.getCode();
+            if (category.id == id) {
+                return category.getId();
             }
         }
-        return ALL.getCode();
+        return ALL.getId();
     }
 
     public static List<Map<String, Object>> getAllCategoriesWithCodes() {
@@ -43,7 +43,7 @@ public enum AttractionCategory {
         for (AttractionCategory category : AttractionCategory.values()) {
             Map<String, Object> categoryMap = new HashMap<>();
             categoryMap.put("name", category.getName());
-            categoryMap.put("code", category.getCode());
+            categoryMap.put("code", category.getId());
             categoriesWithCodes.add(categoryMap);
         }
         return categoriesWithCodes;

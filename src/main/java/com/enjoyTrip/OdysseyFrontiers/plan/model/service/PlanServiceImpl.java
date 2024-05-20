@@ -1,43 +1,52 @@
 package com.enjoyTrip.OdysseyFrontiers.plan.model.service;
 
+import com.enjoyTrip.OdysseyFrontiers.plan.model.dto.PlanDetailDto;
 import com.enjoyTrip.OdysseyFrontiers.plan.model.dto.PlanDto;
 import com.enjoyTrip.OdysseyFrontiers.plan.model.mapper.PlanMapper;
-import org.springframework.stereotype.Service;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
-@Service
+@RestController
+@RequestMapping("/plan")
+@RequiredArgsConstructor
 public class PlanServiceImpl implements PlanService {
 
-    private final PlanMapper planMapper;
+    private PlanMapper planMapper;
 
-    private PlanServiceImpl(PlanMapper PlanMapper) {
-        this.planMapper = PlanMapper;
+    public List<PlanDto> searchPlans(int contentTypeId, int sidoCode, int gugunCode, String keyword) {
+        return planMapper.searchPlans(contentTypeId, sidoCode, gugunCode, keyword);
     }
 
-    @Override
+    @Transactional
     public void createPlan(PlanDto planDto) {
-        planMapper.createPlan(planDto);
+        planMapper.insertPlan(planDto);
+        for (PlanDetailDto detail : planDto.getPlanDetails()) {
+            detail.setPlanId(planDto.getPlanId());
+            planMapper.insertPlanDetail(detail);
+        }
     }
 
-    @Override
-    public List<PlanDto> listPlan(Map<String, Object> map) {
-        return planMapper.listPlan();
+    public PlanDto getPlan(long planId) {
+        return planMapper.getPlan(planId);
     }
 
-    @Override
-    public PlanDto getPlan(int planNo) {
-        return planMapper.getPlan(planNo);
+    @Transactional
+    public void updatePlan(PlanDto planDto){
+        planMapper.updatePlan(planDto);
+        planMapper.deletePlanDetails(planDto.getPlanId());
+        for (PlanDetailDto detail : planDto.getPlanDetails()) {
+            detail.setPlanId(planDto.getPlanId());
+            planMapper.insertPlanDetail(detail);
+        }
     }
 
-    @Override
-    public void modifyPlan(int planNo, PlanDto planDto) {
-        planMapper.modifyPlan(planNo, planDto);
-    }
-
-    @Override
-    public void deletePlan(int planNo) {
-        planMapper.deletePlan(planNo);
+    @Transactional
+    public void deletePlan(long planId){
+        planMapper.deletePlanDetails(planId);
+        planMapper.deletePlan(planId);
     }
 }

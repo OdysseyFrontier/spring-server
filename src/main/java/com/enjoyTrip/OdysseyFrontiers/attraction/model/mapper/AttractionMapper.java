@@ -19,4 +19,6 @@ public interface AttractionMapper {
     List<AttractionInfo> selectAttrOnlyKeyword(String keyword) throws SQLException;
 
     List<AttractionInfo> selectAttrNoKeyword(int contentTypeId, int sidoCode, int gugunCode) throws SQLException;
+
+    AttractionInfo selectAttraction(long contentId);
 }

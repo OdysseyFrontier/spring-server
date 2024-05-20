@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 
+import com.enjoyTrip.OdysseyFrontiers.attraction.model.dto.AttractionDetail;
 import com.enjoyTrip.OdysseyFrontiers.util.AttractionCategory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.enjoyTrip.OdysseyFrontiers.attraction.model.dto.AttractionInfo;
@@ -33,6 +34,11 @@ public class AttractionRestController {
 //        this.attractionService = attractionService;
 //    }
 
+    @GetMapping("/{contentId}")
+    public ResponseEntity<?> getAttractions(long contentId) {
+        AttractionDetail attraction = attractionService.getAttraction(contentId);
+        return new ResponseEntity<>(attraction,HttpStatus.OK);
+    }
     @GetMapping("/sido")
     public ResponseEntity<?> getSidos() {
         try {

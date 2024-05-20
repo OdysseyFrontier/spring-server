@@ -5,11 +5,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import com.enjoyTrip.OdysseyFrontiers.attraction.model.dto.Gugun;
+import com.enjoyTrip.OdysseyFrontiers.attraction.model.dto.Sido;
 import org.apache.ibatis.annotations.Mapper;
 
-import com.enjoyTrip.OdysseyFrontiers.hotplace.model.dto.Gugun;
 import com.enjoyTrip.OdysseyFrontiers.hotplace.model.dto.HotPlaceDto;
-import com.enjoyTrip.OdysseyFrontiers.hotplace.model.dto.Sido;
 
 
 @Mapper
