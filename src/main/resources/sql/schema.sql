@@ -17,7 +17,7 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,N
 
 
 -- 존재하는 경우 삭제해라 --
-# DROP SCHEMA IF EXISTS `enjoytrip`;
+DROP SCHEMA IF EXISTS `enjoytrip`;
 
 CREATE SCHEMA IF NOT EXISTS `enjoytrip` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci ;
 USE `enjoytrip` ;
@@ -48,10 +48,23 @@ CREATE TABLE IF NOT EXISTS `enjoytrip`.`gugun` (
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8mb4;
 
+-- -----------------------------------------------------
+-- Table `enjoytrip`.`content_type`
+-- -----------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS `content_type` (
+                                              `content_type_id` INT NOT NULL,
+                                              `type_name` VARCHAR(50) NOT NULL,
+                                              PRIMARY KEY (`content_type_id`)
+) ENGINE = InnoDB
+  DEFAULT CHARACTER SET = utf8mb4;
+
 
 -- -----------------------------------------------------
 -- Table `enjoytrip`.`attraction_info`
 -- -----------------------------------------------------
+
+
 CREATE TABLE IF NOT EXISTS `enjoytrip`.`attraction_info` (
                                                              `content_id` INT NOT NULL,
                                                              `content_type_id` INT NULL DEFAULT NULL,
@@ -68,10 +81,13 @@ CREATE TABLE IF NOT EXISTS `enjoytrip`.`attraction_info` (
                                                              `latitude` DECIMAL(20,17) NULL DEFAULT NULL,
                                                              `longitude` DECIMAL(20,17) NULL DEFAULT NULL,
                                                              `mlevel` VARCHAR(2) NULL DEFAULT NULL,
+                                                             `member_id` BIGINT NULL DEFAULT 1,
+                                                             `access_level` VARCHAR(10) NULL DEFAULT 'public', -- Changed VARCHAR(2) to VARCHAR(10) for better readability
                                                              PRIMARY KEY (`content_id`),
                                                              INDEX `attraction_to_content_type_id_fk_idx` (`content_type_id` ASC) VISIBLE,
                                                              INDEX `attraction_to_sido_code_fk_idx` (`sido_code` ASC) VISIBLE,
                                                              INDEX `attraction_to_gugun_code_fk_idx` (`gugun_code` ASC) VISIBLE,
+                                                             INDEX `attraction_to_member_id_fk_idx` (`member_id`),
                                                              CONSTRAINT `attraction_to_content_type_id_fk`
                                                                  FOREIGN KEY (`content_type_id`)
                                                                      REFERENCES `enjoytrip`.`content_type` (`content_type_id`),
@@ -80,7 +96,10 @@ CREATE TABLE IF NOT EXISTS `enjoytrip`.`attraction_info` (
                                                                      REFERENCES `enjoytrip`.`gugun` (`gugun_code`),
                                                              CONSTRAINT `attraction_to_sido_code_fk`
                                                                  FOREIGN KEY (`sido_code`)
-                                                                     REFERENCES `enjoytrip`.`sido` (`sido_code`))
+                                                                     REFERENCES `enjoytrip`.`sido` (`sido_code`),
+                                                             CONSTRAINT `attraction_to_member_id_fk`
+                                                                 FOREIGN KEY (`member_id`)
+                                                                     REFERENCES `enjoytrip`.`members` (`member_id`))
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8mb4;
 
@@ -341,6 +360,7 @@ CREATE TABLE IF NOT EXISTS `enjoytrip`.`plan_detail` (
                                                          `plan_id` BIGINT NOT NULL,
                                                          `day` VARCHAR(45) NOT NULL,
                                                          `content_id` INT NOT NULL,
+                                                         `description` VARCHAR(100) NULL DEFAULT NULL,
                                                          `plan_time` DATETIME NULL DEFAULT NULL,
                                                          PRIMARY KEY (`plan_detail_id`),
                                                          INDEX `fk_plan_detail_attraction_info1_idx` (`content_id` ASC) VISIBLE,

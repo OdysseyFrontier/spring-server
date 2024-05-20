@@ -10,23 +10,28 @@ import com.enjoyTrip.OdysseyFrontiers.attraction.model.dto.AttractionInfo;
 import com.enjoyTrip.OdysseyFrontiers.attraction.model.dto.Gugun;
 import com.enjoyTrip.OdysseyFrontiers.attraction.model.dto.Sido;
 import com.enjoyTrip.OdysseyFrontiers.attraction.model.service.AttractionService;
+import com.enjoyTrip.OdysseyFrontiers.board.model.service.BoardService;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin
+//@CrossOrigin
 @RestController
 @RequestMapping("/attraction")
-public class AttractionRestController extends HttpServlet {
+@RequiredArgsConstructor
+public class AttractionRestController {
 
     private final AttractionService attractionService;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    public AttractionRestController(AttractionService attractionService) throws ServletException {
-        this.attractionService = attractionService;
-    }
+//    public AttractionRestController(AttractionService attractionService) throws ServletException {
+//        this.attractionService = attractionService;
+//    }
 
     @GetMapping("/sido")
     public ResponseEntity<?> getSidos() {
@@ -45,7 +50,7 @@ public class AttractionRestController extends HttpServlet {
     }
 
     @GetMapping("/gugun/{sidoCode}")
-    public ResponseEntity<?> getGuguns(@PathVariable int sidoCode) {
+    public ResponseEntity<?> getGuguns(@PathVariable("sidoCode") int sidoCode) {
         try {
             List<Gugun> guguns = attractionService.listGuguns(sidoCode);
             if (guguns != null && !guguns.isEmpty()) {
@@ -85,8 +90,10 @@ public class AttractionRestController extends HttpServlet {
     }
 
     @GetMapping("/search/{contentTypeId}")
-    public ResponseEntity<?> getAttraction(@PathVariable int contentTypeId){
-        try {
+    public ResponseEntity<?> getAttraction(@PathVariable("contentTypeId") int contentTypeId){
+    	System.out.println("들어옴1");
+    	try {
+        	System.out.println("들어옴");
             contentTypeId = AttractionCategory.fromCode(contentTypeId);
             System.out.println(contentTypeId);
             List<AttractionInfo> attrs = attractionService.listAttr(contentTypeId);

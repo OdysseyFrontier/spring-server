@@ -20,9 +20,9 @@ public interface BoardMapper {
     int createHit(int boardNo, Long memberId);
     int updateHit(int boardHitId) throws SQLException;
     
+    int modifyBoard(BoardDto boardDto) throws SQLException;
     
 
-    int modifyBoard(BoardDto boardDto) throws SQLException;
     int deleteBoard(int BoardNO) throws SQLException;
 
     
