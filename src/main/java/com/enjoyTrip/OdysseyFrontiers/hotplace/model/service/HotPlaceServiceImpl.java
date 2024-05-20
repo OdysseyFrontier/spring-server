@@ -1,15 +1,16 @@
 package com.enjoyTrip.OdysseyFrontiers.hotplace.model.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.enjoyTrip.OdysseyFrontiers.hotplace.model.dto.Gugun;
+import com.enjoyTrip.OdysseyFrontiers.hotplace.model.dto.Gugun2;
 import com.enjoyTrip.OdysseyFrontiers.hotplace.model.dto.HotPlaceDto;
 import com.enjoyTrip.OdysseyFrontiers.hotplace.model.dto.HotPlaceHitDto;
-import com.enjoyTrip.OdysseyFrontiers.hotplace.model.dto.Sido;
+import com.enjoyTrip.OdysseyFrontiers.hotplace.model.dto.Sido2;
 import com.enjoyTrip.OdysseyFrontiers.hotplace.model.mapper.HotPlaceMapper;
 
 @Service
@@ -21,12 +22,12 @@ public class HotPlaceServiceImpl implements HotPlaceService {
     }
 	
 	@Override
-	public List<Sido> listSidos() throws Exception {
+	public List<Sido2> listSidos() throws Exception {
 		return hotPlaceMapper.listSidos();
 	}
 
 	@Override
-	public List<Gugun> listGuguns(int sidoCode) throws Exception {
+	public List<Gugun2> listGuguns(int sidoCode) throws Exception {
 		return hotPlaceMapper.listGuguns(sidoCode);
 	}
 
@@ -45,6 +46,14 @@ public class HotPlaceServiceImpl implements HotPlaceService {
 
 	@Override
 	public List<HotPlaceDto> selectAttr(Map<String, Object> map) throws Exception {
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("word", map.get("word") == null ? "" : map.get("word"));
+		param.put("sidoCode", map.get("sidoCode") == null ? "0" : map.get("sidoCode"));
+		param.put("gugunCode", map.get("gugunCode") == null ? "0" : map.get("gugunCode"));
+		param.put("contentTypeId", map.get("contentTypeId") == null ? "0" : map.get("contentTypeId"));
+		
+		
+		
 		List<HotPlaceDto> list = hotPlaceMapper.selectAttr(map);
         return list;
 	}
@@ -59,9 +68,10 @@ public class HotPlaceServiceImpl implements HotPlaceService {
 		int contentId = hotplaceHitDto.getContentId();
         Long memberId = hotplaceHitDto.getMemberId();
 		
-		Optional<Integer> recentMemberCount = hotPlaceMapper.getRecentMemberHit(contentId, memberId);
+		int recentMemberCount = hotPlaceMapper.getRecentMemberHit(contentId, memberId);
 
-        if (recentMemberCount.isEmpty()) {
+	System.out.println(recentMemberCount);
+        if (recentMemberCount == 0) {
             return hotPlaceMapper.createHit(contentId, memberId);
         } else {
             return hotPlaceMapper.updateHit(contentId, memberId);

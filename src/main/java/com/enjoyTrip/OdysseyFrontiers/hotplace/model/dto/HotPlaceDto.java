@@ -10,6 +10,8 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 public class HotPlaceDto {
+	private long memberId;
+	private String name;
 	private int contentId;
     private int contentTypeId;
     private String title;
@@ -25,7 +27,7 @@ public class HotPlaceDto {
     private double latitude;
     private double longitude;
     private String mlevel;
-    private int like;
+    private int likes;
     private String isLike;
     
     
