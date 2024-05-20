@@ -14,9 +14,9 @@ import com.enjoyTrip.OdysseyFrontiers.hotplace.model.dto.HotPlaceDto;
 
 @Mapper
 public interface HotPlaceMapper {
-    List<Sido2> listSidos() throws SQLException;
+    List<Sido> listSidos() throws SQLException;
 
-    List<Gugun2> listGuguns(int sidoCode) throws SQLException;
+    List<Gugun> listGuguns(int sidoCode) throws SQLException;
 
     int writeHotPlaceInfo(HotPlaceDto hotPlaceDto) throws SQLException;
     void writeHotPlaceDetail(HotPlaceDto hotPlaceDto) throws SQLException;
