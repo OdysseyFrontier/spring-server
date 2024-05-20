@@ -7,16 +7,16 @@ import java.util.Optional;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.enjoyTrip.OdysseyFrontiers.hotplace.model.dto.Gugun;
+import com.enjoyTrip.OdysseyFrontiers.hotplace.model.dto.Gugun2;
 import com.enjoyTrip.OdysseyFrontiers.hotplace.model.dto.HotPlaceDto;
-import com.enjoyTrip.OdysseyFrontiers.hotplace.model.dto.Sido;
+import com.enjoyTrip.OdysseyFrontiers.hotplace.model.dto.Sido2;
 
 
 @Mapper
 public interface HotPlaceMapper {
-    List<Sido> listSidos() throws SQLException;
+    List<Sido2> listSidos() throws SQLException;
 
-    List<Gugun> listGuguns(int sidoCode) throws SQLException;
+    List<Gugun2> listGuguns(int sidoCode) throws SQLException;
 
     int writeHotPlaceInfo(HotPlaceDto hotPlaceDto) throws SQLException;
     void writeHotPlaceDetail(HotPlaceDto hotPlaceDto) throws SQLException;
@@ -28,7 +28,7 @@ public interface HotPlaceMapper {
     List<HotPlaceDto> selectAttr(Map<String, Object> map) throws SQLException;
     HotPlaceDto getHotPlace(Map<String, Object> map) throws SQLException;
     
-    Optional<Integer> getRecentMemberHit(int contentId, Long memberId) throws SQLException;
+    int getRecentMemberHit(int contentId, Long memberId) throws SQLException;
     int createHit(int contentId, Long memberId) throws SQLException;
     int updateHit(int contentId, Long memberId) throws SQLException;
     
