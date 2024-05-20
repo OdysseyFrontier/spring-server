@@ -21,8 +21,6 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
 		this.jwtInterceptor = jwtInterceptor;
 	}
 
-	
-	
 //    @Override
 //    public void addViewControllers(ViewControllerRegistry registry) {
 //        registry.addViewController("/").setViewName("index");
@@ -32,10 +30,10 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:5173","http://localhost:5176","http://localhost:5175","http://localhost:5177","http://localhost:5174")
-                .allowedMethods("GET", "POST", "PUT", "DELETE")
-                .allowedHeaders("*")
-                .allowCredentials(true);
+                .allowedOriginPatterns("http://localhost:5173", "http://localhost:5173/**", "http://localhost:5176", "http://localhost:5175", "http://localhost:5177", "http://localhost:5174") // Use allowedOriginPatterns
+                .allowedMethods("*") // Allow all methods
+                .allowedHeaders("*") // Allow all headers
+                .allowCredentials(true); // Allow credentials
     }
     
     @Override
