@@ -3,6 +3,8 @@ package com.enjoyTrip.OdysseyFrontiers.board.model.service;
 
 import java.util.Map;
 
+import org.springframework.stereotype.Service;
+
 import com.enjoyTrip.OdysseyFrontiers.board.model.dto.BoardDto;
 import com.enjoyTrip.OdysseyFrontiers.board.model.dto.BoardHitDto;
 import com.enjoyTrip.OdysseyFrontiers.board.model.dto.BoardListDto;

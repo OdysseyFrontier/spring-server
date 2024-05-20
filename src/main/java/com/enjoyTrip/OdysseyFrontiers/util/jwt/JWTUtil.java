@@ -109,7 +109,7 @@ public class JWTUtil {
 		}
 		Map<String, Object> value = claims.getBody();
 		log.info("value : {}", value);
-		return (String) value.get("userId");
+		return (String) value.get("memberId");
 	}
 
 }

@@ -35,7 +35,7 @@
     </select>
 
 
-    <sql id="search">
+<!--     <sql id="search">
         <trim prefix="WHERE" prefixOverrides="AND">
             <if test="sidoCode != null and sidoCode != 0 ">
                 AND info.sido_code = #{sidoCode}
@@ -47,7 +47,7 @@
                 AND info.content_type_id = #{contentTypeId}
             </if>
         </trim>
-    </sql>
+    </sql> -->
 
 
     <select id="selectAttr" parameterType="map" resultMap="resultAttr">
@@ -56,15 +56,15 @@
                 info.addr2,
                 info.latitude,
                 info.longitude,
-                info.irst_image,
+                info.first_image,
                 info.content_id,
                 des.overview as description
         FROM attraction_info as info
               join attraction_description as des
         on info.content_id = des.content_id
 
-        <include refid="search"/>
-
+<!--         <include refid="search"/>
+ -->
         AND title LIKE CONCAT('%', #{keyword}, '%')
         ORDER BY info.readcount desc
         limit 5;
@@ -99,8 +99,8 @@
         FROM attraction_info as info
         join attraction_description as des
         on info.content_id = des.content_id
-        <include refid="search"/>
-        ORDER BY info.readcount desc
+<!--         <include refid="search"/>
+ -->        ORDER BY info.readcount desc
         limit 5;
     </select>
 
