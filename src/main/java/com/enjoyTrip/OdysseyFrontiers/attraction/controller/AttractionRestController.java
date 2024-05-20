@@ -36,7 +36,7 @@ public class AttractionRestController {
 
     @GetMapping("/{contentId}")
     public ResponseEntity<?> getAttractions(long contentId) {
-        AttractionDetail attraction = attractionService.getAttraction(contentId);
+        AttractionInfo attraction = attractionService.getAttraction(contentId);
         return new ResponseEntity<>(attraction,HttpStatus.OK);
     }
     @GetMapping("/sido")

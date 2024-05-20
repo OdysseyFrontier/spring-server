@@ -22,6 +22,9 @@ values ("소연" , "1234", "1234" , "010-1234-5678", 'ACTIVE');
 insert into members (name, email_id, password, phone, status)
 values ("ssafy" , "ssafy", "1234" , "010-1234-5678", 'ACTIVE');
 
+insert into members (name, email_id,email_domain, password, phone, status)
+values ("alice" , "alice1234", "naver.com" , "1234" , "010-1234-5678", 'ACTIVE');
+
 
 insert into board (member_id, subject, content, type)
 values (1, "abc", "abc", 'community');

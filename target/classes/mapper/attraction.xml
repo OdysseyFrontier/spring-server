@@ -104,4 +104,20 @@
         limit 5;
     </select>
 
+    <select id="selectAttraction" resultMap="resultAttr">
+        SELECT info.title,
+        info.addr1,
+        info.addr2,
+        info.latitude,
+        info.longitude,
+        info.first_image,
+        info.content_id,
+        des.overview as description
+        FROM attraction_info as info
+        join attraction_description as des
+        on info.content_id = des.content_id
+        Where info.content_id = #{contentId}
+
+    </select>
+
 </mapper>

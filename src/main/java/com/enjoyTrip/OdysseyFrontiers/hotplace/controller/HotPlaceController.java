@@ -45,7 +45,7 @@ public class HotPlaceController {
     @GetMapping("/sido")
     public ResponseEntity<?> getSidos() {
         try {
-            List<Sido2> sidos = hotPlaceService.listSidos();
+            List<Sido> sidos = hotPlaceService.listSidos();
             System.out.println(sidos);
             if (sidos != null && !sidos.isEmpty()) {
                 String result = objectMapper.writeValueAsString(sidos);
@@ -61,7 +61,7 @@ public class HotPlaceController {
     @GetMapping("/gugun/{sidoCode}")
     public ResponseEntity<?> getGuguns(@PathVariable("sidoCode") int sidoCode) {
         try {
-            List<Gugun2> guguns = hotPlaceService.listGuguns(sidoCode);
+            List<Gugun> guguns = hotPlaceService.listGuguns(sidoCode);
             if (guguns != null && !guguns.isEmpty()) {
                 String result = objectMapper.writeValueAsString(guguns);
                 return new ResponseEntity<String>(result, HttpStatus.OK);

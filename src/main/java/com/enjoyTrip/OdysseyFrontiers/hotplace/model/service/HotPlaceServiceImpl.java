@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import com.enjoyTrip.OdysseyFrontiers.attraction.model.dto.Gugun;
+import com.enjoyTrip.OdysseyFrontiers.attraction.model.dto.Sido;
 import org.springframework.stereotype.Service;
 
 import com.enjoyTrip.OdysseyFrontiers.hotplace.model.dto.Gugun2;
@@ -22,12 +24,12 @@ public class HotPlaceServiceImpl implements HotPlaceService {
     }
 	
 	@Override
-	public List<Sido2> listSidos() throws Exception {
+	public List<Sido> listSidos() throws Exception {
 		return hotPlaceMapper.listSidos();
 	}
 
 	@Override
-	public List<Gugun2> listGuguns(int sidoCode) throws Exception {
+	public List<Gugun> listGuguns(int sidoCode) throws Exception {
 		return hotPlaceMapper.listGuguns(sidoCode);
 	}
 
