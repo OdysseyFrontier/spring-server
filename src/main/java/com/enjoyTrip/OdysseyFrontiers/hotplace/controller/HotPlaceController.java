@@ -13,15 +13,16 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.enjoyTrip.OdysseyFrontiers.hotplace.model.dto.Gugun;
+import com.enjoyTrip.OdysseyFrontiers.hotplace.model.dto.Gugun2;
 import com.enjoyTrip.OdysseyFrontiers.hotplace.model.dto.HotPlaceDto;
 import com.enjoyTrip.OdysseyFrontiers.hotplace.model.dto.HotPlaceHitDto;
-import com.enjoyTrip.OdysseyFrontiers.hotplace.model.dto.Sido;
+import com.enjoyTrip.OdysseyFrontiers.hotplace.model.dto.Sido2;
 import com.enjoyTrip.OdysseyFrontiers.hotplace.model.service.HotPlaceService;
 import com.enjoyTrip.OdysseyFrontiers.util.jwt.JWTUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -41,7 +42,7 @@ public class HotPlaceController {
     @GetMapping("/sido")
     public ResponseEntity<?> getSidos() {
         try {
-            List<Sido> sidos = hotPlaceService.listSidos();
+            List<Sido2> sidos = hotPlaceService.listSidos();
             System.out.println(sidos);
             if (sidos != null && !sidos.isEmpty()) {
                 String result = objectMapper.writeValueAsString(sidos);
@@ -57,7 +58,7 @@ public class HotPlaceController {
     @GetMapping("/gugun/{sidoCode}")
     public ResponseEntity<?> getGuguns(@PathVariable("sidoCode") int sidoCode) {
         try {
-            List<Gugun> guguns = hotPlaceService.listGuguns(sidoCode);
+            List<Gugun2> guguns = hotPlaceService.listGuguns(sidoCode);
             if (guguns != null && !guguns.isEmpty()) {
                 String result = objectMapper.writeValueAsString(guguns);
                 return new ResponseEntity<String>(result, HttpStatus.OK);
@@ -90,7 +91,7 @@ public class HotPlaceController {
                                   @RequestHeader("Authorization") String authorization) throws Exception {
 
         // 현재는 회원만 board 에 조회 수 증가 가능.
-            Long memberId = Long.parseLong(jwtUtil.getUserId(authorization));
+            Long memberId = jwtUtil.getUserId(authorization);       
             HotPlaceHitDto hotplaceHitDto = new HotPlaceHitDto(contentId, memberId);
             hotPlaceService.createOrUpdateHit(hotplaceHitDto);
 
@@ -104,15 +105,17 @@ public class HotPlaceController {
     }
     
     @PostMapping("/like")
-	  public ResponseEntity<?> creatLike(@RequestParam Map<String, String> map) throws Exception {
-	      hotPlaceService.createLike(map);
+	  public ResponseEntity<?> creatLike(@RequestBody Map<String, String> map) throws Exception {
+    	System.out.println(map); 
+    	hotPlaceService.createLike(map);
 	
 	      return new ResponseEntity<>(HttpStatus.CREATED);
 	  }
     
     @DeleteMapping("/like")
-    public ResponseEntity<?> delete(@RequestParam Map<String, String> map) throws Exception {
-
+    public ResponseEntity<?> delete(@RequestBody Map<String, String> map) throws Exception {
+    	System.out.println("취소 누름");
+    	System.out.println(map); 
         hotPlaceService.deleteLike(map);
 
         return new ResponseEntity<>(HttpStatus.OK);

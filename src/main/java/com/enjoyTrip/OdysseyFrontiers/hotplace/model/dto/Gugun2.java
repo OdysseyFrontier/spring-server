@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class Gugun {
+public class Gugun2 {
 	
 	private int gugunCode;
 	private String gugunName;

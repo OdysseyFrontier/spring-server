@@ -4,15 +4,15 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
-import com.enjoyTrip.OdysseyFrontiers.hotplace.model.dto.Gugun;
+import com.enjoyTrip.OdysseyFrontiers.hotplace.model.dto.Gugun2;
 import com.enjoyTrip.OdysseyFrontiers.hotplace.model.dto.HotPlaceDto;
 import com.enjoyTrip.OdysseyFrontiers.hotplace.model.dto.HotPlaceHitDto;
-import com.enjoyTrip.OdysseyFrontiers.hotplace.model.dto.Sido;
+import com.enjoyTrip.OdysseyFrontiers.hotplace.model.dto.Sido2;
 
 public interface HotPlaceService {
-	List<Sido> listSidos() throws Exception;
+	List<Sido2> listSidos() throws Exception;
 
-    List<Gugun> listGuguns(int sidoCode) throws Exception;
+    List<Gugun2> listGuguns(int sidoCode) throws Exception;
 
     int writeHotPlace(HotPlaceDto hotPlaceDto) throws Exception;
     
