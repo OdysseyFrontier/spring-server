@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.enjoyTrip.OdysseyFrontiers.hotplace.model.mapper.HotPlaceMapper">
+    <resultMap id="resultSido" type="com.enjoyTrip.OdysseyFrontiers.hotplace.model.dto.Sido">
+        <result column="sido_code" property="sidoCode"/>
+        <result column="sido_name" property="sidoName"/>
+    </resultMap>
+
+    <resultMap id="resultGugun" type="com.enjoyTrip.OdysseyFrontiers.hotplace.model.dto.Gugun">
+        <result column="gugun_code" property="gugunCode"/>
+        <result column="gugun_name" property="gugunName"/>
+        <result column="sido_code" property="sidoCode"/>
+    </resultMap>
+
+    <resultMap id="resultAttr" type="com.enjoyTrip.OdysseyFrontiers.hotplace.model.dto.HotPlaceDto">
+        <result column="content_id" property="contentId"/>
+        <result column="content_type_id" property="contentTypeId"/>
+        <result column="sido_code" property="sidoCode"/>
+        <result column="gugun_code" property="gugunCode"/>
+        <result column="first_image" property="firstImage"/>
+    </resultMap>
+    
+    <resultMap type="hotPlaceHitDto" id="hotPlaceHit">
+        <result column="content_id" property="contentId"/>
+        <result column="member_id" property="memberId"/>
+        <result column="create_time" property="createTime"/>
+    </resultMap>
+    
+    <resultMap type="hotPlaceLikeDto" id="hotplaceLike">
+        <result column="content_id" property="contentId"/>
+        <result column="member_id" property="memberId"/>
+        <result column="create_time" property="createTime"/>
+    </resultMap>
+
+    <select id="listSidos" resultMap="resultSido">
+        SELECT *
+        FROM sido;
+    </select>
+
+    <select id="listGuguns" parameterType="int" resultMap="resultGugun">
+        SELECT *
+        FROM gugun
+        WHERE sido_code = #{sidoCode};
+    </select>
+
+	
+	<insert id="writeHotPlaceInfo" parameterType="hotPlaceDto">
+        insert into attraction_info (content_type_id, title, addr1, addr2, zipcode, tel, first_image, sido_code, gugun_code, latitude, longitude, mlevel)
+        values (#{contentTypeId}, #{title}, #{addr1}, #{addr2}, #{zipcode}, #{tel}, #{firstImage}, #{sidoCode}, #{gugunCode}, #{latitude}, #{longitude}, #{mlevel})
+        <selectKey resultType="int" keyProperty="contentId" order="AFTER">
+            select last_insert_id()
+        </selectKey>
+    </insert>
+    
+    <insert id="writeHotPlaceDetail" parameterType="hotPlaceDto">
+        insert into attraction_detail (content_id, cat1, cat2, cat3, created_time)
+        values (#{contentId} #{cat1}, #{cat2}, #{cat3}, now())
+    </insert>
+    
+    <insert id="writeHotPlaceDescription" parameterType="hotPlaceDto">
+        insert into attraction_detail (content_id, homepage, overview, telname)
+        values (#{contentId} #{homepage}, #{overview}, #{telname})
+    </insert>
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <sql id="search">
+        <where>
+            <if test="sidoCode != null and sidoCode != 0 ">
+                AND info.sido_code = #{sidoCode}
+            </if>
+            <if test="gugunCode != null and gugunCode != 0 ">
+                AND info.gugun_code = #{gugunCode}
+            </if>
+            <if test="contentTypeId != null and contentTypeId != 0">
+                AND info.content_type_id = #{contentTypeId}
+            </if>
+            <if test="word != null and word != ''">
+                <if test="key == 'title'">
+                    and info.title like concat('%', #{word}, '%')
+                </if>
+                <if test="key != 'title'">
+                    and ${key} = #{word}
+                </if>
+            </if>
+        </where>
+    </sql>
+
+
+    <select id="selectAttr" parameterType="map" resultMap="resultAttr">
+        SELECT  info.content_id,
+        		info.content_type_id,
+        		info.title,
+                info.addr1,
+                info.addr2,
+                info.zipcode,
+                info.tel,
+                info.latitude,
+                info.longitude,
+                info.irst_image,
+                des.homepage,
+                des.overview,
+                ah.hit,
+                al.like
+        FROM attraction_info as info
+              join attraction_description as des
+        on info.content_id = det.content_id
+        left join (select content_id count(*) as hit from attraction_hit) as ah
+        on info.content_id = ah.content_id
+        left join (select content_id count(*) as like from attraction_like) as al
+        on info.content_id = al.content_id
+
+        <include refid="search"/>
+
+        ORDER BY ah.hit desc
+        limit 5;
+    </select>
+    
+    <select id="getHotPlace" parameterType="map" resultMap="resultAttr">
+        SELECT  info.content_id,
+        		info.content_type_id,
+        		info.title,
+                info.addr1,
+                info.addr2,
+                info.zipcode,
+                info.tel,
+                info.latitude,
+                info.longitude,
+                info.irst_image,
+                des.homepage,
+                des.overview,
+                ah.hit,
+                al.like,
+                det.created_time,
+                al2.isLike
+        FROM attraction_info as info
+              join attraction_description as des
+        on info.content_id = des.content_id
+        	join attraction_detail as det
+        on info.content_id = det.content_id
+        left join (select content_id count(*) as hit from attraction_hit) as ah
+        on info.content_id = ah.content_id
+        left join (select content_id count(*) as like from attraction_like) as al
+        on info.content_id = al.content_id
+        left join (select content_id count(*) as isLike from attraction_like as temp where temp.member_id = #{memberId}) as al2
+        on info.content_id = al2.content_id
+
+        where info.content_id = #{contentId}
+    </select>
+    
+    <select id="getRecentMemberHit" parameterType="map" resultType="java.lang.Integer">
+        select count(*)
+        from attraction_hit
+        where member_id = #{memberId} and
+            content_id = #{contentId}
+        order by create_time desc
+            limit 1
+    </select>
+
+	<insert id="createHit" parameterType="map">
+        INSERT INTO attraction_hit (member_id, content_id)
+        VALUES (#{memberId}, #{contentId})
+    </insert>
+
+
+    <update id="updateHit" parameterType="map" >
+        UPDATE attraction_hit
+        SET create_time = now()
+        where member_id = #{memberId}
+        and content_id = #{contentId}
+    </update>
+    
+    
+    <update id="modifyHotPlcaeInfo" parameterType="map">
+        update attraction_detail
+        set content_type_id = #{contentTypeId},
+        	title = #{title},
+        	addr1 = #{addr1},
+        	addr2 = #{addr2},
+        	zipcode = #{zipcode},
+        	tel = #{tel},
+        	first_image = #{firstImage},
+        	sido_code = #{sidoCode},
+        	gugun_code = #{gugunCode},
+        	latitude = #{latitude},
+        	longitude = #{longitude}
+        where content_id = #{contentId}
+    </update>
+    
+    <update id="modifyHotPlcaeDetail" parameterType="map">
+        update attraction_detail
+        set modified_time = now()
+        where content_id = #{contentId}
+    </update>
+    
+    <update id="modifyHotPlcaeDescription" parameterType="map">
+        update attraction_description
+        set homepage = #{homepage},
+        	overview = #{overview},
+        where content_id = #{contentId}
+    </update>
+    
+    
+    
+    
+    <insert id="createLike" parameterType="map">
+        INSERT INTO attraction_like (member_id, content_id)
+        VALUES (#{memberId}, #{contentId})
+    </insert>
+    
+    <delete id="deleteHotPlaceInfo">
+        delete
+        from attraction_info
+        where content_id = #{contentId}
+    </delete>
+    
+    <delete id="deleteHotPlaceDetail">
+        delete
+        from attraction_detail
+        where content_id = #{contentId}
+    </delete>
+    
+    <delete id="deleteHotPlaceDescription">
+        delete
+        from attraction_description
+        where content_id = #{contentId}
+    </delete>
+    
+    <delete id="deleteHotPlaceAttachments">
+        delete
+        from attraction_description
+        where content_id = #{contentId}
+    </delete>
+    
+    <delete id="deleteHotPlaceHit">
+        delete
+        from attraction_hit
+        where content_id = #{contentId}
+    </delete>
+    
+    <delete id="deleteHotPlaceLike">
+        delete
+        from attraction_like
+        where content_id = #{contentId}
+    </delete>
+    
+    
+    
+    
+
+</mapper>
