@@ -56,7 +56,7 @@
                 info.addr2,
                 info.latitude,
                 info.longitude,
-                info.irst_image,
+                info.first_image,
                 info.content_id,
                 des.overview as description
         FROM attraction_info as info
@@ -67,7 +67,7 @@
 
         AND title LIKE CONCAT('%', #{keyword}, '%')
         ORDER BY info.readcount desc
-        limit 20;
+        limit 5;
     </select>
 
     <select id="selectAttrOnlyKeyword" parameterType="string" resultMap="resultAttr">
@@ -84,7 +84,7 @@
         on info.content_id = des.content_id
         WHERE info.title LIKE CONCAT('%', #{keyword}, '%')
         ORDER BY info.readcount desc
-        limit 20;
+        limit 5;
     </select>
 
     <select id="selectAttrNoKeyword" parameterType="map" resultMap="resultAttr">
@@ -101,7 +101,7 @@
         on info.content_id = des.content_id
         <include refid="search"/>
         ORDER BY info.readcount desc
-        limit 20;
+        limit 5;
     </select>
 
 </mapper>
