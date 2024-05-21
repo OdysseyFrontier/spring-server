@@ -100,7 +100,7 @@ public class MemberRestController {
         Map<String, Object> resultMap = new HashMap<String, Object>();
         HttpStatus status = HttpStatus.ACCEPTED;
         
-        System.out.println("dddd");
+        System.out.println("login");
 
 //        MemberDto memberDto = memberService.loginMember(map);
 

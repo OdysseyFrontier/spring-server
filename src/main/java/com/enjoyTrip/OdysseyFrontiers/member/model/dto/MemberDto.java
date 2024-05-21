@@ -28,3 +28,4 @@ public class MemberDto {
 	private String token;
 	private String image;
 }
+

@@ -14,6 +14,7 @@
         <result property="season" column="season"/>
         <result property="accessType" column="access_type"/>
         <result property="startTime" column="start_time"/>
+        <result property="endTime" column="end_time"/>
         <result property="recentUpdateTime" column="recent_update_time"/>
         <collection property="planDetails" ofType="com.enjoyTrip.OdysseyFrontiers.plan.model.dto.PlanDetailDto">
             <id property="planDetailId" column="plan_detail_id"/>
@@ -23,6 +24,12 @@
             <result property="description" column="description"/>
             <result property="planTime" column="plan_time"/>
         </collection>
+    </resultMap>
+
+    <resultMap type="boardDto" id="viewboard" extends="planResultMap">
+        <result property="name" column="name"/>
+        <result property="image" column="image"/>
+        <result property="member_id" column="memberId"/>
     </resultMap>
 
     <sql id="search">
@@ -36,31 +43,71 @@
             <if test="contentTypeId != null and contentTypeId != 0">
                 AND info.content_type_id = #{contentTypeId}
             </if>
+            <if test="keyword != null and keyword != 'no' and keyword != ''">
+                AND (info.title LIKE CONCAT('%', #{keyword}, '%') OR pd.description LIKE CONCAT('%', #{keyword}, '%'))
+            </if>
         </trim>
     </sql>
 
     <select id="searchPlans" parameterType="map" resultMap="planResultMap">
-        SELECT p.*, pd.*
+        SELECT DISTINCT p.*
         FROM plan p
         JOIN plan_detail pd ON p.plan_id = pd.plan_id
         JOIN attraction_info info ON pd.content_id = info.content_id
         <include refid="search"/>
-        AND (info.title LIKE CONCAT('%', #{keyword}, '%') OR info.description LIKE CONCAT('%', #{keyword}, '%'))
-        GROUP BY p.plan_id, pd.plan_detail_id
+        GROUP BY
+        p.plan_id,
+        p.member_id,
+        p.title,
+        p.description,
+        p.season,
+        p.access_type,
+        p.start_time,
+        p.recent_update_time,
+        pd.plan_detail_id,
+        pd.plan_id,
+        pd.day,
+        pd.content_id,
+        pd.description,
+        pd.plan_time
         ORDER BY p.recent_update_time DESC
         LIMIT 5;
     </select>
 
     <select id="getPlan" parameterType="long" resultMap="planResultMap">
-        SELECT p.*, pd.*
+        SELECT
+            p.*,
+            pd.plan_detail_id,
+            pd.plan_id,
+            pd.content_id,
+            pd.plan_time,
+            pd.description,
+            info.first_image,
+            info.addr1,
+            info.addr2,
+            info.latitude,
+            info.longitude,
+            members.name,
+            members.member_id,
+            members.image,
+            MAX(pd.plan_time) AS end_time
         FROM plan p
-                 JOIN plan_detail pd ON p.plan_id = pd.plan_id
-        WHERE p.plan_id = #{planId}
+        JOIN plan_detail pd
+        ON p.plan_id = pd.plan_id
+        JoIn attraction_info info
+        on pd.content_id = info.content_id
+        Join members
+        on info.member_id = members.member_id
+        WHERE
+            p.plan_id = #{planId}
+        GROUP BY
+            p.plan_id, pd.plan_detail_id, pd.plan_time, pd.description, pd.content_id, members.name, members.member_id
     </select>
 
+
     <insert id="insertPlan" useGeneratedKeys="true" keyProperty="planId">
-        INSERT INTO plan (member_id, title, description, season, start_time, access_type, recent_update_time)
-        VALUES (#{memberId}, #{title}, #{description}, #{season}, #{startTime}, #{accessType}, #{recentUpdateTime})
+        INSERT INTO plan (member_id, title, description, season, start_time, access_type)
+        VALUES (1, #{title}, #{description}, #{season}, #{startTime}, #{accessType})
     </insert>
 
     <insert id="insertPlanDetail">
@@ -89,4 +136,20 @@
         DELETE FROM plan_detail
         WHERE plan_id = #{planId}
     </delete>
+
+    <select id="findPlansByMemberId" parameterType="long" resultMap="planResultMap">
+        SELECT DISTINCT p.*
+        FROM plan p
+        WHERE p.member_id = #{memberId}
+        ORDER BY p.recent_update_time DESC
+    </select>
+
+    <select id="findLikedPlansByMemberId" parameterType="long" resultMap="planResultMap">
+        SELECT DISTINCT p.*
+        FROM plan p
+                 JOIN plan_like pl ON p.plan_id = pl.plan_id
+        WHERE pl.member_id = #{memberId}
+        ORDER BY p.recent_update_time DESC
+    </select>
+
 </mapper>

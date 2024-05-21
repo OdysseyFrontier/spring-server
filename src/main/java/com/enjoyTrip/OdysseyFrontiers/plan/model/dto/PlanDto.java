@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Getter
@@ -15,12 +16,13 @@ import java.util.List;
 public class PlanDto {
     private long planId;
     private long memberId;
-    private String name;
+//    private String name;
     private String title;
     private String description;
-    private Season season;
-    private AccessType accessType;
-    private String startTime;
+    private String season;
+    private String accessType;
+    private LocalDate startTime;
+    private LocalDate endTime;
     private String recentUpdateTime;
     private List<PlanDetailDto> planDetails; // Add PlanDetailDto to represent plan details
 }
