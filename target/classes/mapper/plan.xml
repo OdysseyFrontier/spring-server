@@ -26,7 +26,7 @@
         <result property="planId" column="plan_id"/>
         <result property="day" column="day"/>
         <result property="contentId" column="content_id"/>
-        <result property="description" column="description"/>
+        <result property="description" column="detail_des"/>
         <result property="planTime" column="plan_time"/>
         <collection property="attractionInfo" ofType="com.enjoyTrip.OdysseyFrontiers.attraction.model.dto.AttractionInfo" resultMap="AttractionResultMap"/>
     </resultMap>
@@ -90,7 +90,7 @@
             pd.plan_id,
             pd.content_id,
             pd.plan_time,
-            pd.description,
+            pd.description as detail_des,
             info.title as info_title,
             info.first_image,
             info.addr1,
@@ -117,7 +117,7 @@
 
     <insert id="insertPlan" useGeneratedKeys="true" keyProperty="planId">
         INSERT INTO plan (member_id, title, description, season, start_time, access_type)
-        VALUES (1, #{title}, #{description}, #{season}, #{startTime}, #{accessType})
+        VALUES (#{memberId}, #{title}, #{description}, #{season}, #{startTime}, #{accessType})
     </insert>
 
     <insert id="insertPlanDetail">

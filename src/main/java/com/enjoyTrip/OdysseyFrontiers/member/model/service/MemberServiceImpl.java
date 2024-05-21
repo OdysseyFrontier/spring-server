@@ -151,4 +151,32 @@ public class MemberServiceImpl implements MemberService {
 		map.put("token", null);
 		memberMapper.deleteRefreshToken(map);
 	}
+
+	@Override
+	public void followMember(long followerId, long followingId) throws Exception {
+		memberMapper.followMember(Map.of("followerId", followerId, "followingId", followingId));
+	}
+
+	@Override
+	public void unfollowMember(long followerId, long followingId) throws Exception {
+		memberMapper.unfollowMember(Map.of("followerId", followerId, "followingId", followingId));
+	}
+
+	@Override
+	public List<MemberDto> findFollowers(long memberId) throws Exception {
+		return memberMapper.findFollowers(memberId);
+	}
+
+	@Override
+	public List<MemberDto> findFollowing(long memberId) throws Exception {
+		return memberMapper.findFollowing(memberId);
+	}
+
+	public List<MemberDto> searchMembers(String search) {
+		if (search == null || search.trim().isEmpty()) {
+			return memberMapper.findAll();
+		} else {
+			return memberMapper.findByEmailIdOrNameLike(search.trim());
+		}
+	}
 }

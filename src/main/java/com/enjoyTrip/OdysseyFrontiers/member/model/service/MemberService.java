@@ -43,4 +43,11 @@ public interface MemberService {
     Optional<MemberDto> findByMemberId(Long memberId) throws Exception;
 
     Optional<MemberDto> findByName(String name) throws Exception;
+
+    // 팔로우 기능 추가
+    void followMember(long followerId, long followingId) throws Exception;
+    void unfollowMember(long followerId, long followingId) throws Exception;
+    List<MemberDto> findFollowers(long memberId) throws Exception;
+    List<MemberDto> findFollowing(long memberId) throws Exception;
+    List<MemberDto> searchMembers(String search) throws Exception;
 }

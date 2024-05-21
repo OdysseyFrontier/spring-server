@@ -113,24 +113,39 @@ public class PlanServiceImpl implements PlanService {
             throw new IllegalArgumentException("Start time and end time cannot be null");
         }
 
-        Month startMonth = startTime.getMonth();
-        Month endMonth = endTime.getMonth();
+        LocalDate winterStart = LocalDate.of(startTime.getYear(), Month.DECEMBER, 1);
+        LocalDate winterEnd = LocalDate.of(endTime.getYear() + 1, Month.FEBRUARY, 28);
+        LocalDate springStart = LocalDate.of(startTime.getYear(), Month.MARCH, 1);
+        LocalDate springEnd = LocalDate.of(endTime.getYear(), Month.MAY, 31);
+        LocalDate summerStart = LocalDate.of(startTime.getYear(), Month.JUNE, 1);
+        LocalDate summerEnd = LocalDate.of(endTime.getYear(), Month.AUGUST, 31);
+        LocalDate autumnStart = LocalDate.of(startTime.getYear(), Month.SEPTEMBER, 1);
+        LocalDate autumnEnd = LocalDate.of(endTime.getYear(), Month.NOVEMBER, 30);
 
-        // Determine the season based on start and end months
-        if ((startMonth == Month.DECEMBER || startMonth == Month.JANUARY || startMonth == Month.FEBRUARY) &&
-                (endMonth == Month.DECEMBER || endMonth == Month.JANUARY || endMonth == Month.FEBRUARY)) {
+        long winterDays = calculateDaysInSeason(startTime, endTime, winterStart, winterEnd);
+        long springDays = calculateDaysInSeason(startTime, endTime, springStart, springEnd);
+        long summerDays = calculateDaysInSeason(startTime, endTime, summerStart, summerEnd);
+        long autumnDays = calculateDaysInSeason(startTime, endTime, autumnStart, autumnEnd);
+
+        if (winterDays >= springDays && winterDays >= summerDays && winterDays >= autumnDays) {
             return "Winter";
-        } else if ((startMonth == Month.MARCH || startMonth == Month.APRIL || startMonth == Month.MAY) &&
-                (endMonth == Month.MARCH || endMonth == Month.APRIL || endMonth == Month.MAY)) {
+        } else if (springDays >= winterDays && springDays >= summerDays && springDays >= autumnDays) {
             return "Spring";
-        } else if ((startMonth == Month.JUNE || startMonth == Month.JULY || startMonth == Month.AUGUST) &&
-                (endMonth == Month.JUNE || endMonth == Month.JULY || endMonth == Month.AUGUST)) {
+        } else if (summerDays >= winterDays && summerDays >= springDays && summerDays >= autumnDays) {
             return "Summer";
-        } else if ((startMonth == Month.SEPTEMBER || startMonth == Month.OCTOBER || startMonth == Month.NOVEMBER) &&
-                (endMonth == Month.SEPTEMBER || endMonth == Month.OCTOBER || endMonth == Month.NOVEMBER)) {
-            return "Autumn";
         } else {
-            return "Mixed";
+            return "Fall";
         }
+    }
+
+    private long calculateDaysInSeason(LocalDate startTime, LocalDate endTime, LocalDate seasonStart, LocalDate seasonEnd) {
+        LocalDate actualSeasonStart = startTime.isBefore(seasonStart) ? seasonStart : startTime;
+        LocalDate actualSeasonEnd = endTime.isAfter(seasonEnd) ? seasonEnd : endTime;
+
+        if (actualSeasonStart.isAfter(actualSeasonEnd)) {
+            return 0;
+        }
+
+        return ChronoUnit.DAYS.between(actualSeasonStart, actualSeasonEnd) + 1;
     }
 }

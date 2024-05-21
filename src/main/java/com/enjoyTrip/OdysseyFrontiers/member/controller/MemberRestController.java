@@ -251,5 +251,54 @@ public class MemberRestController {
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
-    
+	// 팔로우 기능 추가
+	@PostMapping("/{followerId}/follow/{followingId}")
+	public ResponseEntity<?> followMember(@PathVariable long followerId, @PathVariable long followingId) {
+		try {
+			memberService.followMember(followerId, followingId);
+			return new ResponseEntity<>(HttpStatus.CREATED);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	@PostMapping("/{followerId}/unfollow/{followingId}")
+	public ResponseEntity<?> unfollowMember(@PathVariable long followerId, @PathVariable long followingId) {
+		try {
+			memberService.unfollowMember(followerId, followingId);
+			return new ResponseEntity<>(HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	@GetMapping("/{memberId}/followers")
+	public ResponseEntity<List<MemberDto>> getFollowers(@PathVariable long memberId) {
+		try {
+			List<MemberDto> followers = memberService.findFollowers(memberId);
+			return new ResponseEntity<>(followers, HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	@GetMapping("/{memberId}/following")
+	public ResponseEntity<List<MemberDto>> getFollowing(@PathVariable long memberId) {
+		try {
+			List<MemberDto> following = memberService.findFollowing(memberId);
+			return new ResponseEntity<>(following, HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	@GetMapping("/search/{search}")
+	public ResponseEntity<List<MemberDto>> searchMembers(@PathVariable(required = false) String search) throws Exception {
+		List<MemberDto> members = memberService.searchMembers(search);
+		return ResponseEntity.ok(members);
+	}
 }

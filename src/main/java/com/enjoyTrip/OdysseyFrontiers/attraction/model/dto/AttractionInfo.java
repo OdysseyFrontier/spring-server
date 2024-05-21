@@ -10,7 +10,7 @@ import lombok.*;
 public class AttractionInfo {
 	private int contentId;
     private int contentTypeId;
-    private String  contentTypeName;
+    private String contentTypeName;
     private String title;
     private String description;
     private String addr1;

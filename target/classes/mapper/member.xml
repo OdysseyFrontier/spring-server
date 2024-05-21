@@ -6,7 +6,7 @@
 
     <resultMap type="com.enjoyTrip.OdysseyFrontiers.member.model.dto.MemberDto" id="member">
         <result column="member_id" property="memberId"/>
-<!--         <result column="name" property="name"/> -->
+         <result column="name" property="name"/> 
         <result column="email_id" property="emailId"/>
         <result column="email_domain" property="emailDomain"/>
 <!--         <result column="password" property="password"/>
@@ -131,4 +131,40 @@
 		where member_id = #{memberId}
 	</update>
 
+    <!-- 팔로우 기능 추가 -->
+    <insert id="followMember" parameterType="map">
+        insert into followers (follower_id, following_id)
+        values (#{followerId}, #{followingId})
+    </insert>
+
+    <delete id="unfollowMember" parameterType="map">
+        delete from followers
+        where follower_id = #{followerId} and following_id = #{followingId}
+    </delete>
+
+    <select id="findFollowers" parameterType="long" resultType="com.enjoyTrip.OdysseyFrontiers.member.model.dto.MemberDto">
+        select m.*
+        from followers f
+                 join members m on f.follower_id = m.member_id
+        where f.following_id = #{memberId}
+    </select>
+
+    <select id="findFollowing" parameterType="long" resultType="com.enjoyTrip.OdysseyFrontiers.member.model.dto.MemberDto">
+        select m.*
+        from followers f
+                 join members m on f.following_id = m.member_id
+        where f.follower_id = #{memberId}
+    </select>
+
+    <select id="findAll" resultMap="member">
+        select *
+        from members;
+    </select>
+    
+    <select id="findByEmailIdOrNameLike" parameterType="String" resultMap="member">
+        select *
+        from members
+        where members.email_id LIKE CONCAT('%', #{search}, '%') or
+              members.name Like CONCAT('%', #{search}, '%');
+    </select>
 </mapper>

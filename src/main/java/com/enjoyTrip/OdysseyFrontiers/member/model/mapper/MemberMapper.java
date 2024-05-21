@@ -48,4 +48,15 @@ public interface MemberMapper {
 	Optional<MemberDto> findByMemberId(Long memberId) throws SQLException;
 
     List<MemberDto> findAllMembers() throws SQLException;
+
+    void followMember(Map<String, Long> followerId);
+
+	void unfollowMember(Map<String, Long> followerId);
+
+	List<MemberDto> findFollowers(long memberId);
+
+	List<MemberDto> findFollowing(long memberId);
+	List<MemberDto> findByEmailIdOrNameLike(String search);
+
+	List<MemberDto> findAll();
 }

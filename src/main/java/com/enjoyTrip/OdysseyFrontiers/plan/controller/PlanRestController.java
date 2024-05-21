@@ -49,6 +49,7 @@ public class PlanRestController {
     @GetMapping("/myMakePlans/{memberId}")
     public ResponseEntity<List<PlanDto>> makeMyPlans(@PathVariable Long memberId) {
         try {
+            System.out.println("make");
             List<PlanDto> plans = planService.getPlansMadeByMember(memberId);
             System.out.println(plans);
             return ResponseEntity.ok(plans);
@@ -61,6 +62,7 @@ public class PlanRestController {
     @GetMapping("/myLikePlans/{memberId}")
     public ResponseEntity<List<PlanDto>> likeMyPlans(@PathVariable Long memberId) {
         try {
+            System.out.println("like");
             List<PlanDto> plans = planService.getLikedPlansByMember(memberId);
             System.out.println(plans);
             return ResponseEntity.ok(plans);
