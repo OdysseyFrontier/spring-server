@@ -16,7 +16,7 @@ import java.util.List;
 public class PlanDto {
     private long planId;
     private long memberId;
-//    private String name;
+    private String memberName;
     private String title;
     private String description;
     private String season;

@@ -8,7 +8,6 @@
     <resultMap id="planResultMap" type="com.enjoyTrip.OdysseyFrontiers.plan.model.dto.PlanDto">
         <id property="planId" column="plan_id"/>
         <result property="memberId" column="member_id"/>
-        <result property="name" column="name"/>
         <result property="title" column="title"/>
         <result property="description" column="description"/>
         <result property="season" column="season"/>
@@ -16,20 +15,30 @@
         <result property="startTime" column="start_time"/>
         <result property="endTime" column="end_time"/>
         <result property="recentUpdateTime" column="recent_update_time"/>
-        <collection property="planDetails" ofType="com.enjoyTrip.OdysseyFrontiers.plan.model.dto.PlanDetailDto">
-            <id property="planDetailId" column="plan_detail_id"/>
-            <result property="planId" column="plan_id"/>
-            <result property="day" column="day"/>
-            <result property="contentId" column="content_id"/>
-            <result property="description" column="description"/>
-            <result property="planTime" column="plan_time"/>
-        </collection>
+        <result property="memberName" column="member_name"/>
+        <result property="memberImage" column="member_image"/>
+        <result property="image" column="image"/>
+        <collection property="planDetails" ofType="com.enjoyTrip.OdysseyFrontiers.plan.model.dto.PlanDetailDto" resultMap="planDetailMap"/>
     </resultMap>
 
-    <resultMap type="boardDto" id="viewboard" extends="planResultMap">
-        <result property="name" column="name"/>
-        <result property="image" column="image"/>
-        <result property="member_id" column="memberId"/>
+    <resultMap id="planDetailMap" type="com.enjoyTrip.OdysseyFrontiers.plan.model.dto.PlanDetailDto">
+        <id property="planDetailId" column="plan_detail_id"/>
+        <result property="planId" column="plan_id"/>
+        <result property="day" column="day"/>
+        <result property="contentId" column="content_id"/>
+        <result property="description" column="description"/>
+        <result property="planTime" column="plan_time"/>
+        <collection property="attractionInfo" ofType="com.enjoyTrip.OdysseyFrontiers.attraction.model.dto.AttractionInfo" resultMap="AttractionResultMap"/>
+    </resultMap>
+
+    <resultMap id="AttractionResultMap" type="com.enjoyTrip.OdysseyFrontiers.attraction.model.dto.AttractionInfo">
+        <result property="title" column="info_title"/>
+        <result property="firstImage" column="first_image"/>
+        <result property="firstImage2" column="first_image2"/>
+        <result property="addr1" column="addr1"/>
+        <result property="addr2" column="addr2"/>
+        <result property="latitude" column="latitude"/>
+        <result property="longitude" column="longitude"/>
     </resultMap>
 
     <sql id="search">
@@ -82,12 +91,13 @@
             pd.content_id,
             pd.plan_time,
             pd.description,
+            info.title as info_title,
             info.first_image,
             info.addr1,
             info.addr2,
             info.latitude,
             info.longitude,
-            members.name,
+            members.name as member_name,
             members.member_id,
             members.image,
             MAX(pd.plan_time) AS end_time
@@ -107,7 +117,7 @@
 
     <insert id="insertPlan" useGeneratedKeys="true" keyProperty="planId">
         INSERT INTO plan (member_id, title, description, season, start_time, access_type)
-        VALUES (1, #{title}, #{description}, #{season}, #{startTime}, #{accessType})
+        VALUES (#{member_id}, #{title}, #{description}, #{season}, #{startTime}, #{accessType})
     </insert>
 
     <insert id="insertPlanDetail">

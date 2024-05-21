@@ -1,5 +1,7 @@
 package com.enjoyTrip.OdysseyFrontiers.plan.model.service;
 
+import com.enjoyTrip.OdysseyFrontiers.attraction.model.mapper.AttractionMapper;
+import com.enjoyTrip.OdysseyFrontiers.attraction.model.service.AttractionService;
 import com.enjoyTrip.OdysseyFrontiers.plan.model.dto.PlanDetailDto;
 import com.enjoyTrip.OdysseyFrontiers.plan.model.dto.PlanDto;
 import com.enjoyTrip.OdysseyFrontiers.plan.model.mapper.PlanMapper;
@@ -21,6 +23,7 @@ public class PlanServiceImpl implements PlanService {
 
     @Autowired
     private PlanMapper planMapper;
+    private AttractionMapper attractionMapper;
 
     public List<PlanDto> searchPlans(int contentTypeId, int sidoCode, int gugunCode, String keyword) {
         System.out.println("service" + contentTypeId + ":" + sidoCode + ":" + gugunCode + ":" + keyword);
@@ -55,7 +58,7 @@ public class PlanServiceImpl implements PlanService {
         String season = calculateSeason(startTime, endTime);
         planDto.setSeason(season);
 
-        System.out.println("service" + planDto);
+        System.out.println("service " + planDto);
         planMapper.insertPlan(planDto);
         System.out.println("nice");
         for (PlanDetailDto detail : planDto.getPlanDetails()) {

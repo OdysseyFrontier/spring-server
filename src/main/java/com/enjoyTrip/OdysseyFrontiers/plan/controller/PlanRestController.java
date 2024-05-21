@@ -73,6 +73,7 @@ public class PlanRestController {
     @PostMapping("/")
     public ResponseEntity<?> createPlan(@RequestBody PlanDto planDto) throws Exception {
         log.info("create {}", planDto);
+        log.info("member {}", planDto.getMemberId());
         planService.createPlan(planDto);
         return ResponseEntity.ok("Plan created successfully");
     }
