@@ -17,7 +17,7 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,N
 
 
 -- 존재하는 경우 삭제해라 --
-DROP SCHEMA IF EXISTS `enjoytrip`;
+# DROP SCHEMA IF EXISTS `enjoytrip`;
 
 CREATE SCHEMA IF NOT EXISTS `enjoytrip` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci ;
 USE `enjoytrip` ;
@@ -337,7 +337,7 @@ CREATE TABLE IF NOT EXISTS `enjoytrip`.`plan` (
                                                   `plan_id` BIGINT NOT NULL AUTO_INCREMENT,
                                                   `member_id` BIGINT NOT NULL,
                                                   `title` VARCHAR(45) NOT NULL,
-                                                  `description` VARCHAR(100) NULL DEFAULT NULL,
+                                                  `description` VARCHAR(10000) NULL DEFAULT NULL,
                                                   `season` ENUM('SPRING', 'SUMMER', 'FALL', 'WINTER', 'ETC') NOT NULL DEFAULT 'ETC',
                                                   `start_time` DATETIME NULL DEFAULT NULL,
                                                   `access_type` ENUM('PUBLIC', 'PRIVATE') NULL DEFAULT NULL,
@@ -360,7 +360,7 @@ CREATE TABLE IF NOT EXISTS `enjoytrip`.`plan_detail` (
                                                          `plan_id` BIGINT NOT NULL,
                                                          `day` VARCHAR(45) NOT NULL,
                                                          `content_id` INT NOT NULL,
-                                                         `description` VARCHAR(100) NULL DEFAULT NULL,
+                                                         `description` VARCHAR(10000) NULL DEFAULT NULL,
                                                          `plan_time` DATETIME NULL DEFAULT NULL,
                                                          PRIMARY KEY (`plan_detail_id`),
                                                          INDEX `fk_plan_detail_attraction_info1_idx` (`content_id` ASC) VISIBLE,
