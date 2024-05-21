@@ -65,20 +65,33 @@ public class MemberRestController {
 //        List<MemberDto> allMembers = memberService.findAllMembers();
 //        return new ResponseEntity<>(allMembers, HttpStatus.OK);
 //    }
+	
+	@GetMapping("/idcheck")
+	public ResponseEntity<?> idCheck(@RequestParam Map<String, String> map) {
+		try {
+            int count = memberService.idCheck(map);
+            return new ResponseEntity<>(count, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+	}
+	
+	
 
-//    @PostMapping("/join")
-//    public ResponseEntity<?> join(@RequestBody MemberDto memberDto) throws Exception {
-//        Map<String, Object> resultMap = new HashMap<String, Object>();
-//
-//        try {
-//            memberService.joinMember(memberDto);
-//            return new ResponseEntity<>(HttpStatus.CREATED);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            resultMap.put("message", e.getMessage());
-//            return new ResponseEntity<>(resultMap, HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//    }
+    @PostMapping("/join")
+    public ResponseEntity<?> join(@RequestBody MemberDto memberDto) throws Exception {
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+
+        try {
+            memberService.joinMember(memberDto);
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        } catch (Exception e) {
+            e.printStackTrace();
+            resultMap.put("message", e.getMessage());
+            return new ResponseEntity<>(resultMap, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
 
     @PostMapping("/login")

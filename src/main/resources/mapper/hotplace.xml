@@ -56,17 +56,21 @@
     </insert>
     
     <insert id="writeHotPlaceDetail" parameterType="hotPlaceDto">
-        insert into attraction_detail (content_id, cat1, cat2, cat3, created_time)
-        values (#{contentId} #{cat1}, #{cat2}, #{cat3}, now())
+        insert into attraction_detail (content_id, created_time)
+        values (#{contentId}, #{createdTime})
     </insert>
     
     <insert id="writeHotPlaceDescription" parameterType="hotPlaceDto">
-        insert into attraction_detail (content_id, homepage, overview, telname)
-        values (#{contentId} #{homepage}, #{overview}, #{telname})
+        insert into attraction_description (content_id, homepage, overview, telname)
+        values (#{contentId}, #{homepage}, #{overview}, #{telname})
     </insert>
     
     
-
+	<update id="setFilePath" parameterType="hotPlaceDto" >
+        UPDATE attraction_info
+        SET first_image = #{firstImage}
+        where content_id = #{contentId}
+    </update>
 
 
 

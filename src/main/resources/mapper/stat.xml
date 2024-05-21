@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.enjoyTrip.OdysseyFrontiers.stat.model.mapper.StatMapper">
+<!--     <resultMap id="resultStat" type="com.enjoyTrip.OdysseyFrontiers.stat.model.dto.StatDto">
+        <result column="sido_code" property="sidoCode"/>
+        <result column="sido_name" property="sidoName"/>
+    </resultMap>
+
+
+    <select id="listSidos" resultMap="resultSido">
+        SELECT *
+        FROM sido;
+    </select> -->
+
+<!--     <select id="listSidos" resultType="statDto">
+        SELECT *
+        FROM sido;
+    </select> -->
+    
+    <select id="getPopularAttractions" resultType="statDto">
+	    SELECT ai.content_id, ai.title, COUNT(ah.content_id) AS hit_count
+	    FROM attraction_info ai
+	    JOIN attraction_hit ah ON ai.content_id = ah.content_id
+	    GROUP BY ai.content_id, ai.title
+	    ORDER BY hit_count DESC
+	    LIMIT 10;
+	</select>
+
+	<select id="getMemberRegistrationStats" resultType="statDto">
+	    SELECT DATE(join_date) AS registration_date, COUNT(*) AS member_count
+	    FROM members
+	    GROUP BY DATE(join_date)
+	    ORDER BY registration_date;
+	</select>
+	
+	<select id="getAttractionCountByRegion" resultType="statDto">
+	    SELECT s.sido_name, g.gugun_name, COUNT(ai.content_id) AS attraction_count
+	    FROM attraction_info ai
+	    JOIN gugun g ON ai.gugun_code = g.gugun_code
+	    JOIN sido s ON g.sido_code = s.sido_code
+	    GROUP BY s.sido_name, g.gugun_name
+	    ORDER BY s.sido_name, g.gugun_name;
+	</select>
+	
+	<select id="getActivityByTime" resultType="statDto">
+	    SELECT HOUR(register_time) AS time_slot, COUNT(*) AS activity_count
+	    FROM board
+	    GROUP BY HOUR(register_time)
+	    ORDER BY time_slot;
+	</select>
+
+</mapper>

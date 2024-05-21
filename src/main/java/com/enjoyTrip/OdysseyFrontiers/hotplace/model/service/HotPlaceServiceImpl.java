@@ -35,15 +35,26 @@ public class HotPlaceServiceImpl implements HotPlaceService {
 
 	@Override
 	public int writeHotPlace(HotPlaceDto hotPlaceDto) throws Exception {
+		System.out.println("서비스 들어옴");
 		int contendId =  hotPlaceMapper.writeHotPlaceInfo(hotPlaceDto);
 		
-		hotPlaceDto.setContentId(contendId);
+		System.out.println("info 저장");
+		System.out.println(contendId);
+		System.out.println(hotPlaceDto.getContentId());
+		
+//		hotPlaceDto.setContentId(contendId);
 		hotPlaceMapper.writeHotPlaceDetail(hotPlaceDto);
+		System.out.println("디테일하고옴");
 		hotPlaceMapper.writeHotPlaceDescription(hotPlaceDto);
 		
-		hotPlaceMapper.writeHotPlaceAttachments(hotPlaceDto);
+//		hotPlaceMapper.writeHotPlaceAttachments(hotPlaceDto);
 		
-		return contendId;
+		return hotPlaceDto.getContentId();
+	}
+	
+	@Override
+	public void setFilePath(HotPlaceDto hotPlaceDto) throws Exception{
+		hotPlaceMapper.setFilePath(hotPlaceDto);
 	}
 
 	@Override

@@ -21,7 +21,7 @@ public interface HotPlaceMapper {
     int writeHotPlaceInfo(HotPlaceDto hotPlaceDto) throws SQLException;
     void writeHotPlaceDetail(HotPlaceDto hotPlaceDto) throws SQLException;
     void writeHotPlaceDescription(HotPlaceDto hotPlaceDto) throws SQLException;
-    
+    void setFilePath(HotPlaceDto hotPlaceDto) throws SQLException;
     // 사진 저장 어떻게 할지 고민하기
     void writeHotPlaceAttachments(HotPlaceDto hotPlaceDto) throws SQLException;
     

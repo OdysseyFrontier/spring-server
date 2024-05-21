@@ -21,10 +21,11 @@ public class MemberDto {
 	private String emailDomain;
 	private String password;
 	private String phone;
-	private MemberStatus status;
+	private String status;
 	private String address;
-	private Date birthday;
+	private String birthday;
 	private String joinDate;
 	private String token;
+	private String image;
 }
 
