@@ -15,6 +15,7 @@ public interface HotPlaceService {
     List<Gugun> listGuguns(int sidoCode) throws Exception;
 
     int writeHotPlace(HotPlaceDto hotPlaceDto) throws Exception;
+    void setFilePath(HotPlaceDto hotPlaceDto) throws Exception;
     
     List<HotPlaceDto> selectAttr(Map<String, Object> map) throws Exception;
     HotPlaceDto getHotPlace(Map<String, Object> map) throws Exception;
