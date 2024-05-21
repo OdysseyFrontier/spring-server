@@ -66,7 +66,7 @@ CREATE TABLE IF NOT EXISTS `content_type` (
 
 
 CREATE TABLE IF NOT EXISTS `enjoytrip`.`attraction_info` (
-                                                             `content_id` INT NOT NULL,
+                                                             `content_id` INT NOT NULL AUTO_INCREMENT,
                                                              `content_type_id` INT NULL DEFAULT NULL,
                                                              `title` VARCHAR(100) NULL DEFAULT NULL,
                                                              `addr1` VARCHAR(100) NULL DEFAULT NULL,
@@ -100,6 +100,7 @@ CREATE TABLE IF NOT EXISTS `enjoytrip`.`attraction_info` (
                                                              CONSTRAINT `attraction_to_member_id_fk`
                                                                  FOREIGN KEY (`member_id`)
                                                                      REFERENCES `enjoytrip`.`members` (`member_id`))
+    AUTO_INCREMENT = 30000000
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8mb4;
 

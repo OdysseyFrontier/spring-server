@@ -29,7 +29,7 @@ public class JWTUtil {
 	private long refreshTokenExpireTime;
 
 	public String createAccessToken(long memberId) {
-		System.out.println("dddd");
+		System.out.println("createAccessToken");
 		return create(memberId, "access-token", accessTokenExpireTime);
 	}
 
