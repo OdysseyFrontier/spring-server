@@ -2,13 +2,17 @@ package com.enjoyTrip.OdysseyFrontiers.attraction.model.dto;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
+@ToString
 public class AttractionInfo {
 	private int contentId;
     private int contentTypeId;
+    private String  contentTypeName;
     private String title;
+    private String description;
     private String addr1;
     private String addr2;
     private String zipcode;
@@ -18,22 +22,13 @@ public class AttractionInfo {
     private int readCount;
     private int sidoCode;
     private int gugunCode;
+    private String gugunName;
+    private String sidoName;
     private double latitude;
     private double longitude;
     private String mlevel;
     private boolean isScrap;
     private long memberId;
     private String accessLevel;
-    
 
-	@Override
-	public String toString() {
-		return "AttractionInfo [contentId=" + contentId + ", contentTypeId=" + contentTypeId + ", title=" + title
-				+ ", addr1=" + addr1 + ", addr2=" + addr2 + ", zipcode=" + zipcode + ", tel=" + tel + ", firstImage="
-				+ firstImage + ", firstImage2=" + firstImage2 + ", readCount=" + readCount + ", sidoCode=" + sidoCode
-				+ ", gugunCode=" + gugunCode + ", latitude=" + latitude + ", longitude=" + longitude + ", mlevel="
-				+ mlevel + ", isScrap=" + isScrap + "]";
-	}
-	
-	
 }

@@ -36,6 +36,9 @@
             <if test="contentTypeId != null and contentTypeId != 0">
                 AND info.content_type_id = #{contentTypeId}
             </if>
+            <if test="keyword != null and keyword != 'no' and keyword != ''">
+                AND (info.title LIKE CONCAT('%', #{keyword}, '%') OR info.description LIKE CONCAT('%', #{keyword}, '%'))
+            </if>
         </trim>
     </sql>
 
@@ -45,8 +48,22 @@
         JOIN plan_detail pd ON p.plan_id = pd.plan_id
         JOIN attraction_info info ON pd.content_id = info.content_id
         <include refid="search"/>
-        AND (info.title LIKE CONCAT('%', #{keyword}, '%') OR info.description LIKE CONCAT('%', #{keyword}, '%'))
-        GROUP BY p.plan_id, pd.plan_detail_id
+        GROUP BY
+        p.plan_id,
+        p.member_id,
+        p.name,
+        p.title,
+        p.description,
+        p.season,
+        p.access_type,
+        p.start_time,
+        p.recent_update_time,
+        pd.plan_detail_id,
+        pd.plan_id,
+        pd.day,
+        pd.content_id,
+        pd.description,
+        pd.plan_time
         ORDER BY p.recent_update_time DESC
         LIMIT 5;
     </select>

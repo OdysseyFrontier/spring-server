@@ -15,12 +15,28 @@
     </resultMap>
 
     <resultMap id="resultAttr" type="com.enjoyTrip.OdysseyFrontiers.attraction.model.dto.AttractionInfo">
+        <result column="content_id" property="contentId"/>
         <result column="title" property="title"/>
+        <result column="description" property="description"/>
         <result column="addr1" property="addr1"/>
         <result column="addr2" property="addr2"/>
         <result column="latitude" property="latitude"/>
         <result column="longitude" property="longitude"/>
         <result column="first_image" property="firstImage"/>
+        <result column="first_image2" property="firstImage2"/>
+        <result column="readcount" property="readCount"/>
+        <result column="sido_code" property="sidoCode"/>
+        <result column="gugun_code" property="gugunCode"/>
+        <result column="zipcode" property="zipcode"/>
+        <result column="tel" property="tel"/>
+        <result column="mlevel" property="mlevel"/>
+        <result column="is_scrap" property="isScrap" javaType="boolean"/>
+        <result column="member_id" property="memberId"/>
+        <result column="access_level" property="accessLevel"/>
+        <!-- Additional mappings for joined data -->
+        <result column="sido_name" property="sidoName"/>
+        <result column="gugun_name" property="gugunName"/>
+        <result column="content_type_name" property="contentTypeName"/>
     </resultMap>
 
     <select id="listSidos" resultMap="resultSido">
@@ -56,12 +72,18 @@
         info.addr2,
         info.latitude,
         info.longitude,
+        info.first_image2,
         info.first_image,
         info.content_id,
-        des.overview as description
+        des.overview as description,
+        ct.type_name as content_type_name,
+        si.sido_name as sido_name,
+        gu.gugun_name as gugun_name
         FROM attraction_info as info
-        join attraction_description as des
-        on info.content_id = des.content_id
+        JOIN attraction_description as des ON info.content_id = des.content_id
+        LEFT JOIN content_type as ct ON info.content_type_id = ct.content_type_id
+        LEFT JOIN sido as si ON info.sido_code = si.sido_code
+        LEFT JOIN gugun as gu ON info.gugun_code = gu.gugun_code and info.sido_code = gu.sido_code
 
         <include refid="search"/>
 
@@ -77,11 +99,17 @@
                info.latitude,
                info.longitude,
                info.first_image,
+               info.first_image2,
                info.content_id,
-               des.overview as description
-        FROM attraction_info info
-                 join attraction_description des
-                      on info.content_id = des.content_id
+               des.overview as description,
+               ct.type_name as content_type_name,
+               si.sido_name as sido_name,
+               gu.gugun_name as gugun_name
+        FROM attraction_info as info
+                 JOIN attraction_description as des ON info.content_id = des.content_id
+                 LEFT JOIN content_type as ct ON info.content_type_id = ct.content_type_id
+                 LEFT JOIN sido as si ON info.sido_code = si.sido_code
+                 LEFT JOIN gugun as gu ON info.gugun_code = gu.gugun_code and info.sido_code = gu.sido_code
         WHERE info.title LIKE CONCAT('%', #{keyword}, '%')
         ORDER BY info.readcount desc
         limit 5;
@@ -94,11 +122,17 @@
         info.latitude,
         info.longitude,
         info.first_image,
+        info.first_image2,
         info.content_id,
-        des.overview as description
+        des.overview as description,
+        ct.type_name as content_type_name,
+        si.sido_name as sido_name,
+        gu.gugun_name as gugun_name
         FROM attraction_info as info
-        join attraction_description as des
-        on info.content_id = des.content_id
+        JOIN attraction_description as des ON info.content_id = des.content_id
+        LEFT JOIN content_type as ct ON info.content_type_id = ct.content_type_id
+        LEFT JOIN sido as si ON info.sido_code = si.sido_code
+        LEFT JOIN gugun as gu ON info.gugun_code = gu.gugun_code and info.sido_code = gu.sido_code
         <include refid="search"/>
         ORDER BY info.readcount desc
         limit 5;
@@ -106,16 +140,22 @@
 
     <select id="selectAttraction" resultMap="resultAttr">
         SELECT info.title,
-        info.addr1,
-        info.addr2,
-        info.latitude,
-        info.longitude,
-        info.first_image,
-        info.content_id,
-        des.overview as description
+               info.addr1,
+               info.addr2,
+               info.latitude,
+               info.longitude,
+               info.first_image,
+               info.first_image2,
+               info.content_id,
+               des.overview  as description,
+               ct.type_name as content_type_name,
+               si.sido_name as sido_name,
+               gu.gugun_name as gugun_name
         FROM attraction_info as info
-        join attraction_description as des
-        on info.content_id = des.content_id
+                 JOIN attraction_description as des ON info.content_id = des.content_id
+                 LEFT JOIN content_type as ct ON info.content_type_id = ct.content_type_id
+                 LEFT JOIN sido as si ON info.sido_code = si.sido_code
+                 LEFT JOIN gugun as gu ON info.gugun_code = gu.gugun_code and info.sido_code = gu.sido_code
         Where info.content_id = #{contentId}
 
     </select>

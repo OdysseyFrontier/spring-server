@@ -34,8 +34,9 @@ public class AttractionRestController {
 //    }
 
     @GetMapping("/{contentId}")
-    public ResponseEntity<?> getAttractions(long contentId) {
+    public ResponseEntity<?> getAttractions(@PathVariable long contentId) {
         AttractionInfo attraction = attractionService.getAttraction(contentId);
+        System.out.println(attraction);
         return new ResponseEntity<>(attraction,HttpStatus.OK);
     }
     @GetMapping("/sido")
