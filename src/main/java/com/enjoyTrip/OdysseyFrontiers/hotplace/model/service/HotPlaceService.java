@@ -1,5 +1,6 @@
 package com.enjoyTrip.OdysseyFrontiers.hotplace.model.service;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
@@ -14,6 +15,7 @@ public interface HotPlaceService {
 
     List<Gugun> listGuguns(int sidoCode) throws Exception;
 
+    int getSidoCode(String sidocode) throws Exception;
     int writeHotPlace(HotPlaceDto hotPlaceDto) throws Exception;
     void setFilePath(HotPlaceDto hotPlaceDto) throws Exception;
     
@@ -22,6 +24,7 @@ public interface HotPlaceService {
     
     int createOrUpdateHit(HotPlaceHitDto hotplaceHitDto) throws Exception;
     
+    HotPlaceDto getModifyHotPlace(int contentId) throws Exception;
     int modifyHotPlcae(HotPlaceDto hotPlaceDto) throws Exception;
     
     void createLike(Map<String, String> map) throws Exception;

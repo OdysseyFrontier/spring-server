@@ -32,6 +32,11 @@ public class HotPlaceServiceImpl implements HotPlaceService {
 	public List<Gugun> listGuguns(int sidoCode) throws Exception {
 		return hotPlaceMapper.listGuguns(sidoCode);
 	}
+	
+	@Override
+	public int getSidoCode(String sidocode) throws Exception {
+		return hotPlaceMapper.getSidoCode(sidocode);
+	}
 
 	@Override
 	public int writeHotPlace(HotPlaceDto hotPlaceDto) throws Exception {
@@ -43,9 +48,11 @@ public class HotPlaceServiceImpl implements HotPlaceService {
 		System.out.println(hotPlaceDto.getContentId());
 		
 //		hotPlaceDto.setContentId(contendId);
-		hotPlaceMapper.writeHotPlaceDetail(hotPlaceDto);
 		System.out.println("디테일하고옴");
+		System.out.println(hotPlaceDto.getContentId());
 		hotPlaceMapper.writeHotPlaceDescription(hotPlaceDto);
+		System.out.println(hotPlaceDto.getContentId());
+		hotPlaceMapper.writeHotPlaceDetail(hotPlaceDto);
 		
 //		hotPlaceMapper.writeHotPlaceAttachments(hotPlaceDto);
 		
@@ -90,6 +97,13 @@ public class HotPlaceServiceImpl implements HotPlaceService {
             return hotPlaceMapper.updateHit(contentId, memberId);
         }
 	}
+	
+	
+	@Override
+	public HotPlaceDto getModifyHotPlace(int contentId) throws Exception {
+		return hotPlaceMapper.getModifyHotPlace(contentId);
+	}
+	
 
 	@Override
 	public int modifyHotPlcae(HotPlaceDto hotPlaceDto) throws Exception {
@@ -98,10 +112,17 @@ public class HotPlaceServiceImpl implements HotPlaceService {
 //		if(!hotPlaceDto.getHomepage().equals(preHotPlaceDto.getHomepage()) || !hotPlaceDto.getOverview().equals(preHotPlaceDto.getOverview())) {
 //			hotPlaceMapper.modifyHotPlcaeDescription(hotPlaceDto);
 //		}
+		
+		System.out.println("서비스 들어옴");
 		hotPlaceMapper.modifyHotPlcaeDescription(hotPlaceDto);
+		
+		System.out.println("des 고침");
 		hotPlaceMapper.modifyHotPlcaeInfo(hotPlaceDto);
+		
+		System.out.println("info 고침");
 		return hotPlaceMapper.modifyHotPlcaeDetail(hotPlaceDto);
 	}
+	
 
 	@Override
 	public void createLike(Map<String, String> map) throws Exception {
