@@ -1,5 +1,7 @@
 package com.enjoyTrip.OdysseyFrontiers.member.controller;
 
+import com.enjoyTrip.OdysseyFrontiers.board.model.dto.BoardListDto;
+import com.enjoyTrip.OdysseyFrontiers.hotplace.model.dto.HotPlaceDto;
 import com.enjoyTrip.OdysseyFrontiers.member.model.dto.MemberDto;
 import com.enjoyTrip.OdysseyFrontiers.member.model.service.MemberService;
 import com.enjoyTrip.OdysseyFrontiers.util.constant.JwtConst;
@@ -13,6 +15,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 //import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 //import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -22,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -323,5 +327,33 @@ public class MemberRestController {
 //		long loginMemberId = Long.parseLong(loginMemberId);
 		List<MemberDto> members = memberService.searchMembersByLoginMemberId(search,loginMemberId);
 		return ResponseEntity.ok(members);
+	}
+	
+	
+	// 특정 멤버에 대한 정보를 준다
+	@GetMapping("/meberInfo")
+	public ResponseEntity<?> getMemberInfo(@RequestParam Map<String, String> map) {
+		
+		log.info("getMemberInfo map - {}", map);
+		try {
+			MemberDto MemberDto = memberService.getMemberInfo(map);
+			return new ResponseEntity<>(MemberDto, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<String>("Error : " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+	}
+	
+	// 특정 멤버의 hotplaceList를 준다
+	@GetMapping("/hotplace")
+	public ResponseEntity<?> getMemberHotPlace(@RequestParam long memberId) {
+		
+		log.info("getMemberHotPlace memberId - {}", memberId);
+		try {
+			List<HotPlaceDto> list = memberService.getMemberHotPlace(memberId);
+			return new ResponseEntity<>(list, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<String>("Error : " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 }

@@ -9,6 +9,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.enjoyTrip.OdysseyFrontiers.hotplace.model.dto.HotPlaceDto;
 import com.enjoyTrip.OdysseyFrontiers.member.model.dto.MemberDto;
 import com.enjoyTrip.OdysseyFrontiers.member.model.mapper.MemberMapper;
 
@@ -187,4 +188,17 @@ public class MemberServiceImpl implements MemberService {
 		} else {
 			return memberMapper.findByEmailIdOrNameLikeByLoginMemberId(search.trim(),loginMemberId);
 		}	}
+	
+	
+	@Override
+	public MemberDto getMemberInfo(Map<String, String> map) throws Exception {
+		return memberMapper.getMemberInfo(map);
+	}
+	
+	
+	@Override
+	public List<HotPlaceDto> getMemberHotPlace(long memberId) throws Exception {
+		return memberMapper.getMemberHotPlace(memberId);
+	}
+	
 }

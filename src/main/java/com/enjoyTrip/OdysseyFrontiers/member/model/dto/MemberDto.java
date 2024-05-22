@@ -27,6 +27,11 @@ public class MemberDto {
 	private String joinDate;
 	private String token;
 	private String image;
+	private int boardNum;
+	private int hotPlaceNum;
+	private int planNum;
+	private int followingNum; // 팔로잉(내가 팔로우 하는 사람) 수
+	private int followedNum; // 팔로워(나를 팔로우 하는 사람) 수
 	private boolean isFollowing;
 	private boolean isFollowed;
 }
