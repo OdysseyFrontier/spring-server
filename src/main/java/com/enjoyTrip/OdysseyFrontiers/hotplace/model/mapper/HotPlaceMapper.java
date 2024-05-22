@@ -18,6 +18,7 @@ public interface HotPlaceMapper {
 
     List<Gugun> listGuguns(int sidoCode) throws SQLException;
 
+    int getSidoCode(String sidocode) throws SQLException;
     int writeHotPlaceInfo(HotPlaceDto hotPlaceDto) throws SQLException;
     void writeHotPlaceDetail(HotPlaceDto hotPlaceDto) throws SQLException;
     void writeHotPlaceDescription(HotPlaceDto hotPlaceDto) throws SQLException;
@@ -32,6 +33,7 @@ public interface HotPlaceMapper {
     int createHit(int contentId, Long memberId) throws SQLException;
     int updateHit(int contentId, Long memberId) throws SQLException;
     
+    HotPlaceDto getModifyHotPlace(int contentId) throws SQLException;
 //    int modifyHotPlcae(HotPlaceDto hotPlaceDto) throws SQLException;
     int modifyHotPlcaeInfo(HotPlaceDto hotPlaceDto) throws SQLException;
     int modifyHotPlcaeDetail(HotPlaceDto hotPlaceDto) throws SQLException;

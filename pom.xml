@@ -65,33 +65,33 @@
             <version>2.15.4</version>
         </dependency>
 
-        <!--		&lt;!&ndash; https://mvnrepository.com/artifact/org.assertj/assertj-core &ndash;&gt;-->
-        <!--		<dependency>-->
-        <!--			<groupId>org.assertj</groupId>-->
-        <!--			<artifactId>assertj-core</artifactId>-->
-        <!--			<version>3.25.3</version>-->
-        <!--			<scope>test</scope>-->
-        <!--		</dependency>-->
-        <!--		&lt;!&ndash; https://mvnrepository.com/artifact/org.aspectj/aspectjrt &ndash;&gt;-->
-        <!--		<dependency>-->
-        <!--			<groupId>org.aspectj</groupId>-->
-        <!--			<artifactId>aspectjrt</artifactId>-->
-        <!--			<version>1.9.22.1</version>-->
-        <!--			<scope>runtime</scope>-->
-        <!--		</dependency>-->
-        <!--		&lt;!&ndash; https://mvnrepository.com/artifact/org.aspectj/aspectjweaver &ndash;&gt;-->
-        <!--		<dependency>-->
-        <!--			<groupId>org.aspectj</groupId>-->
-        <!--			<artifactId>aspectjweaver</artifactId>-->
-        <!--			<version>1.9.22.1</version>-->
-        <!--			<scope>runtime</scope>-->
-        <!--		</dependency>-->
-        <!--		&lt;!&ndash; https://mvnrepository.com/artifact/org.springframework/spring-aspects &ndash;&gt;-->
-        <!--		<dependency>-->
-        <!--			<groupId>org.springframework</groupId>-->
-        <!--			<artifactId>spring-aspects</artifactId>-->
-        <!--			<version>3.2.0.RELEASE</version>-->
-        <!--		</dependency>-->
+        <!--        &lt;!&ndash; https://mvnrepository.com/artifact/org.assertj/assertj-core &ndash;&gt;-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.assertj</groupId>-->
+        <!--            <artifactId>assertj-core</artifactId>-->
+        <!--            <version>3.25.3</version>-->
+        <!--            <scope>test</scope>-->
+        <!--        </dependency>-->
+        <!--        &lt;!&ndash; https://mvnrepository.com/artifact/org.aspectj/aspectjrt &ndash;&gt;-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.aspectj</groupId>-->
+        <!--            <artifactId>aspectjrt</artifactId>-->
+        <!--            <version>1.9.22.1</version>-->
+        <!--            <scope>runtime</scope>-->
+        <!--        </dependency>-->
+        <!--        &lt;!&ndash; https://mvnrepository.com/artifact/org.aspectj/aspectjweaver &ndash;&gt;-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.aspectj</groupId>-->
+        <!--            <artifactId>aspectjweaver</artifactId>-->
+        <!--            <version>1.9.22.1</version>-->
+        <!--            <scope>runtime</scope>-->
+        <!--        </dependency>-->
+        <!--        &lt;!&ndash; https://mvnrepository.com/artifact/org.springframework/spring-aspects &ndash;&gt;-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.springframework</groupId>-->
+        <!--            <artifactId>spring-aspects</artifactId>-->
+        <!--            <version>3.2.0.RELEASE</version>-->
+        <!--        </dependency>-->
 
         <!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-jwt -->
         <dependency>
