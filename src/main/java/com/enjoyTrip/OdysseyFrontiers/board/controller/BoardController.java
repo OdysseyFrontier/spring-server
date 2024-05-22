@@ -66,6 +66,7 @@ public class BoardController {
         boardDto.setMemberId(memberDto.getMemberId());
 
         System.out.println(boardDto);
+
 //		FileUpload 관련 설정.
 //		logger.debug("uploadPath : {}, uploadImagePath : {}, uploadFilePath : {}", uploadPath, uploadImagePath, uploadFilePath);
 //		logger.debug("MultipartFile.isEmpty : {}", files[0].isEmpty());
@@ -75,11 +76,14 @@ public class BoardController {
 //			String today = new SimpleDateFormat("yyMMdd").format(new Date());
 //			String saveFolder = uploadPath + File.separator + today;
 //			logger.debug("저장 폴더 : {}", saveFolder);
+
 //			File folder = new File(saveFolder);
+
 //			if (!folder.exists())
 //				folder.mkdirs();
 //			if (!folder.getParentFile().exists())
 //				folder.getParentFile().mkdirs();
+
 //			logger.debug("폴더 경로 : {}", folder.getPath());
 //
 //			List<FileInfoDto> fileInfos = new ArrayList<FileInfoDto>();

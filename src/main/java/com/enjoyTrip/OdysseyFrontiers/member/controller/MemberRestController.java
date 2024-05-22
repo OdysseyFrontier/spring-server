@@ -296,9 +296,32 @@ public class MemberRestController {
 		}
 	}
 
+	@GetMapping("/search/all")
+	public ResponseEntity<List<MemberDto>> searchAllMembers() throws Exception {
+		List<MemberDto> members = memberService.searchMembers(" ");
+		return ResponseEntity.ok(members);
+	}
+
 	@GetMapping("/search/{search}")
 	public ResponseEntity<List<MemberDto>> searchMembers(@PathVariable(required = false) String search) throws Exception {
 		List<MemberDto> members = memberService.searchMembers(search);
+		return ResponseEntity.ok(members);
+	}
+
+	@GetMapping("/search/all/{loginMemberId}")
+	public ResponseEntity<List<MemberDto>> searchAllMembersByLoginMemberId(@PathVariable(required = false) long loginMemberId) throws Exception {
+//		System.out.println(loginMemberId);
+//		long loginMemberId = Long.parseLong(loginMemberId);
+		List<MemberDto> members = memberService.searchMembersByLoginMemberId(" ", loginMemberId);
+		return ResponseEntity.ok(members);
+	}
+
+	@GetMapping("/search/{search}/{loginMemberId}")
+	public ResponseEntity<List<MemberDto>> searchMembersByLoginMemberId(@PathVariable(required = false) String search,
+																		@PathVariable(required = false) long loginMemberId) throws Exception {
+//		System.out.println(loginMemberId);
+//		long loginMemberId = Long.parseLong(loginMemberId);
+		List<MemberDto> members = memberService.searchMembersByLoginMemberId(search,loginMemberId);
 		return ResponseEntity.ok(members);
 	}
 }

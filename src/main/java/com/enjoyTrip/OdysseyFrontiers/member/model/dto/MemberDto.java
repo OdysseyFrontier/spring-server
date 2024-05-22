@@ -27,5 +27,7 @@ public class MemberDto {
 	private String joinDate;
 	private String token;
 	private String image;
+	private boolean isFollowing;
+	private boolean isFollowed;
 }
 

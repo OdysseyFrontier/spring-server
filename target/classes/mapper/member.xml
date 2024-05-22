@@ -6,7 +6,7 @@
 
     <resultMap type="com.enjoyTrip.OdysseyFrontiers.member.model.dto.MemberDto" id="member">
         <result column="member_id" property="memberId"/>
-         <result column="name" property="name"/> 
+        <result column="name" property="name"/>
         <result column="email_id" property="emailId"/>
         <result column="email_domain" property="emailDomain"/>
 <!--         <result column="password" property="password"/>
@@ -14,6 +14,11 @@
         <result column="address" property="address"/> -->
         <result column="birthday" property="birthday"/>
         <result column="join_date" property="joinDate"/>
+    </resultMap>
+
+    <resultMap type="com.enjoyTrip.OdysseyFrontiers.member.model.dto.MemberDto" id="extendsMember" extends="member">
+        <result column="isFollowing" property="isFollowing"/>
+        <result column="isFollowed" property="isFollowed"/>
     </resultMap>
 
     <!-- ADMIN -->
@@ -139,17 +144,17 @@
 
     <delete id="unfollowMember" parameterType="map">
         delete from followers
-        where follower_id = #{followerId} and following_id = #{followingId}
+        where follower_id = #{followerId} and following_id = #{followingId};
     </delete>
 
-    <select id="findFollowers" parameterType="long" resultType="com.enjoyTrip.OdysseyFrontiers.member.model.dto.MemberDto">
+    <select id="findFollowers" parameterType="long" resultMap="member">
         select m.*
         from followers f
                  join members m on f.follower_id = m.member_id
-        where f.following_id = #{memberId}
+        where f.following_id = #{memberId};
     </select>
 
-    <select id="findFollowing" parameterType="long" resultType="com.enjoyTrip.OdysseyFrontiers.member.model.dto.MemberDto">
+    <select id="findFollowing" parameterType="long" resultMap="member">
         select m.*
         from followers f
                  join members m on f.following_id = m.member_id
@@ -164,7 +169,37 @@
     <select id="findByEmailIdOrNameLike" parameterType="String" resultMap="member">
         select *
         from members
+        join followers
+        on members.member_id = followers.follower_id
+        <if test="search != null and search != ' '">
         where members.email_id LIKE CONCAT('%', #{search}, '%') or
-              members.name Like CONCAT('%', #{search}, '%');
+            members.name Like CONCAT('%', #{search}, '%')
+        </if>
+    </select>
+
+    <select id="findAllByLoginMemberId" parameterType="Long" resultMap="extendsMember">
+        select
+            m.*,
+            IF(f1.follower_id IS NOT NULL, 1, 0) AS isFollowing,
+            IF(f2.following_id IS NOT NULL, 1, 0) AS isFollowed
+        from
+            members m
+                left join followers f1 on m.member_id = f1.following_id and f1.follower_id = #{loginMemberId}
+                left join followers f2 on m.member_id = f2.follower_id and f2.following_id = #{loginMemberId}
+    </select>
+
+    <select id="findByEmailIdOrNameLikeByLoginMemberId" parameterType="String" resultMap="extendsMember">
+        select
+        m.*,
+        IF(f1.follower_id IS NOT NULL, 1, 0) AS isFollowing,
+        IF(f2.following_id IS NOT NULL, 1, 0) AS isFollowed
+        from
+        members m
+        left join followers f1 on m.member_id = f1.following_id and f1.follower_id = #{loginMemberId}
+        left join followers f2 on m.member_id = f2.follower_id and f2.following_id = #{loginMemberId}
+        <if test="search != null and search != ''">
+            where m.email_id LIKE CONCAT('%', #{search}, '%')
+               or m.name LIKE CONCAT('%', #{search}, '%')
+        </if>
     </select>
 </mapper>

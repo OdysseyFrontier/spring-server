@@ -179,4 +179,12 @@ public class MemberServiceImpl implements MemberService {
 			return memberMapper.findByEmailIdOrNameLike(search.trim());
 		}
 	}
+
+	@Override
+	public List<MemberDto> searchMembersByLoginMemberId(String search, long loginMemberId) {
+		if (search == null || search.trim().isEmpty()) {
+			return memberMapper.findAllByLoginMemberId(loginMemberId);
+		} else {
+			return memberMapper.findByEmailIdOrNameLikeByLoginMemberId(search.trim(),loginMemberId);
+		}	}
 }

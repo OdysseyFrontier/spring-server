@@ -50,4 +50,6 @@ public interface MemberService {
     List<MemberDto> findFollowers(long memberId) throws Exception;
     List<MemberDto> findFollowing(long memberId) throws Exception;
     List<MemberDto> searchMembers(String search) throws Exception;
+
+    List<MemberDto> searchMembersByLoginMemberId(String search, long loginMemberId);
 }

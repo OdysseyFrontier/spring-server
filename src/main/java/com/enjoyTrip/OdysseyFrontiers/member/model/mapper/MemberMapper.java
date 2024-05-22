@@ -59,4 +59,8 @@ public interface MemberMapper {
 	List<MemberDto> findByEmailIdOrNameLike(String search);
 
 	List<MemberDto> findAll();
+
+	List<MemberDto> findAllByLoginMemberId(long loginMemberId);
+
+	List<MemberDto> findByEmailIdOrNameLikeByLoginMemberId(String trim, long loginMemberId);
 }
