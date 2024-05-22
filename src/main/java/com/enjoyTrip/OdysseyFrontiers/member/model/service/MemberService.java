@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import com.enjoyTrip.OdysseyFrontiers.hotplace.model.dto.HotPlaceDto;
 import com.enjoyTrip.OdysseyFrontiers.member.model.dto.MemberDto;
 
 public interface MemberService {
@@ -52,4 +53,10 @@ public interface MemberService {
     List<MemberDto> searchMembers(String search) throws Exception;
 
     List<MemberDto> searchMembersByLoginMemberId(String search, long loginMemberId);
+    
+    // 특정 회원 정보 조회
+    MemberDto getMemberInfo(Map<String, String> map) throws Exception;
+    
+    // 특정 회원 핫플레이스 리스트
+    List<HotPlaceDto> getMemberHotPlace(long memberId) throws Exception;
 }
