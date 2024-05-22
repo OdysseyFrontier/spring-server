@@ -214,7 +214,7 @@
         </if>
     </select>
     
-     <select id="getMemberInfo" parameterType="map" resultType="com.example.demo.dto.MemberDto" >
+     <select id="getMemberInfo" parameterType="map" resultType="MemberDto" >
          SELECT 
             m.member_id AS memberId,
             m.name,
@@ -226,14 +226,12 @@
             m.address,
             m.birthday,
             m.join_date AS joinDate,
-            m.token,
             m.image,
             COALESCE(b.boardNum, 0) AS boardNum,
             COALESCE(hp.hotPlaceNum, 0) AS hotPlaceNum,
             COALESCE(p.planNum, 0) AS planNum,
             COALESCE(f.followerNum, 0) AS followedNum,
             COALESCE(fg.followingNum, 0) AS followingNum,
-            ch.isFollowing,
             if((SELECT COUNT(*) FROM followers WHERE follower_id = #{memberId} and following_id = #{targetId}) = 0, 'true', 'false') AS isFollowing
         FROM members m
         LEFT JOIN (SELECT member_id, COUNT(*) AS boardNum FROM board where member_id = #{targetId}) b ON m.member_id = b.member_id

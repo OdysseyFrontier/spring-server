@@ -14,7 +14,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.temporal.ChronoUnit;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/plan")
@@ -74,11 +76,36 @@ public class PlanServiceImpl implements PlanService {
 
 
     public PlanDto getPlan(long planId) {
-        return planMapper.getPlan(planId);
+        PlanDto plan = planMapper.getPlan(planId);
+        System.out.println("service get plan");
+        System.out.println(plan);
+        LocalDateTime latestPlanDetail = plan.getPlanDetails().stream()
+                .map(PlanDetailDto::getPlanTime)
+                .max(Comparator.comparing(LocalDateTime::toLocalDate))
+                .orElse(null);
+        plan.setEndTime(LocalDate.from(Objects.requireNonNull(latestPlanDetail)));
+        return plan;
     }
 
     @Transactional
     public void updatePlan(PlanDto planDto){
+        if (planDto == null) {
+            throw new IllegalArgumentException("PlanDto cannot be null");
+        }
+        if (planDto.getPlanDetails() == null) {
+            throw new IllegalArgumentException("Plan details cannot be null");
+        }
+
+        planDto.setAccessType("public");
+        LocalDate startTime = planDto.getStartTime();
+        LocalDate endTime = planDto.getEndTime();
+        String season = calculateSeason(startTime, endTime);
+        planDto.setSeason(season);
+
+        System.out.println("====================================");
+        for (PlanDetailDto planDetail : planDto.getPlanDetails()) {
+            System.out.println(planDetail);
+        }
         planMapper.updatePlan(planDto);
         planMapper.deletePlanDetails(planDto.getPlanId());
 

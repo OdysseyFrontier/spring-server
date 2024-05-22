@@ -133,7 +133,7 @@
             season = #{season},
             start_time = #{startTime},
             access_type = #{accessType},
-            recent_update_time = #{recentUpdateTime}
+            recent_update_time = now()
         WHERE plan_id = #{planId}
     </update>
 

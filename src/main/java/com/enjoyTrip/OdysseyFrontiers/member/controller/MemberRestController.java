@@ -337,8 +337,10 @@ public class MemberRestController {
 		log.info("getMemberInfo map - {}", map);
 		try {
 			MemberDto MemberDto = memberService.getMemberInfo(map);
+			System.out.println(MemberDto);
 			return new ResponseEntity<>(MemberDto, HttpStatus.OK);
 		} catch (Exception e) {
+			System.out.println(e.getMessage());
 			return new ResponseEntity<String>("Error : " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		

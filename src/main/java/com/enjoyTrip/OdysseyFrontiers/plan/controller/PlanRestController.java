@@ -83,12 +83,14 @@ public class PlanRestController {
     @GetMapping("/{planId}")
     public ResponseEntity<PlanDto> getPlan(@PathVariable("planId") long planId) {
         PlanDto planDto = planService.getPlan(planId);
+        System.out.println(planDto);
         return ResponseEntity.ok(planDto);
     }
 
     @PutMapping("/{planId}")
     public ResponseEntity<?> updatePlan(@PathVariable("planId") long planId, @RequestBody PlanDto planDto) throws Exception {
         planDto.setPlanId(planId);
+        System.out.println(planDto);
         planService.updatePlan(planDto);
         return ResponseEntity.ok("Plan updated successfully");
     }
