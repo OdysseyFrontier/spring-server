@@ -104,9 +104,13 @@ public class PlanServiceImpl implements PlanService {
         System.out.println(plan);
         LocalDateTime latestPlanDetail = plan.getPlanDetails().stream()
                 .map(PlanDetailDto::getPlanTime)
+                .filter(Objects::nonNull)
                 .max(Comparator.comparing(LocalDateTime::toLocalDate))
                 .orElse(null);
-        plan.setEndTime(LocalDate.from(Objects.requireNonNull(latestPlanDetail)));
+        System.out.println(latestPlanDetail);
+        if (latestPlanDetail != null) {
+            plan.setEndTime(LocalDate.from(Objects.requireNonNull(latestPlanDetail)));
+        }
         return plan;
     }
 
