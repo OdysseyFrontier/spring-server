@@ -55,6 +55,7 @@ public class BoardServiceImpl implements BoardService {
 		boardListDto.setArticles(list);
 		boardListDto.setCurrentPage(currentPage);
 		boardListDto.setTotalPageCount(totalPageCount);
+        boardListDto.setTotalCount(totalArticleCount);
     	
     	
     	

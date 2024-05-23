@@ -101,7 +101,7 @@ CREATE TABLE IF NOT EXISTS `enjoytrip`.`attraction_info` (
                                                                  FOREIGN KEY (`member_id`)
                                                                      REFERENCES `enjoytrip`.`members` (`member_id`)
 									ON DELETE CASCADE)
-    AUTO_INCREMENT = 30000000
+    AUTO_INCREMENT = 30000001
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8mb4;
 

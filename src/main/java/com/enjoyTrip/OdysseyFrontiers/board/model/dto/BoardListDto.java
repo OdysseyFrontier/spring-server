@@ -20,4 +20,6 @@ public class BoardListDto {
 	// 전체 페이지 수
 	private int totalPageCount;
 
+	private int totalCount;
+
 }

@@ -25,7 +25,6 @@
 	    JOIN attraction_hit ah ON ai.content_id = ah.content_id
 	    GROUP BY ai.content_id, ai.title
 	    ORDER BY hit_count DESC
-	    LIMIT 10;
 	</select>
 
 	<select id="getMemberRegistrationStats" resultType="statDto">
