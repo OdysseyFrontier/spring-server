@@ -24,5 +24,6 @@ public class PlanDto {
     private LocalDate startTime;
     private LocalDate endTime;
     private String recentUpdateTime;
+    private List<String> images;
     private List<PlanDetailDto> planDetails; // Add PlanDetailDto to represent plan details
 }

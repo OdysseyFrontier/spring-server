@@ -63,7 +63,7 @@ public interface MemberMapper {
 
 	List<MemberDto> findAllByLoginMemberId(long loginMemberId);
 
-	List<MemberDto> findByEmailIdOrNameLikeByLoginMemberId(String trim, long loginMemberId);
+	List<MemberDto> findByEmailIdOrNameLikeByLoginMemberId(String search, long loginMemberId);
 	
 	// 특정 회원 정보 조회
     MemberDto getMemberInfo(Map<String, String> map) throws SQLException;

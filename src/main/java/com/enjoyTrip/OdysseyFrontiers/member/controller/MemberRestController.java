@@ -323,15 +323,17 @@ public class MemberRestController {
 	@GetMapping("/search/{search}/{loginMemberId}")
 	public ResponseEntity<List<MemberDto>> searchMembersByLoginMemberId(@PathVariable(required = false) String search,
 																		@PathVariable(required = false) long loginMemberId) throws Exception {
-//		System.out.println(loginMemberId);
-//		long loginMemberId = Long.parseLong(loginMemberId);
+
+		System.out.println(search);
+		System.out.println(loginMemberId);
 		List<MemberDto> members = memberService.searchMembersByLoginMemberId(search,loginMemberId);
+		System.out.println(members);
 		return ResponseEntity.ok(members);
 	}
 	
 	
 	// 특정 멤버에 대한 정보를 준다
-	@GetMapping("/meberInfo")
+	@GetMapping("/memberInfo")
 	public ResponseEntity<?> getMemberInfo(@RequestParam Map<String, String> map) {
 		
 		log.info("getMemberInfo map - {}", map);
