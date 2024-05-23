@@ -2,6 +2,7 @@ package com.enjoyTrip.OdysseyFrontiers.member.model.service;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -199,6 +200,12 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public List<HotPlaceDto> getMemberHotPlace(long memberId) throws Exception {
 		return memberMapper.getMemberHotPlace(memberId);
+	}
+	
+
+	@Override
+	public void modifyMemberInfo(MemberDto memberDto) throws Exception {
+		memberMapper.modifyMemberInfo(memberDto);
 	}
 	
 }

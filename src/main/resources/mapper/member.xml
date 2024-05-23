@@ -270,5 +270,10 @@
         ORDER BY ah.hit desc;
     </select>
     
+    <update id="modifyMemberInfo" parameterType="map">
+        UPDATE members
+        SET name = #{name}, phone = #{phone}, birthday = #{birthday}, address = #{address}
+        where member_id = #{memberId}
+    </update>
     
 </mapper>

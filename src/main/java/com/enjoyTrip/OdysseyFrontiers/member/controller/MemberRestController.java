@@ -1,5 +1,6 @@
 package com.enjoyTrip.OdysseyFrontiers.member.controller;
 
+import com.enjoyTrip.OdysseyFrontiers.board.model.dto.BoardDto;
 import com.enjoyTrip.OdysseyFrontiers.board.model.dto.BoardListDto;
 import com.enjoyTrip.OdysseyFrontiers.hotplace.model.dto.HotPlaceDto;
 import com.enjoyTrip.OdysseyFrontiers.member.model.dto.MemberDto;
@@ -331,7 +332,7 @@ public class MemberRestController {
 	
 	
 	// 특정 멤버에 대한 정보를 준다
-	@GetMapping("/meberInfo")
+	@GetMapping("/memberInfo")
 	public ResponseEntity<?> getMemberInfo(@RequestParam Map<String, String> map) {
 		
 		log.info("getMemberInfo map - {}", map);
@@ -358,4 +359,15 @@ public class MemberRestController {
 			return new ResponseEntity<String>("Error : " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+	
+	// 회원 정보 수정
+    @PutMapping
+    public ResponseEntity<?> modify(@RequestBody MemberDto memberDto) throws Exception {
+    	System.out.println(memberDto);
+        
+        memberService.modifyMemberInfo(memberDto);
+        
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
