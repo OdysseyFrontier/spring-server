@@ -32,7 +32,29 @@ public class PlanServiceImpl implements PlanService {
 
     public List<PlanDto> searchPlans(int contentTypeId, int sidoCode, int gugunCode, String keyword) {
         System.out.println("service" + contentTypeId + ":" + sidoCode + ":" + gugunCode + ":" + keyword);
-        return planMapper.searchPlans(contentTypeId, sidoCode, gugunCode, keyword);
+
+        List<PlanDto> planDtos = planMapper.searchPlans(contentTypeId, sidoCode, gugunCode, keyword);
+
+        System.out.println(planDtos);
+        for (PlanDto planDto : planDtos) {
+            System.out.println(planDto);
+            List<String> images = new ArrayList<>();
+            List<PlanDetailDto> planDetails = planMapper.getPlanDetails(planDto.getPlanId());
+            for (PlanDetailDto planDetail : planDetails) {
+                AttractionInfo attractionInfo = attractionMapper.selectAttraction(planDetail.getContentId());
+                String firstImage = attractionInfo.getFirstImage();
+                String firstImage2 = attractionInfo.getFirstImage2();
+                if (firstImage != null && !firstImage.isEmpty()) {
+                    images.add(firstImage);
+                }
+                if (firstImage2 != null && !firstImage2.isEmpty()) {
+                    images.add(firstImage2);
+                }
+            }
+            planDto.setImages(images);
+            System.out.println(images);
+        }
+        return planDtos;
     }
 
     public List<PlanDto> getPlansMadeByMember(Long memberId) {
@@ -76,7 +98,7 @@ public class PlanServiceImpl implements PlanService {
         }
 
         System.out.println(planDto);
-        // start_time와 end_time을 계산해서 season에 맞는 값을 string으로 넣어주고
+//         start_time와 end_time을 계산해서 season에 맞는 값을 string으로 넣어주고
         planDto.setAccessType("public");
         LocalDate startTime = planDto.getStartTime();
         LocalDate endTime = planDto.getEndTime();

@@ -99,8 +99,8 @@ CREATE TABLE IF NOT EXISTS `enjoytrip`.`attraction_info` (
                                                                      REFERENCES `enjoytrip`.`sido` (`sido_code`),
                                                              CONSTRAINT `attraction_to_member_id_fk`
                                                                  FOREIGN KEY (`member_id`)
-                                                                     REFERENCES `enjoytrip`.`members` (`member_id`))
-						ON DELETE CASCADE
+                                                                     REFERENCES `enjoytrip`.`members` (`member_id`)
+									ON DELETE CASCADE)
     AUTO_INCREMENT = 30000000
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8mb4;
@@ -119,8 +119,8 @@ CREATE TABLE IF NOT EXISTS `enjoytrip`.`attachments` (
                                                          INDEX `fk_attachments_attraction_info1_idx` (`content_id` ASC) VISIBLE,
                                                          CONSTRAINT `fk_attachments_attraction_info1`
                                                              FOREIGN KEY (`content_id`)
-                                                                 REFERENCES `enjoytrip`.`attraction_info` (`content_id`))
-						ON DELETE CASCADE
+                                                                 REFERENCES `enjoytrip`.`attraction_info` (`content_id`)
+									ON DELETE CASCADE)
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8mb4
     COLLATE = utf8mb4_0900_ai_ci;
@@ -137,8 +137,8 @@ CREATE TABLE IF NOT EXISTS `enjoytrip`.`attraction_description` (
                                                                     PRIMARY KEY (`content_id`),
                                                                     CONSTRAINT `attraction_detail_to_attraciton_id_fk`
                                                                         FOREIGN KEY (`content_id`)
-                                                                            REFERENCES `enjoytrip`.`attraction_info` (`content_id`))
-							ON DELETE CASCADE
+                                                                            REFERENCES `enjoytrip`.`attraction_info` (`content_id`)
+										ON DELETE CASCADE)
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8mb4;
 
@@ -157,8 +157,8 @@ CREATE TABLE IF NOT EXISTS `enjoytrip`.`attraction_detail` (
                                                                PRIMARY KEY (`content_id`),
                                                                CONSTRAINT `attraction_detail_to_basic_content_id_fk`
                                                                    FOREIGN KEY (`content_id`)
-                                                                       REFERENCES `enjoytrip`.`attraction_info` (`content_id`))
-						ON DELETE CASCADE
+                                                                       REFERENCES `enjoytrip`.`attraction_info` (`content_id`)
+									ON DELETE CASCADE)
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8mb4;
 
@@ -200,8 +200,8 @@ CREATE TABLE IF NOT EXISTS `enjoytrip`.`attraction_hit` (
 						ON DELETE CASCADE,
                                                             CONSTRAINT `fk_hit_members10`
                                                                 FOREIGN KEY (`member_id`)
-                                                                    REFERENCES `enjoytrip`.`members` (`member_id`))
-						ON DELETE CASCADE
+                                                                    REFERENCES `enjoytrip`.`members` (`member_id`)
+									ON DELETE CASCADE)
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8mb4
     COLLATE = utf8mb4_0900_ai_ci;
@@ -222,8 +222,8 @@ CREATE TABLE IF NOT EXISTS `enjoytrip`.`attraction_like` (
 						ON DELETE CASCADE,
                                                              CONSTRAINT `fk_like_members1`
                                                                  FOREIGN KEY (`member_id`)
-                                                                     REFERENCES `enjoytrip`.`members` (`member_id`))
-						ON DELETE CASCADE
+                                                                     REFERENCES `enjoytrip`.`members` (`member_id`)
+									ON DELETE CASCADE)
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8mb4
     COLLATE = utf8mb4_0900_ai_ci;
@@ -243,10 +243,10 @@ CREATE TABLE IF NOT EXISTS `enjoytrip`.`board` (
                                                    INDEX `board_to_members_member_id_fk` (`member_id` ASC) VISIBLE,
                                                    CONSTRAINT `board_to_members_member_id_fk`
                                                        FOREIGN KEY (`member_id`)
-                                                           REFERENCES `enjoytrip`.`members` (`member_id`))
-					ON DELETE CASCADE
+                                                           REFERENCES `enjoytrip`.`members` (`member_id`)
+								ON DELETE CASCADE)
     ENGINE = InnoDB
-    AUTO_INCREMENT = 100
+    AUTO_INCREMENT = 1
     DEFAULT CHARACTER SET = utf8mb4
     COLLATE = utf8mb4_0900_ai_ci;
 
@@ -269,8 +269,8 @@ CREATE TABLE IF NOT EXISTS `enjoytrip`.`board_hit` (
 						ON DELETE CASCADE,
                                                        CONSTRAINT `fk_hit_members1`
                                                            FOREIGN KEY (`member_id`)
-                                                               REFERENCES `enjoytrip`.`members` (`member_id`))
-						ON DELETE CASCADE
+                                                               REFERENCES `enjoytrip`.`members` (`member_id`)
+								ON DELETE CASCADE)
     ENGINE = InnoDB
     AUTO_INCREMENT = 1
     DEFAULT CHARACTER SET = utf8mb4
@@ -292,8 +292,8 @@ CREATE TABLE IF NOT EXISTS `enjoytrip`.`board_like` (
 						ON DELETE CASCADE,
                                                         CONSTRAINT `fk_plan_like_copy1_board1`
                                                             FOREIGN KEY (`board_no`)
-                                                                REFERENCES `enjoytrip`.`board` (`board_no`))
-						ON DELETE CASCADE
+                                                                REFERENCES `enjoytrip`.`board` (`board_no`)
+									ON DELETE CASCADE)
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8mb4
     COLLATE = utf8mb4_0900_ai_ci;
@@ -317,8 +317,8 @@ CREATE TABLE IF NOT EXISTS `enjoytrip`.`comments` (
 						ON DELETE CASCADE,
                                                       CONSTRAINT `fk_comments_members1`
                                                           FOREIGN KEY (`member_id`)
-                                                              REFERENCES `enjoytrip`.`members` (`member_id`))
-						ON DELETE CASCADE
+                                                              REFERENCES `enjoytrip`.`members` (`member_id`)
+								ON DELETE CASCADE)
     ENGINE = InnoDB
     AUTO_INCREMENT = 1
     DEFAULT CHARACTER SET = utf8mb4
@@ -337,10 +337,12 @@ CREATE TABLE IF NOT EXISTS `enjoytrip`.`followers` (
                                                        INDEX `fk_followers_members2_idx` (`following_id` ASC) VISIBLE,
                                                        CONSTRAINT `fk_followers_members1`
                                                            FOREIGN KEY (`follower_id`)
-                                                               REFERENCES `enjoytrip`.`members` (`member_id`),
+                                                               REFERENCES `enjoytrip`.`members` (`member_id`)
+								ON DELETE CASCADE,
                                                        CONSTRAINT `fk_followers_members2`
                                                            FOREIGN KEY (`following_id`)
-                                                               REFERENCES `enjoytrip`.`members` (`member_id`))
+                                                               REFERENCES `enjoytrip`.`members` (`member_id`)
+								ON DELETE CASCADE)
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8mb4
     COLLATE = utf8mb4_0900_ai_ci;
@@ -362,7 +364,8 @@ CREATE TABLE IF NOT EXISTS `enjoytrip`.`plan` (
                                                   INDEX `fk_plan_members1` (`member_id` ASC) VISIBLE,
                                                   CONSTRAINT `fk_plan_members1`
                                                       FOREIGN KEY (`member_id`)
-                                                          REFERENCES `enjoytrip`.`members` (`member_id`))
+                                                          REFERENCES `enjoytrip`.`members` (`member_id`)
+								ON DELETE CASCADE)
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8mb4
     COLLATE = utf8mb4_0900_ai_ci;
@@ -383,10 +386,12 @@ CREATE TABLE IF NOT EXISTS `enjoytrip`.`plan_detail` (
                                                          INDEX `fk_plan_detail_plan1_idx` (`plan_id` ASC) VISIBLE,
                                                          CONSTRAINT `fk_plan_detail_attraction_info1`
                                                              FOREIGN KEY (`content_id`)
-                                                                 REFERENCES `enjoytrip`.`attraction_info` (`content_id`),
+                                                                 REFERENCES `enjoytrip`.`attraction_info` (`content_id`)
+									ON DELETE CASCADE,
                                                          CONSTRAINT `fk_plan_detail_plan1`
                                                              FOREIGN KEY (`plan_id`)
-                                                                 REFERENCES `enjoytrip`.`plan` (`plan_id`))
+                                                                 REFERENCES `enjoytrip`.`plan` (`plan_id`)
+									ON DELETE CASCADE)
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8mb4
     COLLATE = utf8mb4_0900_ai_ci;
@@ -403,10 +408,12 @@ CREATE TABLE IF NOT EXISTS `enjoytrip`.`plan_like` (
                                                        INDEX `fk_plan_like_plan1_idx` (`plan_id` ASC) VISIBLE,
                                                        CONSTRAINT `fk_like_members10`
                                                            FOREIGN KEY (`member_id`)
-                                                               REFERENCES `enjoytrip`.`members` (`member_id`),
+                                                               REFERENCES `enjoytrip`.`members` (`member_id`)
+								ON DELETE CASCADE,
                                                        CONSTRAINT `fk_plan_like_plan1`
                                                            FOREIGN KEY (`plan_id`)
-                                                               REFERENCES `enjoytrip`.`plan` (`plan_id`))
+                                                               REFERENCES `enjoytrip`.`plan` (`plan_id`)
+								ON DELETE CASCADE)
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8mb4
     COLLATE = utf8mb4_0900_ai_ci;
@@ -425,10 +432,12 @@ CREATE TABLE IF NOT EXISTS `enjoytrip`.`member_search_hit` (
                                                                PRIMARY KEY (`member_search_hit_id`),
                                                                CONSTRAINT `fk_followers_members10`
                                                                    FOREIGN KEY (`searching_member_id`)
-                                                                       REFERENCES `enjoytrip`.`members` (`member_id`),
+                                                                       REFERENCES `enjoytrip`.`members` (`member_id`)
+										ON DELETE CASCADE,
                                                                CONSTRAINT `fk_followers_members20`
                                                                    FOREIGN KEY (`searched_member_id`)
-                                                                       REFERENCES `enjoytrip`.`members` (`member_id`))
+                                                                       REFERENCES `enjoytrip`.`members` (`member_id`)
+										ON DELETE CASCADE)
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8mb4
     COLLATE = utf8mb4_0900_ai_ci;

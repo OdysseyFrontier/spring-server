@@ -80,7 +80,6 @@
         pd.description,
         pd.plan_time
         ORDER BY p.recent_update_time DESC
-        LIMIT 5;
     </select>
 
     <select id="getPlan" parameterType="long" resultMap="planResultMap">

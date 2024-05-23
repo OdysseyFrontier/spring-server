@@ -89,7 +89,7 @@
 
         AND title LIKE CONCAT('%', #{keyword}, '%')
         ORDER BY info.readcount desc
-        limit 5;
+        limit 30;
     </select>
 
     <select id="selectAttrOnlyKeyword" parameterType="string" resultMap="resultAttr">
@@ -112,7 +112,7 @@
                  LEFT JOIN gugun as gu ON info.gugun_code = gu.gugun_code and info.sido_code = gu.sido_code
         WHERE info.title LIKE CONCAT('%', #{keyword}, '%')
         ORDER BY info.readcount desc
-        limit 5;
+        limit 30;
     </select>
 
     <select id="selectAttrNoKeyword" parameterType="map" resultMap="resultAttr">
@@ -135,7 +135,7 @@
         LEFT JOIN gugun as gu ON info.gugun_code = gu.gugun_code and info.sido_code = gu.sido_code
         <include refid="search"/>
         ORDER BY info.readcount desc
-        limit 5;
+        limit 30;
     </select>
 
     <select id="selectAttraction" resultMap="resultAttr">
@@ -157,7 +157,7 @@
                  LEFT JOIN sido as si ON info.sido_code = si.sido_code
                  LEFT JOIN gugun as gu ON info.gugun_code = gu.gugun_code and info.sido_code = gu.sido_code
         Where info.content_id = #{contentId}
-
+        limit 30;
     </select>
 
 </mapper>
