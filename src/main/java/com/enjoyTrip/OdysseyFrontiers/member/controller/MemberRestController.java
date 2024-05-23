@@ -367,8 +367,6 @@ public class MemberRestController {
 		}
 	}
 	
-<<<<<<< HEAD
-
 
 	@GetMapping("/likehotplace")
 	public ResponseEntity<?> getMemberLikeHotPlace(@RequestParam long memberId) {
@@ -383,8 +381,6 @@ public class MemberRestController {
 		}
 	}
 	
-=======
->>>>>>> 7158cf37ca9fb8a84b3b3b65f3a3ae1713c1abc6
 	// 회원 정보 수정
     @PutMapping
     public ResponseEntity<?> modify(@RequestBody MemberDto memberDto) throws Exception {

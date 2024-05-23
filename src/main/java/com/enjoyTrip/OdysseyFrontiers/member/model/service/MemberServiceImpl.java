@@ -204,15 +204,13 @@ public class MemberServiceImpl implements MemberService {
 	
 
 	@Override
-<<<<<<< HEAD
 	public List<HotPlaceDto> getMemberLikeHotPlace(long memberId) throws Exception {
 		return memberMapper.getMemberLikeHotPlace(memberId);
 	}
 
 	
 
-=======
->>>>>>> 7158cf37ca9fb8a84b3b3b65f3a3ae1713c1abc6
+
 	public void modifyMemberInfo(MemberDto memberDto) throws Exception {
 		memberMapper.modifyMemberInfo(memberDto);
 	}

@@ -70,13 +70,10 @@ public interface MemberMapper {
     
  // 특정 회원 핫플레이스 리스트
     List<HotPlaceDto> getMemberHotPlace(long memberId) throws SQLException;
-<<<<<<< HEAD
 
 
     List<HotPlaceDto> getMemberLikeHotPlace(long memberId) throws SQLException;
 
-=======
-    
->>>>>>> 7158cf37ca9fb8a84b3b3b65f3a3ae1713c1abc6
+
     void modifyMemberInfo(MemberDto memberDto) throws SQLException;
 }
