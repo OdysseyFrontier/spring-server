@@ -367,6 +367,20 @@ public class MemberRestController {
 		}
 	}
 	
+
+	@GetMapping("/likehotplace")
+	public ResponseEntity<?> getMemberLikeHotPlace(@RequestParam long memberId) {
+		
+		log.info("getMemberLikeHotPlace memberId - {}", memberId);
+		try {
+			List<HotPlaceDto> list = memberService.getMemberLikeHotPlace(memberId);
+			System.out.println(list);
+			return new ResponseEntity<>(list, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<String>("Error : " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
 	// 회원 정보 수정
     @PutMapping
     public ResponseEntity<?> modify(@RequestBody MemberDto memberDto) throws Exception {

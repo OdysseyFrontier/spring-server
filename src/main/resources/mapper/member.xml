@@ -267,6 +267,36 @@
         left join (select content_id, count(*) as likes from attraction_like l group by l.content_id) as al
         on info.content_id = al.content_id
 		where member_id = #{memberId}
+        ORDER BY ah.hit desc;
+    </select>
+    
+
+    <select id="getMemberLikeHotPlace" parameterType="long" resultMap="resultAttr">
+        SELECT  info.content_id,
+        		info.member_id,
+        		info.content_type_id,
+        		info.title,
+                info.addr1,
+                info.addr2,
+                info.zipcode,
+                info.tel,
+                info.latitude,
+                info.longitude,
+                info.first_image,
+                des.homepage,
+                des.overview,
+                ah.hit,
+                al.likes
+        FROM attraction_info as info
+              join attraction_description as des
+        on info.content_id = des.content_id
+        left join (select content_id, count(*) as hit from attraction_hit h group by h.content_id) as ah
+        on info.content_id = ah.content_id
+        left join (select content_id, count(*) as likes from attraction_like l group by l.content_id) as al
+        on info.content_id = al.content_id
+        right join (select content_id, count(*) as isLike from attraction_like as temp where temp.member_id = #{memberId} group by temp.content_id) as al2
+        on info.content_id = al2.content_id
+		where member_id = #{memberId}
 
         ORDER BY ah.hit desc;
     </select>

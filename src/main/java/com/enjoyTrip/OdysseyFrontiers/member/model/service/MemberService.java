@@ -59,6 +59,9 @@ public interface MemberService {
     
     // 특정 회원 핫플레이스 리스트
     List<HotPlaceDto> getMemberHotPlace(long memberId) throws Exception;
+
+    List<HotPlaceDto> getMemberLikeHotPlace(long memberId) throws Exception;
+
     
     void modifyMemberInfo(MemberDto memberDto) throws Exception;
 }

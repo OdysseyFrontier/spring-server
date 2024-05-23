@@ -93,7 +93,7 @@
 
 
     <sql id="search">
-        <where>
+        <!-- <where> -->
             <if test="sidoCode != null and sidoCode != 0 ">
                 AND info.sido_code = #{sidoCode}
             </if>
@@ -111,7 +111,7 @@
                     and ${key} = #{word}
                 </if>
             </if>
-        </where>
+       <!--  </where> -->
     </sql>
 
 
@@ -138,11 +138,11 @@
         on info.content_id = ah.content_id
         left join (select content_id, count(*) as likes from attraction_like l group by l.content_id) as al
         on info.content_id = al.content_id
-
+		where info.member_id != 1
         <include refid="search"/>
 
         ORDER BY ah.hit desc
-        limit 15;
+      <!--   limit 15; -->
     </select>
     
     <select id="getHotPlace" parameterType="map" resultMap="resultAttr">
