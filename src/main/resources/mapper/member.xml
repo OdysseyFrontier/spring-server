@@ -158,14 +158,15 @@
         where follower_id = #{followerId} and following_id = #{followingId};
     </delete>
 
-    <select id="findFollowers" parameterType="long" resultMap="member">
-        select m.*
+    <select id="findFollowers" parameterType="long" resultMap="extendsMember">
+        select m.*,
+               IF(f.follower_id = #{memberId}, 1, 0) AS isFollowing
         from followers f
                  join members m on f.follower_id = m.member_id
         where f.following_id = #{memberId};
     </select>
 
-    <select id="findFollowing" parameterType="long" resultMap="member">
+    <select id="findFollowing" parameterType="long" resultMap="extendsMember">
         select m.*
         from followers f
                  join members m on f.following_id = m.member_id

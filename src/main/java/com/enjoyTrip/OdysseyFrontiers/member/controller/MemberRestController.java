@@ -261,6 +261,8 @@ public class MemberRestController {
 	public ResponseEntity<?> followMember(@PathVariable long followerId, @PathVariable long followingId) {
 		try {
 			memberService.followMember(followerId, followingId);
+			System.out.println("follow er" + followerId + " " + followingId);
+
 			return new ResponseEntity<>(HttpStatus.CREATED);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -272,6 +274,7 @@ public class MemberRestController {
 	public ResponseEntity<?> unfollowMember(@PathVariable long followerId, @PathVariable long followingId) {
 		try {
 			memberService.unfollowMember(followerId, followingId);
+			System.out.println("un er" + followerId + " " + followingId);
 			return new ResponseEntity<>(HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -283,6 +286,8 @@ public class MemberRestController {
 	public ResponseEntity<List<MemberDto>> getFollowers(@PathVariable long memberId) {
 		try {
 			List<MemberDto> followers = memberService.findFollowers(memberId);
+			System.out.println(memberId);
+			System.out.println(followers);
 			return new ResponseEntity<>(followers, HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
