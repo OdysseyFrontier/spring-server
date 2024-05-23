@@ -19,6 +19,8 @@ public interface PlanMapper {
 
     PlanDto getPlan(long planId);
 
+    List<PlanDetailDto> getPlanDetails(long planId);
+
     void updatePlan(PlanDto planDto);
 
     void deletePlan(long planId);

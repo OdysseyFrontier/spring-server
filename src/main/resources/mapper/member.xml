@@ -158,14 +158,15 @@
         where follower_id = #{followerId} and following_id = #{followingId};
     </delete>
 
-    <select id="findFollowers" parameterType="long" resultMap="member">
-        select m.*
+    <select id="findFollowers" parameterType="long" resultMap="extendsMember">
+        select m.*,
+               IF(f.follower_id = #{memberId}, 1, 0) AS isFollowing
         from followers f
                  join members m on f.follower_id = m.member_id
         where f.following_id = #{memberId};
     </select>
 
-    <select id="findFollowing" parameterType="long" resultMap="member">
+    <select id="findFollowing" parameterType="long" resultMap="extendsMember">
         select m.*
         from followers f
                  join members m on f.following_id = m.member_id
@@ -214,7 +215,7 @@
         </if>
     </select>
     
-     <select id="getMemberInfo" parameterType="map" resultType="com.example.demo.dto.MemberDto" >
+     <select id="getMemberInfo" parameterType="map" resultType="MemberDto" >
          SELECT 
             m.member_id AS memberId,
             m.name,
@@ -226,14 +227,12 @@
             m.address,
             m.birthday,
             m.join_date AS joinDate,
-            m.token,
             m.image,
             COALESCE(b.boardNum, 0) AS boardNum,
             COALESCE(hp.hotPlaceNum, 0) AS hotPlaceNum,
             COALESCE(p.planNum, 0) AS planNum,
             COALESCE(f.followerNum, 0) AS followedNum,
             COALESCE(fg.followingNum, 0) AS followingNum,
-            ch.isFollowing,
             if((SELECT COUNT(*) FROM followers WHERE follower_id = #{memberId} and following_id = #{targetId}) = 0, 'true', 'false') AS isFollowing
         FROM members m
         LEFT JOIN (SELECT member_id, COUNT(*) AS boardNum FROM board where member_id = #{targetId}) b ON m.member_id = b.member_id
@@ -268,9 +267,44 @@
         left join (select content_id, count(*) as likes from attraction_like l group by l.content_id) as al
         on info.content_id = al.content_id
 		where member_id = #{memberId}
+        ORDER BY ah.hit desc;
+    </select>
+    
+
+    <select id="getMemberLikeHotPlace" parameterType="long" resultMap="resultAttr">
+        SELECT  info.content_id,
+        		info.member_id,
+        		info.content_type_id,
+        		info.title,
+                info.addr1,
+                info.addr2,
+                info.zipcode,
+                info.tel,
+                info.latitude,
+                info.longitude,
+                info.first_image,
+                des.homepage,
+                des.overview,
+                ah.hit,
+                al.likes
+        FROM attraction_info as info
+              join attraction_description as des
+        on info.content_id = des.content_id
+        left join (select content_id, count(*) as hit from attraction_hit h group by h.content_id) as ah
+        on info.content_id = ah.content_id
+        left join (select content_id, count(*) as likes from attraction_like l group by l.content_id) as al
+        on info.content_id = al.content_id
+        right join (select content_id, count(*) as isLike from attraction_like as temp where temp.member_id = #{memberId} group by temp.content_id) as al2
+        on info.content_id = al2.content_id
+		where member_id = #{memberId}
 
         ORDER BY ah.hit desc;
     </select>
     
+    <update id="modifyMemberInfo" parameterType="map">
+        UPDATE members
+        SET name = #{name}, phone = #{phone}, birthday = #{birthday}, address = #{address}
+        where member_id = #{memberId}
+    </update>
     
 </mapper>

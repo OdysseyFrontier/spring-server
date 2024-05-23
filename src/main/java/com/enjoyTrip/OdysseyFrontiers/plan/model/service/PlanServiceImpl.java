@@ -1,5 +1,6 @@
 package com.enjoyTrip.OdysseyFrontiers.plan.model.service;
 
+import com.enjoyTrip.OdysseyFrontiers.attraction.model.dto.AttractionInfo;
 import com.enjoyTrip.OdysseyFrontiers.attraction.model.mapper.AttractionMapper;
 import com.enjoyTrip.OdysseyFrontiers.attraction.model.service.AttractionService;
 import com.enjoyTrip.OdysseyFrontiers.plan.model.dto.PlanDetailDto;
@@ -14,7 +15,10 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/plan")
@@ -23,6 +27,7 @@ public class PlanServiceImpl implements PlanService {
 
     @Autowired
     private PlanMapper planMapper;
+    @Autowired
     private AttractionMapper attractionMapper;
 
     public List<PlanDto> searchPlans(int contentTypeId, int sidoCode, int gugunCode, String keyword) {
@@ -32,7 +37,27 @@ public class PlanServiceImpl implements PlanService {
 
     public List<PlanDto> getPlansMadeByMember(Long memberId) {
         // Example method to fetch plans made by a member
-        return planMapper.findPlansByMemberId(memberId);
+        List<PlanDto> plansByMemberId = planMapper.findPlansByMemberId(memberId);
+
+        System.out.println(plansByMemberId);
+        for (PlanDto planDto : plansByMemberId) {
+            System.out.println(planDto);
+            List<String> images = new ArrayList<>();
+            List<PlanDetailDto> planDetails = planMapper.getPlanDetails(planDto.getPlanId());
+            for (PlanDetailDto planDetail : planDetails) {
+                AttractionInfo attractionInfo = attractionMapper.selectAttraction(planDetail.getContentId());
+                String firstImage = attractionInfo.getFirstImage();
+                String firstImage2 = attractionInfo.getFirstImage2();
+                if (firstImage != null && !firstImage.isEmpty()) {
+                    images.add(firstImage);
+                }
+                if (firstImage2 != null && !firstImage2.isEmpty()) {
+                    images.add(firstImage2);
+                }
+            }
+            planDto.setImages(images);
+        }
+        return plansByMemberId;
     }
 
     public List<PlanDto> getLikedPlansByMember(Long memberId) {
@@ -74,11 +99,40 @@ public class PlanServiceImpl implements PlanService {
 
 
     public PlanDto getPlan(long planId) {
-        return planMapper.getPlan(planId);
+        PlanDto plan = planMapper.getPlan(planId);
+        System.out.println("service get plan");
+        System.out.println(plan);
+        LocalDateTime latestPlanDetail = plan.getPlanDetails().stream()
+                .map(PlanDetailDto::getPlanTime)
+                .filter(Objects::nonNull)
+                .max(Comparator.comparing(LocalDateTime::toLocalDate))
+                .orElse(null);
+        System.out.println(latestPlanDetail);
+        if (latestPlanDetail != null) {
+            plan.setEndTime(LocalDate.from(Objects.requireNonNull(latestPlanDetail)));
+        }
+        return plan;
     }
 
     @Transactional
     public void updatePlan(PlanDto planDto){
+        if (planDto == null) {
+            throw new IllegalArgumentException("PlanDto cannot be null");
+        }
+        if (planDto.getPlanDetails() == null) {
+            throw new IllegalArgumentException("Plan details cannot be null");
+        }
+
+        planDto.setAccessType("public");
+        LocalDate startTime = planDto.getStartTime();
+        LocalDate endTime = planDto.getEndTime();
+        String season = calculateSeason(startTime, endTime);
+        planDto.setSeason(season);
+
+        System.out.println("====================================");
+        for (PlanDetailDto planDetail : planDto.getPlanDetails()) {
+            System.out.println(planDetail);
+        }
         planMapper.updatePlan(planDto);
         planMapper.deletePlanDetails(planDto.getPlanId());
 

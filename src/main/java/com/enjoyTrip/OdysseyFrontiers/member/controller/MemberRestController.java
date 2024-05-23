@@ -1,5 +1,6 @@
 package com.enjoyTrip.OdysseyFrontiers.member.controller;
 
+import com.enjoyTrip.OdysseyFrontiers.board.model.dto.BoardDto;
 import com.enjoyTrip.OdysseyFrontiers.board.model.dto.BoardListDto;
 import com.enjoyTrip.OdysseyFrontiers.hotplace.model.dto.HotPlaceDto;
 import com.enjoyTrip.OdysseyFrontiers.member.model.dto.MemberDto;
@@ -260,6 +261,8 @@ public class MemberRestController {
 	public ResponseEntity<?> followMember(@PathVariable long followerId, @PathVariable long followingId) {
 		try {
 			memberService.followMember(followerId, followingId);
+			System.out.println("follow er" + followerId + " " + followingId);
+
 			return new ResponseEntity<>(HttpStatus.CREATED);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -271,6 +274,7 @@ public class MemberRestController {
 	public ResponseEntity<?> unfollowMember(@PathVariable long followerId, @PathVariable long followingId) {
 		try {
 			memberService.unfollowMember(followerId, followingId);
+			System.out.println("un er" + followerId + " " + followingId);
 			return new ResponseEntity<>(HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -282,6 +286,8 @@ public class MemberRestController {
 	public ResponseEntity<List<MemberDto>> getFollowers(@PathVariable long memberId) {
 		try {
 			List<MemberDto> followers = memberService.findFollowers(memberId);
+			System.out.println(memberId);
+			System.out.println(followers);
 			return new ResponseEntity<>(followers, HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -323,22 +329,26 @@ public class MemberRestController {
 	@GetMapping("/search/{search}/{loginMemberId}")
 	public ResponseEntity<List<MemberDto>> searchMembersByLoginMemberId(@PathVariable(required = false) String search,
 																		@PathVariable(required = false) long loginMemberId) throws Exception {
-//		System.out.println(loginMemberId);
-//		long loginMemberId = Long.parseLong(loginMemberId);
+
+		System.out.println(search);
+		System.out.println(loginMemberId);
 		List<MemberDto> members = memberService.searchMembersByLoginMemberId(search,loginMemberId);
+		System.out.println(members);
 		return ResponseEntity.ok(members);
 	}
 	
 	
 	// 특정 멤버에 대한 정보를 준다
-	@GetMapping("/meberInfo")
+	@GetMapping("/memberInfo")
 	public ResponseEntity<?> getMemberInfo(@RequestParam Map<String, String> map) {
 		
 		log.info("getMemberInfo map - {}", map);
 		try {
 			MemberDto MemberDto = memberService.getMemberInfo(map);
+			System.out.println(MemberDto);
 			return new ResponseEntity<>(MemberDto, HttpStatus.OK);
 		} catch (Exception e) {
+			System.out.println(e.getMessage());
 			return new ResponseEntity<String>("Error : " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		
@@ -356,4 +366,30 @@ public class MemberRestController {
 			return new ResponseEntity<String>("Error : " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+	
+
+
+	@GetMapping("/likehotplace")
+	public ResponseEntity<?> getMemberLikeHotPlace(@RequestParam long memberId) {
+		
+		log.info("getMemberLikeHotPlace memberId - {}", memberId);
+		try {
+			List<HotPlaceDto> list = memberService.getMemberLikeHotPlace(memberId);
+			System.out.println(list);
+			return new ResponseEntity<>(list, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<String>("Error : " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	// 회원 정보 수정
+    @PutMapping
+    public ResponseEntity<?> modify(@RequestBody MemberDto memberDto) throws Exception {
+    	System.out.println(memberDto);
+        
+        memberService.modifyMemberInfo(memberDto);
+        
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

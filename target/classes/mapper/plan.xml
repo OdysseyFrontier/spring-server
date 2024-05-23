@@ -115,6 +115,11 @@
     </select>
 
 
+    <select id="getPlanDetails" parameterType="long" resultMap="planDetailMap">
+        select *
+        from plan_detail
+        where plan_detail.plan_id = #{planId}
+    </select>
     <insert id="insertPlan" useGeneratedKeys="true" keyProperty="planId">
         INSERT INTO plan (member_id, title, description, season, start_time, access_type)
         VALUES (#{memberId}, #{title}, #{description}, #{season}, #{startTime}, #{accessType})
@@ -133,7 +138,7 @@
             season = #{season},
             start_time = #{startTime},
             access_type = #{accessType},
-            recent_update_time = #{recentUpdateTime}
+            recent_update_time = now()
         WHERE plan_id = #{planId}
     </update>
 

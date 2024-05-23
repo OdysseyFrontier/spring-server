@@ -6,6 +6,8 @@ import com.enjoyTrip.OdysseyFrontiers.board.model.dto.BoardListDto;
 import com.enjoyTrip.OdysseyFrontiers.board.model.service.BoardService;
 import com.enjoyTrip.OdysseyFrontiers.board.model.service.CommentService;
 import com.enjoyTrip.OdysseyFrontiers.member.model.dto.MemberDto;
+import com.enjoyTrip.OdysseyFrontiers.util.jwt.JWTUtil;
+
 //import com.enjoyTrip.OdysseyFrontiers.util.jwt.JwtInterpreter;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -37,7 +39,8 @@ public class BoardRestController {
     private final BoardService boardService;
 //    private final JwtInterpreter jwtInterpreter;
 
-
+    private final JWTUtil jwtUtil;
+    
     @PostMapping
 //    public ResponseEntity<?> write(@RequestBody BoardDto boardDto,
 //            @RequestPart(value = "upfile", required = false) MultipartFile[] files,
@@ -74,16 +77,19 @@ public class BoardRestController {
 
     @GetMapping("/{boardno}")
     public ResponseEntity<?> view(@PathVariable("boardno") int boardno,
-                                  @RequestHeader(name = HEADER_AUTH, required = false) String jwtToken) throws Exception {
+    		@RequestHeader("Authorization") String authorization) throws Exception {
 
         // 현재는 회원만 board 에 조회 수 증가 가능.
-        if (jwtToken != null) {
-//            Long userId = jwtInterpreter.getUserId(jwtToken);
-//            BoardHitDto boardHitDto = new BoardHitDto(boardno, userId);
-//            boardService.createOrUpdateHit(boardHitDto);
-        }
-
-        // 비회원 증가하려면, ip를 가져와야함?
+//        if (jwtToken != null) {
+////            Long userId = jwtInterpreter.getUserId(jwtToken);
+////            BoardHitDto boardHitDto = new BoardHitDto(boardno, userId);
+////            boardService.createOrUpdateHit(boardHitDto);
+//        }
+    	Long memberId = jwtUtil.getUserId(authorization); 
+    	BoardHitDto boardHitDto = new BoardHitDto(boardno, memberId);
+    	boardService.createOrUpdateHit(boardHitDto);
+    	
+        
         System.out.println("들어옴");
         BoardDto boardDto = boardService.getBoard(boardno);
 
@@ -129,6 +135,7 @@ public class BoardRestController {
     @DeleteMapping("/{boardno}")
     public ResponseEntity<?> delete(@PathVariable("boardno") int boardno) throws Exception {
 
+//    	System.out.println(boardno);
         int result = boardService.deleteBoard(boardno);
 
         if (result == 0) {
