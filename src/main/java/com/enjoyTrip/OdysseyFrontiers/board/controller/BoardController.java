@@ -116,22 +116,7 @@ public class BoardController {
     @GetMapping("/list")
     public String list(@RequestParam Map<String, String> map, Model model, HttpSession session) throws Exception {
         logger.debug("list parameter pgno : {}", map.get("pgno"));
-
-//		테스트 설정
-//		MemberDto tmp = new MemberDto();
-//		tmp.setMemberId("ssafy1");
-//		tmp.setStatus(MemberStatus.ACTIVE);
-//		tmp.setname("김싸피");
-//		tmp.setPassword("whtlgus");
-//		session.setAttribute("memberInfo", tmp);
-
-        //List<BoardDto> list = boardService.listBoard(map);
-        //System.out.println(list);
         
-        
-//		PageNavigation pageNavigation = boardService.makePageNavigation(map);
-        //model.addAttribute("Boards", list);
-//		model.addAttribute("navigation", pageNavigation);
         model.addAttribute("pgno", map.get("pgno"));
         model.addAttribute("key", map.get("key"));
         model.addAttribute("word", map.get("word"));
