@@ -37,7 +37,6 @@ public class AttractionServiceImpl implements AttractionService {
     @Override
     public List<AttractionInfo> listAttr(int contentTypeId, int sidoCode, int gugunCode,
                                          String keyword, double nowLocLat, double nowLocLng) throws Exception {
-        // 싸피 위도 경도
         double[] nowloc = initLoc(nowLocLat, nowLocLng);
 
         System.out.println(nowLocLat);
