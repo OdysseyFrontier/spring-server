@@ -14,14 +14,6 @@ import org.springframework.util.StopWatch;
 @Aspect
 @Component
 public class LoggingAspect {
-
-
-//	@Before(value = "execution(* com.ssafy.board.model.mapper.Board*.*(..))")
-//	public void loggin(JoinPoint joinPoint) {
-//		logger.debug("before call method : {} ", joinPoint.getSignature());
-//		logger.debug("메서드 선언부 : {} 전달 파라미터 : {}", joinPoint.getSignature(), Arrays.toString(joinPoint.getArgs()));
-//	}
-
 	@Around(value = "execution(* com.enjoyTrip.OdysseyFrontiers.*.model.mapper.*.*(..))")
 	public Object executionTime(ProceedingJoinPoint joinPoint) throws Throwable {
 		log.info("around call method : {} ", joinPoint.getSignature());
