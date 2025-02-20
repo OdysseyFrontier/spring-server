@@ -97,17 +97,9 @@
 
 ### **📌 시스템 아키텍처**
 ![image](https://github.com/user-attachments/assets/c4648501-f978-4a3f-ada7-34be068c2354)
-![아키텍처](#)
 
 ### **📌 데이터베이스 설계 (ERD)**
 <img width="464" alt="image" src="https://github.com/user-attachments/assets/a1b625bc-ccaa-4134-8fdb-2d1743f9150f" />
-![ERD](#)
-
-### **📌 UI & MockUp**
-📌 **[Figma 디자인 보기](#)**
-
-### **📌 기능 명세서**
-📌 **[기능 명세서 보기](#)**
 
 ---
 
